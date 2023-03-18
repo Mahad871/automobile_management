@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Code\VS_Code_Flutter\Automobile\automobile_management\build\windows\CMakeFiles\e9d7734f2f23de53b4726ddfab38836c\flutter_windows.dll.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Code\VS_Code_Flutter\Automobile\automobile_management\build\windows\CMakeFiles\632d3a90d87fd8d02e8dfcc7140acd14\flutter_assemble.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Code\VS_Code_Flutter\Automobile\automobile_management\windows\flutter\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Code\VS_Code_Flutter\Automobile\automobile_management\build\windows\flutter\CMakeFiles\flutter_assemble" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{DEAE7509-3994-35F1-BF5A-77E677C049C7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

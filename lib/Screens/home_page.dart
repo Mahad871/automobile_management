@@ -1,5 +1,8 @@
 import 'package:automobile_management/Common/custom_rounded_button.dart';
 import 'package:automobile_management/Common/reusable_card.dart';
+import 'package:automobile_management/Screens/chat_list_page.dart';
+import 'package:automobile_management/Screens/notificastion_page.dart';
+import 'package:automobile_management/Screens/profile_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../Common/constants.dart';
@@ -24,13 +27,18 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: backgroundColor,
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
+          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 30),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(
                 children: [
                   GestureDetector(
+                    onTap: () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const ProfileScreen(),
+                        )),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -69,10 +77,19 @@ class _HomeScreenState extends State<HomeScreen> {
                                     shape: const CircleBorder(),
                                     side: const BorderSide(
                                         style: BorderStyle.solid)),
-                                onPressed: () {},
+                                onPressed: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        const NotificationScreen(),
+                                  ));
+                                },
                                 child: const Icon(Icons.notifications)),
                             ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.of(context).push(MaterialPageRoute(
+                                    builder: (context) =>
+                                        const ChatListScreen()));
+                              },
                               style: ElevatedButton.styleFrom(
                                   shape: const StadiumBorder()),
                               child: const Text('+ User'),

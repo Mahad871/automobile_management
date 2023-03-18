@@ -1,0 +1,339 @@
+import 'package:automobile_management/Screens/registration_screen.dart';
+import 'package:flutter/material.dart';
+import '../Common/constants.dart';
+
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  bool isVendor = false;
+  Color userModeContainerColor = Colors.black;
+  Color userModeTextColor = Colors.white;
+  Color vendorModeContainerColor = textFieldColor;
+  Color vendorModeTextColor = Colors.black;
+  final TextEditingController _controllerUsername = TextEditingController();
+  final TextEditingController _controllerEmail = TextEditingController();
+  final TextEditingController _controllerPhoneNo = TextEditingController();
+  final TextEditingController _controllerPassword = TextEditingController();
+  final TextEditingController _controllerAddress = TextEditingController();
+  bool usernameFieldDisabled = true;
+  bool emailFieldDisabled = true;
+  bool phoneNoFieldDisabled = true;
+  bool passwordFieldDisabled = true;
+
+  @override
+  Widget build(BuildContext context) {
+    var scaffold = Scaffold(
+      appBar: AppBar(
+        toolbarHeight: 60,
+        leading: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Expanded(
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                style: ElevatedButton.styleFrom(
+                  shape: const CircleBorder(),
+                  backgroundColor: textFieldColor,
+                  foregroundColor: Colors.black,
+                  fixedSize: const Size.fromRadius(25),
+                  elevation: 0,
+                ),
+                child: const Icon(Icons.arrow_back_rounded),
+              ),
+            ),
+          ],
+        ),
+        backgroundColor: textFieldColor.withOpacity(0),
+        foregroundColor: textColor,
+        elevation: 0,
+        shadowColor: Colors.transparent,
+      ),
+      backgroundColor: backgroundColor,
+      body: Padding(
+        padding: const EdgeInsets.all(30.0),
+        child: ListView(
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "Picture",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Container(
+                          decoration: BoxDecoration(boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(1),
+                              spreadRadius: 1,
+                              blurRadius: 15,
+                              offset: const Offset(
+                                  1, 5), // changes position of shadow
+                            ),
+                          ], borderRadius: BorderRadius.circular(25)),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(25),
+                            child: SizedBox.fromSize(
+                              size: const Size.fromRadius(90),
+                              child: Image.asset('assets/images/pic1.jpg',
+                                  fit: BoxFit.cover),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            ),
+            Container(
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                color: backgroundColor,
+                borderRadius: BorderRadius.only(),
+              ),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 20),
+                    const Text(
+                      "Bio",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      " Username",
+                      style: TextStyle(
+                          color: textColor.withOpacity(0.5),
+                          fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 10),
+                    Container(
+                      height: 50,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4),
+                        color: textFieldColor,
+                      ),
+                      padding: const EdgeInsets.only(left: 16),
+                      child: TextField(
+                        readOnly: usernameFieldDisabled,
+                        controller: _controllerUsername,
+                        style: const TextStyle(color: textColor),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintStyle: const TextStyle(color: hintTextColor),
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                usernameFieldDisabled = !usernameFieldDisabled;
+                              });
+                            },
+                            icon: const Icon(Icons.edit),
+                          ),
+                        ),
+                        onChanged: (value) {},
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      " Email",
+                      style: TextStyle(
+                          color: textColor.withOpacity(0.5),
+                          fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 10),
+                    Container(
+                      height: 50,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4),
+                        color: textFieldColor,
+                      ),
+                      padding: const EdgeInsets.only(left: 16),
+                      child: TextField(
+                        readOnly: emailFieldDisabled,
+                        controller: _controllerEmail,
+                        style: const TextStyle(color: textColor),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintStyle: const TextStyle(color: hintTextColor),
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                emailFieldDisabled = !emailFieldDisabled;
+                              });
+                            },
+                            icon: const Icon(Icons.edit),
+                          ),
+                        ),
+                        onChanged: (value) {},
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      " Phone no",
+                      style: TextStyle(
+                          color: textColor.withOpacity(0.5),
+                          fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 10),
+                    Container(
+                      height: 50,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4),
+                        color: textFieldColor,
+                      ),
+                      padding: const EdgeInsets.only(left: 16),
+                      child: TextField(
+                        readOnly: phoneNoFieldDisabled,
+                        controller: _controllerPhoneNo,
+                        style: const TextStyle(color: textColor),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintStyle: const TextStyle(color: hintTextColor),
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                phoneNoFieldDisabled = !phoneNoFieldDisabled;
+                              });
+                            },
+                            icon: const Icon(Icons.edit),
+                          ),
+                        ),
+                        onChanged: (value) {},
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      " Password",
+                      style: TextStyle(
+                          color: textColor.withOpacity(0.5),
+                          fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 10),
+                    Container(
+                      height: 50,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4),
+                        color: textFieldColor,
+                      ),
+                      padding: const EdgeInsets.only(left: 16),
+                      child: TextField(
+                        readOnly: passwordFieldDisabled,
+                        controller: _controllerPassword,
+                        style: const TextStyle(color: textColor),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintStyle: const TextStyle(color: hintTextColor),
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {
+                                passwordFieldDisabled = !passwordFieldDisabled;
+                              });
+                            },
+                            icon: const Icon(Icons.edit),
+                          ),
+                        ),
+                        onChanged: (value) {},
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Text(
+                      " Address",
+                      style: TextStyle(
+                          color: textColor.withOpacity(0.5),
+                          fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 10),
+                    Container(
+                      height: 50,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(4),
+                        color: textFieldColor,
+                      ),
+                      padding: const EdgeInsets.only(left: 16),
+                      child: TextField(
+                        readOnly: false,
+                        controller: _controllerAddress,
+                        style: const TextStyle(color: textColor),
+                        decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintStyle: const TextStyle(color: hintTextColor),
+                          suffixIcon: IconButton(
+                            onPressed: () {
+                              setState(() {});
+                            },
+                            icon: const Icon(Icons.location_on),
+                          ),
+                        ),
+                        onChanged: (value) {},
+                      ),
+                    ),
+                    const SizedBox(height: 20),
+                    Center(
+                      child: GestureDetector(
+                        onTap: () {},
+                        child: Container(
+                          height: 55,
+                          width: 250,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(100),
+                            color: Colors.black,
+                          ),
+                          child: const Center(
+                            child: Padding(
+                              padding: EdgeInsets.all(10.0),
+                              child: Text(
+                                'Update',
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+
+    return scaffold;
+  }
+
+  void navigateToRegistrationScreen(
+    BuildContext context,
+  ) {
+    Navigator.of(context).push(
+        MaterialPageRoute(builder: (context) => const RegistrationScreen()));
+  }
+
+  void swapColors() {
+    setState(() {
+      Color temp = userModeContainerColor;
+      userModeContainerColor = vendorModeContainerColor;
+      vendorModeContainerColor = temp;
+      temp = userModeTextColor;
+      userModeTextColor = vendorModeTextColor;
+      vendorModeTextColor = temp;
+    });
+  }
+}
