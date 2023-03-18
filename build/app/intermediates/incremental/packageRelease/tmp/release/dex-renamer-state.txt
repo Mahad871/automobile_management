@@ -1,0 +1,4 @@
+#Sat Mar 18 17:45:13 PKT 2023
+base.0=C\:\\Code\\VS_Code_Flutter\\Automobile\\automobile_management\\build\\app\\intermediates\\dex\\release\\minifyReleaseWithR8\\classes.dex
+renamed.0=classes.dex
+path.0=classes.dex

@@ -26,64 +26,65 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
           child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              GestureDetector(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
+              Column(
+                children: [
+                  GestureDetector(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: CircleAvatar(
-                            backgroundColor: Colors.grey,
-                            child: Icon(CupertinoIcons.person_alt,
-                                color: Colors.black),
-                          ),
-                        ),
-                        Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                        Row(
                           children: [
-                            const Text(
-                              "Mahad Saleem",
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                            const Padding(
+                              padding: EdgeInsets.all(8.0),
+                              child: CircleAvatar(
+                                backgroundColor: Colors.grey,
+                                child: Icon(CupertinoIcons.person_alt,
+                                    color: Colors.black),
+                              ),
                             ),
-                            Row(
-                              children: const [
-                                Icon(CupertinoIcons.heart_solid, size: 15),
-                                Text("3.1 k")
+                            Column(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                const Text(
+                                  "Mahad Saleem",
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                                Row(
+                                  children: const [
+                                    Icon(CupertinoIcons.heart_solid, size: 15),
+                                    Text("3.1 k")
+                                  ],
+                                )
                               ],
+                            )
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            OutlinedButton(
+                                style: OutlinedButton.styleFrom(
+                                    shape: const CircleBorder(),
+                                    side: const BorderSide(
+                                        style: BorderStyle.solid)),
+                                onPressed: () {},
+                                child: const Icon(Icons.notifications)),
+                            ElevatedButton(
+                              onPressed: () {},
+                              style: ElevatedButton.styleFrom(
+                                  shape: const StadiumBorder()),
+                              child: const Text('+ User'),
                             )
                           ],
                         )
                       ],
                     ),
-                    Row(
-                      children: [
-                        OutlinedButton(
-                            style: OutlinedButton.styleFrom(
-                                shape: const CircleBorder(),
-                                side:
-                                    const BorderSide(style: BorderStyle.solid)),
-                            onPressed: () {},
-                            child: const Icon(Icons.notifications)),
-                        ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                              shape: const StadiumBorder()),
-                          child: const Text('+ User'),
-                        )
-                      ],
-                    )
-                  ],
-                ),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Column(
-                children: [
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   Row(
                     children: [
                       Expanded(
@@ -213,74 +214,70 @@ class _HomeScreenState extends State<HomeScreen> {
                       )
                     ],
                   ),
-                  const SizedBox(
-                    height: 60,
+                ],
+              ),
+              Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: const [
+                      CustomRoundButton(
+                        buttonIcon: Icons.add,
+                        buttonIconColor: textFieldColor,
+                        buttonColor: textColor,
+                      ),
+                      CustomRoundButton(
+                        buttonIcon: Icons.add,
+                        buttonIconColor: textFieldColor,
+                        buttonColor: textColor,
+                      ),
+                      CustomRoundButton(
+                        buttonIcon: Icons.add,
+                        buttonIconColor: textFieldColor,
+                        buttonColor: textColor,
+                      ),
+                      CustomRoundButton(
+                        buttonIcon: Icons.add,
+                        buttonIconColor: textFieldColor,
+                        buttonColor: textColor,
+                      ),
+                      CustomRoundButton(
+                        buttonIcon: Icons.add,
+                        buttonIconColor: textFieldColor,
+                        buttonColor: textColor,
+                      ),
+                    ],
                   ),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: const [
-                          CustomRoundButton(
-                            buttonIcon: Icons.add,
-                            buttonIconColor: textFieldColor,
-                            buttonColor: textColor,
-                          ),
-                          CustomRoundButton(
-                            buttonIcon: Icons.add,
-                            buttonIconColor: textFieldColor,
-                            buttonColor: textColor,
-                          ),
-                          CustomRoundButton(
-                            buttonIcon: Icons.add,
-                            buttonIconColor: textFieldColor,
-                            buttonColor: textColor,
-                          ),
-                          CustomRoundButton(
-                            buttonIcon: Icons.add,
-                            buttonIconColor: textFieldColor,
-                            buttonColor: textColor,
-                          ),
-                          CustomRoundButton(
-                            buttonIcon: Icons.add,
-                            buttonIconColor: textFieldColor,
-                            buttonColor: textColor,
-                          ),
-                        ],
+                  const SizedBox(
+                    height: 10,
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: const [
+                      CustomRoundButton(
+                        buttonIcon: Icons.add,
+                        buttonIconColor: textFieldColor,
+                        buttonColor: textColor,
                       ),
-                      const SizedBox(
-                        height: 10,
+                      CustomRoundButton(
+                        buttonIcon: Icons.add,
+                        buttonIconColor: textFieldColor,
+                        buttonColor: textColor,
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: const [
-                          CustomRoundButton(
-                            buttonIcon: Icons.add,
-                            buttonIconColor: textFieldColor,
-                            buttonColor: textColor,
-                          ),
-                          CustomRoundButton(
-                            buttonIcon: Icons.add,
-                            buttonIconColor: textFieldColor,
-                            buttonColor: textColor,
-                          ),
-                          CustomRoundButton(
-                            buttonIcon: Icons.add,
-                            buttonIconColor: textFieldColor,
-                            buttonColor: textColor,
-                          ),
-                          CustomRoundButton(
-                            buttonIcon: Icons.add,
-                            buttonIconColor: textFieldColor,
-                            buttonColor: textColor,
-                          ),
-                          CustomRoundButton(
-                            buttonIcon: Icons.add,
-                            buttonIconColor: textFieldColor,
-                            buttonColor: textColor,
-                          ),
-                        ],
+                      CustomRoundButton(
+                        buttonIcon: Icons.add,
+                        buttonIconColor: textFieldColor,
+                        buttonColor: textColor,
+                      ),
+                      CustomRoundButton(
+                        buttonIcon: Icons.add,
+                        buttonIconColor: textFieldColor,
+                        buttonColor: textColor,
+                      ),
+                      CustomRoundButton(
+                        buttonIcon: Icons.add,
+                        buttonIconColor: textFieldColor,
+                        buttonColor: textColor,
                       ),
                     ],
                   ),

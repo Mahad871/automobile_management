@@ -1,0 +1,12 @@
+com.example.automobile_management.app-main-0 C:\Code\VS_Code_Flutter\Automobile\automobile_management\android\app\src\main\res
+com.example.automobile_management.app-release-1 C:\Code\VS_Code_Flutter\Automobile\automobile_management\android\app\src\release\res
+com.example.automobile_management.app-pngs-2 C:\Code\VS_Code_Flutter\Automobile\automobile_management\build\app\generated\res\pngs\release
+com.example.automobile_management.app-resValues-3 C:\Code\VS_Code_Flutter\Automobile\automobile_management\build\app\generated\res\resValues\release
+com.example.automobile_management.app-rs-4 C:\Code\VS_Code_Flutter\Automobile\automobile_management\build\app\generated\res\rs\release
+com.example.automobile_management.app-mergeReleaseResources-5 C:\Code\VS_Code_Flutter\Automobile\automobile_management\build\app\intermediates\incremental\release\mergeReleaseResources\merged.dir
+com.example.automobile_management.app-mergeReleaseResources-6 C:\Code\VS_Code_Flutter\Automobile\automobile_management\build\app\intermediates\incremental\release\mergeReleaseResources\stripped.dir
+com.example.automobile_management.app-merged_res-7 C:\Code\VS_Code_Flutter\Automobile\automobile_management\build\app\intermediates\merged_res\release
+com.example.automobile_management.app-jetified-window-java-1.0.0-beta04-8 C:\Users\msasd\.gradle\caches\transforms-3\006d93cd422dbc43e89591147c2de572\transformed\jetified-window-java-1.0.0-beta04\res
+com.example.automobile_management.app-core-1.6.0-9 C:\Users\msasd\.gradle\caches\transforms-3\4ca28c4a71705f8a687c69dda140a277\transformed\core-1.6.0\res
+com.example.automobile_management.app-jetified-annotation-experimental-1.1.0-10 C:\Users\msasd\.gradle\caches\transforms-3\8965c941cf4bee4d72541b965c7c9d39\transformed\jetified-annotation-experimental-1.1.0\res
+com.example.automobile_management.app-jetified-window-1.0.0-beta04-11 C:\Users\msasd\.gradle\caches\transforms-3\dee59bb480020f42d53c2ea15e4501f7\transformed\jetified-window-1.0.0-beta04\res
