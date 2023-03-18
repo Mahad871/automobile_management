@@ -31,31 +31,36 @@ class _ProfileScreenState extends State<ProfileScreen> {
     var scaffold = Scaffold(
       appBar: AppBar(
         toolbarHeight: 60,
-        leading: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Expanded(
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-                style: ElevatedButton.styleFrom(
-                  shape: const CircleBorder(),
-                  backgroundColor: textFieldColor,
-                  foregroundColor: Colors.black,
-                  fixedSize: const Size.fromRadius(25),
-                  elevation: 0,
+        leadingWidth: 100,
+        leading: Padding(
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  style: ElevatedButton.styleFrom(
+                    shape: const CircleBorder(),
+                    backgroundColor: textFieldColor,
+                    foregroundColor: Colors.black,
+                    fixedSize: const Size.fromRadius(30),
+                    elevation: 0,
+                  ),
+                  child: const Icon(Icons.arrow_back_rounded),
                 ),
-                child: const Icon(Icons.arrow_back_rounded),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         backgroundColor: textFieldColor.withOpacity(0),
         foregroundColor: textColor,
         elevation: 0,
         shadowColor: Colors.transparent,
       ),
+      extendBodyBehindAppBar: true,
       backgroundColor: backgroundColor,
       body: Padding(
         padding: const EdgeInsets.all(30.0),
