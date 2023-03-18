@@ -1,4 +1,5 @@
 import 'package:automobile_management/Screens/registration_screen.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../Common/constants.dart';
 
@@ -70,29 +71,53 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Row(
                   children: [
                     Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Container(
-                          decoration: BoxDecoration(boxShadow: [
-                            BoxShadow(
-                              color: Colors.grey.withOpacity(1),
-                              spreadRadius: 1,
-                              blurRadius: 15,
-                              offset: const Offset(
-                                  1, 5), // changes position of shadow
-                            ),
-                          ], borderRadius: BorderRadius.circular(25)),
-                          child: ClipRRect(
-                            borderRadius: BorderRadius.circular(25),
-                            child: SizedBox.fromSize(
-                              size: const Size.fromRadius(90),
-                              child: Image.asset('assets/images/pic1.jpg',
-                                  fit: BoxFit.cover),
+                      child: Stack(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Container(
+                              width: double.maxFinite,
+                              decoration: BoxDecoration(boxShadow: [
+                                BoxShadow(
+                                  color: Colors.grey.withOpacity(1),
+                                  spreadRadius: 0,
+                                  blurRadius: 8,
+                                  offset: const Offset(
+                                      1, 1), // changes position of shadow
+                                ),
+                              ], borderRadius: BorderRadius.circular(20)),
+                              child: ClipRRect(
+                                borderRadius: BorderRadius.circular(20),
+                                child: SizedBox.fromSize(
+                                  size: const Size.fromRadius(90),
+                                  child: Image.asset('assets/images/pic1.jpg',
+                                      fit: BoxFit.cover),
+                                ),
+                              ),
                             ),
                           ),
-                        ),
+                          Align(
+                              alignment: Alignment.bottomRight,
+                              child: Padding(
+                                padding:
+                                    const EdgeInsets.only(right: 25.0, top: 20),
+                                child: ElevatedButton(
+                                  onPressed: () {},
+                                  style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    backgroundColor: textFieldColor,
+                                    foregroundColor: Colors.black,
+                                    fixedSize: const Size.fromRadius(15),
+                                    elevation: 0,
+                                  ),
+                                  child: const Icon(CupertinoIcons.pencil),
+                                ),
+                              ))
+                        ],
                       ),
-                    ),
+                    )
                   ],
                 )
               ],
