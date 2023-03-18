@@ -1,4 +1,5 @@
 import 'package:automobile_management/Screens/forget_password_screen.dart';
+import 'package:automobile_management/Screens/home_page.dart';
 import 'package:automobile_management/Screens/registration_screen.dart';
 import 'package:flutter/material.dart';
 import '../Common/constants.dart';
@@ -192,7 +193,11 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(height: 35),
                       Center(
                         child: GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => const HomeScreen(),
+                            ));
+                          },
                           child: Container(
                             height: 55,
                             width: 250,
