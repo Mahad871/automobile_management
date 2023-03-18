@@ -23,7 +23,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
       body: Column(
         children: [
           Expanded(
-            flex: 2,
+            flex: 1,
             child: Row(
               children: [
                 Padding(
@@ -145,8 +145,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                             hintText: "Email/Username",
                             hintStyle: TextStyle(color: hintTextColor),
                           ),
-                          onChanged: (value) {
-                          },
+                          onChanged: (value) {},
                         ),
                       ),
                       const SizedBox(height: 35),
@@ -154,7 +153,8 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                         child: GestureDetector(
                           onTap: () {
                             Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => const UpdatePasswowrdScreen()));
+                                builder: (context) =>
+                                    const UpdatePasswowrdScreen()));
                           },
                           child: Container(
                             height: 55,

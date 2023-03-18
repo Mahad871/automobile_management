@@ -17,6 +17,7 @@ class MainApp extends StatelessWidget {
           secondary: Colors.white,
         ),
       ),
+      debugShowCheckedModeBanner: false,
       home: const LoginScreen(),
     );
   }

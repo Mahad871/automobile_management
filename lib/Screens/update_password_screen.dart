@@ -22,7 +22,7 @@ class _UpdatePasswowrdScreenState extends State<UpdatePasswowrdScreen> {
       body: Column(
         children: [
           Expanded(
-            flex: 2,
+            flex: 1,
             child: Row(
               children: [
                 Padding(
