@@ -67,23 +67,26 @@ class _SearchScreenState extends State<SearchScreen> {
                 Flexible(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                      child: TextField(
-                        controller: _searchController,
-                        decoration: InputDecoration(
-                          hintText: '  Search',
-                          // Add a clear button to the search bar
-                          suffixIcon: IconButton(
-                            icon: const Icon(Icons.clear),
-                            onPressed: () => _searchController.clear(),
+                    child: TextField(
+                      controller: _searchController,
+                      decoration: InputDecoration(
+                        hintText: '  Search',
+                        suffixIcon: IconButton(
+                          icon: const Icon(Icons.clear),
+                          onPressed: () => _searchController.clear(),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                          borderSide: const BorderSide(
+                            style: BorderStyle.solid,
+                            color: Colors.black,
                           ),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(30.0),
-                            borderSide: const BorderSide(
-                              style: BorderStyle.solid,
-                              color: Colors.black,
-                            ),
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(30.0),
+                          borderSide: const BorderSide(
+                            style: BorderStyle.solid,
+                            color: Colors.black,
                           ),
                         ),
                       ),
@@ -91,10 +94,10 @@ class _SearchScreenState extends State<SearchScreen> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(right: 20),
+                  padding: const EdgeInsets.only(right: 45),
                   child: OutlinedButton(
                       style: OutlinedButton.styleFrom(
-                          fixedSize: const Size.fromRadius(23),
+                          fixedSize: const Size.fromRadius(25),
                           shape: const CircleBorder(),
                           side: const BorderSide(style: BorderStyle.solid)),
                       onPressed: () {

@@ -1,32 +1,44 @@
-# Prerequisites
-*.d
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.buildlog/
+.history
+.svn/
+migrate_working_dir/
 
-# Compiled Object files
-*.slo
-*.lo
-*.o
-*.obj
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
 
-# Precompiled Headers
-*.gch
-*.pch
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
 
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+.pub-cache/
+.pub/
+/build/
 
-# Fortran module files
-*.mod
-*.smod
+# Symbolication related
+app.*.symbols
 
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
+# Obfuscation related
+app.*.map.json
 
-# Executables
-*.exe
-*.out
-*.app
+# Android Studio will place build artifacts here
+/android/app/debug
+/android/app/profile
+/android/app/release
