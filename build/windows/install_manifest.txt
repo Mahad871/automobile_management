@@ -1,0 +1,12 @@
+C:/Code/VS_Code_Flutter/Automobile/automobile_management/build/windows/runner/Debug/data/icudtl.dat
+C:/Code/VS_Code_Flutter/Automobile/automobile_management/build/windows/runner/Debug/flutter_windows.dll
+C:/Code/VS_Code_Flutter/Automobile/automobile_management/build/windows/runner/Debug/data/flutter_assets/AssetManifest.json
+C:/Code/VS_Code_Flutter/Automobile/automobile_management/build/windows/runner/Debug/data/flutter_assets/assets/images/pic1.jpg
+C:/Code/VS_Code_Flutter/Automobile/automobile_management/build/windows/runner/Debug/data/flutter_assets/assets/images/profile_pic.png
+C:/Code/VS_Code_Flutter/Automobile/automobile_management/build/windows/runner/Debug/data/flutter_assets/FontManifest.json
+C:/Code/VS_Code_Flutter/Automobile/automobile_management/build/windows/runner/Debug/data/flutter_assets/fonts/MaterialIcons-Regular.otf
+C:/Code/VS_Code_Flutter/Automobile/automobile_management/build/windows/runner/Debug/data/flutter_assets/kernel_blob.bin
+C:/Code/VS_Code_Flutter/Automobile/automobile_management/build/windows/runner/Debug/data/flutter_assets/NOTICES
+C:/Code/VS_Code_Flutter/Automobile/automobile_management/build/windows/runner/Debug/data/flutter_assets/NOTICES.Z
+C:/Code/VS_Code_Flutter/Automobile/automobile_management/build/windows/runner/Debug/data/flutter_assets/packages/cupertino_icons/assets/CupertinoIcons.ttf
+C:/Code/VS_Code_Flutter/Automobile/automobile_management/build/windows/runner/Debug/data/flutter_assets/shaders/ink_sparkle.frag

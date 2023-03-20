@@ -3,6 +3,7 @@ import 'package:automobile_management/Common/reusable_card.dart';
 import 'package:automobile_management/Screens/chat_list_page.dart';
 import 'package:automobile_management/Screens/notificastion_page.dart';
 import 'package:automobile_management/Screens/profile_screen.dart';
+import 'package:automobile_management/Screens/search_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../Common/constants.dart';
@@ -106,6 +107,11 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       Expanded(
                         child: GestureDetector(
+                          onTap: () =>
+                              Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) =>
+                                const SearchScreen(title: "Toxic\nOnline"),
+                          )),
                           child: Container(
                             decoration: const BoxDecoration(
                                 borderRadius:

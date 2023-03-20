@@ -1,0 +1,28 @@
+^C:\CODE\VS_CODE_FLUTTER\AUTOMOBILE\AUTOMOBILE_MANAGEMENT\BUILD\WINDOWS\CMAKEFILES\E9D7734F2F23DE53B4726DDFAB38836C\FLUTTER_WINDOWS.DLL.RULE
+setlocal
+"C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -E env FLUTTER_ROOT=C:\src\flutter\flutter PROJECT_DIR=C:\Code\VS_Code_Flutter\Automobile\automobile_management FLUTTER_ROOT=C:\src\flutter\flutter FLUTTER_EPHEMERAL_DIR=C:\Code\VS_Code_Flutter\Automobile\automobile_management\windows\flutter\ephemeral PROJECT_DIR=C:\Code\VS_Code_Flutter\Automobile\automobile_management FLUTTER_TARGET=C:\Code\VS_Code_Flutter\Automobile\automobile_management\lib\main.dart DART_DEFINES=RkxVVFRFUl9XRUJfQVVUT19ERVRFQ1Q9dHJ1ZQ== DART_OBFUSCATION=false EXTRA_FRONT_END_OPTIONS=--no-sound-null-safety TRACK_WIDGET_CREATION=true TREE_SHAKE_ICONS=false PACKAGE_CONFIG=C:\Code\VS_Code_Flutter\Automobile\automobile_management\.dart_tool\package_config.json C:/src/flutter/flutter/packages/flutter_tools/bin/tool_backend.bat windows-x64 Debug
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\CODE\VS_CODE_FLUTTER\AUTOMOBILE\AUTOMOBILE_MANAGEMENT\BUILD\WINDOWS\CMAKEFILES\632D3A90D87FD8D02E8DFCC7140ACD14\FLUTTER_ASSEMBLE.RULE
+setlocal
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\CODE\VS_CODE_FLUTTER\AUTOMOBILE\AUTOMOBILE_MANAGEMENT\WINDOWS\FLUTTER\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/Code/VS_Code_Flutter/Automobile/automobile_management/windows -BC:/Code/VS_Code_Flutter/Automobile/automobile_management/build/windows --check-stamp-file C:/Code/VS_Code_Flutter/Automobile/automobile_management/build/windows/flutter/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
