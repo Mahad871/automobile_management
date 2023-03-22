@@ -51,6 +51,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
         backgroundColor: backgroundColor,
         body: SafeArea(
           child: Scaffold(
+            backgroundColor: Colors.white,
             appBar: AppBar(
               centerTitle: true,
               backgroundColor: textFieldColor,

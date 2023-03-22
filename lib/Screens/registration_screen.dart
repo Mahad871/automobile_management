@@ -1,5 +1,8 @@
+import 'package:automobile_management/Screens/login_screen.dart';
+import 'package:automobile_management/models/signup_controller.dart';
 import 'package:flutter/material.dart';
 import '../Common/constants.dart';
+import 'package:get/get.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
@@ -9,6 +12,8 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
+  final controller = Get.put(SignUpControtter());
+  final confirmPasswordController = TextEditingController();
   bool isVendor = false;
   Color userModeContainerColor = Colors.black;
   Color userModeTextColor = Colors.white;
@@ -144,12 +149,10 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             hintText: "Name",
                             hintStyle: TextStyle(color: hintTextColor),
                           ),
-                          onChanged: (value) {
-                          },
+                          controller: controller.username,
                         ),
                       ),
-                      const SizedBox(height: 20),
-                      const SizedBox(height: 5),
+                      const SizedBox(height: 25),
                       Container(
                         height: 50,
                         decoration: BoxDecoration(
@@ -164,8 +167,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             hintText: "Email",
                             hintStyle: TextStyle(color: hintTextColor),
                           ),
-                          onChanged: (value) {
-                          },
+                          controller: controller.email,
                         ),
                       ),
                       const SizedBox(height: 20),
@@ -184,8 +186,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             hintText: "Password",
                             hintStyle: TextStyle(color: hintTextColor),
                           ),
-                          onChanged: (value) {
-                          },
+                          controller: controller.password,
                         ),
                       ),
                       const SizedBox(height: 20),
@@ -204,8 +205,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             hintText: "Confirm Password",
                             hintStyle: TextStyle(color: hintTextColor),
                           ),
-                          onChanged: (value) {
-                          },
+                          controller: confirmPasswordController,
                         ),
                       ),
                       const SizedBox(height: 35),
@@ -247,7 +247,11 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             ),
                             GestureDetector(
                               onTap: () {
-                                Navigator.pop(context);
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const LoginScreen(),
+                                    ));
                               },
                               child: const Text(
                                 'Sign In',

@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1051295119535",
+    "project_id": "automobile-management-cc756",
+    "storage_bucket": "automobile-management-cc756.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1051295119535:android:dc61f1a4d4273222343c5a",
+        "android_client_info": {
+          "package_name": "com.example.automobile_management"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1051295119535-6cf098999mc1faehe86pr3qqmnvhj2lo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA3JFN7ke-0KMj9TIgKu1KUt_TDRkgfWjU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1051295119535-6cf098999mc1faehe86pr3qqmnvhj2lo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
