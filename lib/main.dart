@@ -5,9 +5,8 @@ import 'package:automobile_management/Screens/registration_screen.dart';
 import 'package:automobile_management/Screens/search_page.dart';
 import 'package:automobile_management/Screens/update_password_screen.dart';
 import 'package:flutter/material.dart';
-import 'Screens/login_screen.dart';
+import 'Screens/signin_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,8 +30,8 @@ class MainApp extends StatelessWidget {
       // home: const LoginScreen(),
       initialRoute: '/',
       routes: {
-        '/': (context) => const LoginScreen(),
-        '/login': (context) => const LoginScreen(),
+        '/': (context) => const SignInScreen(),
+        '/login': (context) => const SignInScreen(),
         '/register': (context) => const RegistrationScreen(),
         '/forget_password': (context) => const ForgetPasswordScreen(),
         '/update_password': (context) => const UpdatePasswowrdScreen(),

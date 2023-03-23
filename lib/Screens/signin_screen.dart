@@ -1,17 +1,21 @@
 import 'package:automobile_management/Screens/forget_password_screen.dart';
 import 'package:automobile_management/Screens/home_page.dart';
 import 'package:automobile_management/Screens/registration_screen.dart';
+import 'package:automobile_management/models/user_repository.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../Common/constants.dart';
+import '../models/signin_controller.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class SignInScreen extends StatefulWidget {
+  const SignInScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<SignInScreen> createState() => _SignInScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _SignInScreenState extends State<SignInScreen> {
+  final controller = Get.put(SignInController());
   bool isVendor = false;
   Color userModeContainerColor = Colors.black;
   Color userModeTextColor = Colors.white;
@@ -147,7 +151,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             hintText: "Email/Username",
                             hintStyle: TextStyle(color: hintTextColor),
                           ),
-                          onChanged: (value) {},
+                          controller: controller.email,
                         ),
                       ),
                       const SizedBox(height: 15),
@@ -167,7 +171,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             hintText: "Password",
                             hintStyle: TextStyle(color: hintTextColor),
                           ),
-                          onChanged: (value) {},
+                          controller: controller.password,
                         ),
                       ),
                       Align(
@@ -193,9 +197,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       const SizedBox(height: 35),
                       Center(
                         child: GestureDetector(
-                          onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => const HomeScreen(),
+                          onTap: () async {
+                            var _cureentUser = await UserRepository().siginUser(
+                                email: controller.email.text.trim(),
+                                password: controller.password.text.trim());
+                            await Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => HomeScreen(
+                                currentUser: _cureentUser,
+                              ),
                             ));
                           },
                           child: Container(

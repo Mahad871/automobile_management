@@ -1,10 +1,14 @@
 import 'package:automobile_management/Screens/registration_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import '../Common/constants.dart';
+import '../models/profile_controller.dart';
+import '../models/user_model.dart';
 
 class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+  UserModel currentUser;
+  ProfileScreen({super.key, required this.currentUser});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -16,17 +20,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Color userModeTextColor = Colors.white;
   Color vendorModeContainerColor = textFieldColor;
   Color vendorModeTextColor = Colors.black;
-  final TextEditingController _controllerUsername = TextEditingController();
-  final TextEditingController _controllerEmail = TextEditingController();
-  final TextEditingController _controllerPhoneNo = TextEditingController();
-  final TextEditingController _controllerPassword = TextEditingController();
-  final TextEditingController _controllerAddress = TextEditingController();
+  ProfileController controller = Get.put(ProfileController());
   bool usernameFieldDisabled = true;
   bool emailFieldDisabled = true;
   bool phoneNoFieldDisabled = true;
   bool passwordFieldDisabled = true;
 
   @override
+  void initState() {
+    super.initState();
+
+    setState(() {
+      controller.email.text = widget.currentUser.email;
+      controller.password.text = widget.currentUser.password;
+      controller.username.text = widget.currentUser.username;
+    });
+
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
     var scaffold = Scaffold(
       appBar: AppBar(
@@ -160,7 +172,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       padding: const EdgeInsets.only(left: 16),
                       child: TextField(
                         readOnly: usernameFieldDisabled,
-                        controller: _controllerUsername,
+                        controller: controller.username,
                         style: const TextStyle(color: textColor),
                         decoration: InputDecoration(
                           border: InputBorder.none,
@@ -194,7 +206,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       padding: const EdgeInsets.only(left: 16),
                       child: TextField(
                         readOnly: emailFieldDisabled,
-                        controller: _controllerEmail,
+                        controller: controller.email,
                         style: const TextStyle(color: textColor),
                         decoration: InputDecoration(
                           border: InputBorder.none,
@@ -228,7 +240,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       padding: const EdgeInsets.only(left: 16),
                       child: TextField(
                         readOnly: phoneNoFieldDisabled,
-                        controller: _controllerPhoneNo,
+                        controller: controller.phoneNo,
                         style: const TextStyle(color: textColor),
                         decoration: InputDecoration(
                           border: InputBorder.none,
@@ -261,8 +273,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                       padding: const EdgeInsets.only(left: 16),
                       child: TextField(
+                        obscureText: true,
                         readOnly: passwordFieldDisabled,
-                        controller: _controllerPassword,
+                        controller: controller.password,
                         style: const TextStyle(color: textColor),
                         decoration: InputDecoration(
                           border: InputBorder.none,
@@ -296,7 +309,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       padding: const EdgeInsets.only(left: 16),
                       child: TextField(
                         readOnly: false,
-                        controller: _controllerAddress,
+                        controller: controller.address,
                         style: const TextStyle(color: textColor),
                         decoration: InputDecoration(
                           border: InputBorder.none,
@@ -314,7 +327,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     const SizedBox(height: 20),
                     Center(
                       child: GestureDetector(
-                        onTap: () {},
+                        onTap: () {
+                          controller.updateUser(UserModel(
+                              id: widget.currentUser.id,
+                              username: controller.username.text.trim(),
+                              email: controller.email.text.trim(),
+                              isVendor: widget.currentUser.isVendor,
+                              password: controller.password.text.trim()));
+                              
+                        },
                         child: Container(
                           height: 55,
                           width: 250,

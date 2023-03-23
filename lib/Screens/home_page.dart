@@ -4,12 +4,14 @@ import 'package:automobile_management/Screens/chat_list_page.dart';
 import 'package:automobile_management/Screens/notificastion_page.dart';
 import 'package:automobile_management/Screens/profile_screen.dart';
 import 'package:automobile_management/Screens/search_page.dart';
+import 'package:automobile_management/models/user_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../Common/constants.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  UserModel currentUser;
+  HomeScreen({super.key, required this.currentUser});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -38,7 +40,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const ProfileScreen(),
+                          builder: (context) =>
+                              ProfileScreen(currentUser: widget.currentUser),
                         )),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -57,8 +60,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
-                                  "Mahad Saleem",
+                                Text(
+                                  widget.currentUser.username,
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                                 Row(

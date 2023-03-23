@@ -1,5 +1,6 @@
-import 'package:automobile_management/Screens/login_screen.dart';
+import 'package:automobile_management/Screens/signin_screen.dart';
 import 'package:automobile_management/models/signup_controller.dart';
+import 'package:automobile_management/models/user_model.dart';
 import 'package:flutter/material.dart';
 import '../Common/constants.dart';
 import 'package:get/get.dart';
@@ -12,8 +13,7 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
-  final controller = Get.put(SignUpControtter());
-  final confirmPasswordController = TextEditingController();
+  final controller = Get.put(SignUpController());
   bool isVendor = false;
   Color userModeContainerColor = Colors.black;
   Color userModeTextColor = Colors.white;
@@ -205,13 +205,27 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                             hintText: "Confirm Password",
                             hintStyle: TextStyle(color: hintTextColor),
                           ),
-                          controller: confirmPasswordController,
+                          controller: controller.confirmPassword,
                         ),
                       ),
                       const SizedBox(height: 35),
                       Center(
                         child: GestureDetector(
-                          onTap: () {},
+                          onTap: () {
+                            final user = UserModel(
+                              username: controller.username.text.trim(),
+                              email: controller.email.text.trim(),
+                              isVendor: isVendor,
+                              password: controller.password.text.trim(),
+                            );
+                            SignUpController().crateUser(user);
+                            Navigator.pushAndRemoveUntil(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const SignInScreen(),
+                                ),
+                                (route) => false);
+                          },
                           child: Container(
                             height: 55,
                             width: 250,
@@ -250,7 +264,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
-                                      builder: (context) => const LoginScreen(),
+                                      builder: (context) =>
+                                          const SignInScreen(),
                                     ));
                               },
                               child: const Text(
