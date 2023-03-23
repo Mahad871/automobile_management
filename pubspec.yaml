@@ -13,7 +13,7 @@ dependencies:
   firebase_core: ^2.8.0
   flutter:
     sdk: flutter
-  get: ^4.6.5
+  get_it: ^7.2.0
   provider: 
 dev_dependencies:
   flutter_test:

@@ -2,8 +2,8 @@ import 'package:automobile_management/Screens/signin_screen.dart';
 import 'package:automobile_management/models/signup_controller.dart';
 import 'package:automobile_management/models/user_model.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../Common/constants.dart';
-import 'package:get/get.dart';
 
 class RegistrationScreen extends StatefulWidget {
   const RegistrationScreen({super.key});
@@ -13,7 +13,6 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
-  final controller = Get.put(SignUpController());
   bool isVendor = false;
   Color userModeContainerColor = Colors.black;
   Color userModeTextColor = Colors.white;
@@ -22,6 +21,7 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Provider.of<SignUpController>(context);
     var scaffold = Scaffold(
       backgroundColor: backgroundColor,
       body: Column(
@@ -211,20 +211,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       const SizedBox(height: 35),
                       Center(
                         child: GestureDetector(
-                          onTap: () {
-                            final user = UserModel(
-                              username: controller.username.text.trim(),
-                              email: controller.email.text.trim(),
-                              isVendor: isVendor,
-                              password: controller.password.text.trim(),
-                            );
-                            SignUpController().crateUser(user);
-                            Navigator.pushAndRemoveUntil(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const SignInScreen(),
-                                ),
-                                (route) => false);
+                          onTap: () async {
+                            await registerUser(controller, context);
                           },
                           child: Container(
                             height: 55,
@@ -290,6 +278,23 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     );
 
     return scaffold;
+  }
+
+  Future<void> registerUser(
+      SignUpController controller, BuildContext context) async {
+    final user = UserModel(
+      username: controller.username.text.trim(),
+      email: controller.email.text.trim(),
+      isVendor: isVendor,
+      password: controller.password.text.trim(),
+    );
+    bool success = false;
+
+    success = await SignUpController().crateUser(context, user);
+    if (success) {
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => const SignInScreen()));
+    }
   }
 
   void swapColors() {

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
-  final String? id;
+  late String? id;
   final String username;
   final String email;
   final String password;
@@ -16,6 +16,7 @@ class UserModel {
 
   toJson() {
     return {
+      "uid": id,
       "username": username,
       "email": email,
       "isVendor": isVendor,

@@ -1,9 +1,9 @@
 import 'package:automobile_management/Screens/forget_password_screen.dart';
 import 'package:automobile_management/Screens/home_page.dart';
 import 'package:automobile_management/Screens/registration_screen.dart';
-import 'package:automobile_management/models/user_repository.dart';
+import 'package:automobile_management/models/auth_method.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:provider/provider.dart';
 import '../Common/constants.dart';
 import '../models/signin_controller.dart';
 
@@ -15,7 +15,6 @@ class SignInScreen extends StatefulWidget {
 }
 
 class _SignInScreenState extends State<SignInScreen> {
-  final controller = Get.put(SignInController());
   bool isVendor = false;
   Color userModeContainerColor = Colors.black;
   Color userModeTextColor = Colors.white;
@@ -24,6 +23,8 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
+    AuthMethod authMethod = Provider.of<AuthMethod>(context);
+    final controller = Provider.of<SignInController>(context);
     var scaffold = Scaffold(
       backgroundColor: backgroundColor,
       body: Column(
@@ -198,15 +199,16 @@ class _SignInScreenState extends State<SignInScreen> {
                       Center(
                         child: GestureDetector(
                           onTap: () async {
-                            var _cureentUser = await UserRepositoryProvider()
-                                .siginUser(
-                                    email: controller.email.text.trim(),
-                                    password: controller.password.text.trim());
-                            await Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => HomeScreen(
-                                currentUser: _cureentUser,
-                              ),
-                            ));
+                            bool success = await authMethod.siginUser(
+                                email: controller.email.text.trim(),
+                                password: controller.password.text.trim());
+                            if (success) {
+                              await authMethod.getCurrentUserData(
+                                  controller.email.text.trim());
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => HomeScreen(),
+                              ));
+                            }
                           },
                           child: Container(
                             height: 55,

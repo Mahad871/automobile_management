@@ -1,14 +1,15 @@
 import 'package:automobile_management/Screens/registration_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import '../Common/constants.dart';
 import '../models/profile_controller.dart';
 import '../models/user_model.dart';
+import 'package:provider/provider.dart';
+
+import '../models/auth_method.dart';
 
 class ProfileScreen extends StatefulWidget {
-  UserModel currentUser;
-  ProfileScreen({super.key, required this.currentUser});
+  const ProfileScreen({super.key});
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -20,8 +21,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Color userModeTextColor = Colors.white;
   Color vendorModeContainerColor = textFieldColor;
   Color vendorModeTextColor = Colors.black;
-  // ProfileController controller = Get.put(ProfileController());
-  ProfileProvider controller = ProfileProvider();
   bool usernameFieldDisabled = true;
   bool emailFieldDisabled = true;
   bool phoneNoFieldDisabled = true;
@@ -30,17 +29,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   void initState() {
     super.initState();
-
-    setState(() {
-      controller.email.text = widget.currentUser.email;
-      controller.password.text = widget.currentUser.password;
-      controller.username.text = widget.currentUser.username;
-    });
-
-    super.initState();
   }
 
   Widget build(BuildContext context) {
+    AuthMethod authMethod = Provider.of<AuthMethod>(context);
+    ProfileProvider controller = Provider.of<ProfileProvider>(context);
+    controller.email.text = authMethod.currentUserData.email;
+    controller.password.text = authMethod.currentUserData.password;
+    controller.username.text = authMethod.currentUserData.username;
+
     var scaffold = Scaffold(
       appBar: AppBar(
         toolbarHeight: 60,
@@ -316,9 +313,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           border: InputBorder.none,
                           hintStyle: const TextStyle(color: hintTextColor),
                           suffixIcon: IconButton(
-                            onPressed: () {
-                              setState(() {});
-                            },
+                            onPressed: () {},
                             icon: const Icon(Icons.location_on),
                           ),
                         ),
@@ -329,13 +324,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Center(
                       child: GestureDetector(
                         onTap: () {
-                          controller.updateUser(UserModel(
-                              id: widget.currentUser.id,
-                              username: controller.username.text.trim(),
-                              email: controller.email.text.trim(),
-                              isVendor: widget.currentUser.isVendor,
-                              password: controller.password.text.trim()));
-                              
+                          UserModel user = UserModel(
+                              id: authMethod.currentUser.user!.uid,
+                              username: controller.username.text,
+                              email: controller.email.text,
+                              isVendor: isVendor,
+                              password: controller.password.text);
+                          authMethod.currentUserData = user;
+                          authMethod.updateUser();
                         },
                         child: Container(
                           height: 55,

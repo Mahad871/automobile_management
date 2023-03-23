@@ -4,20 +4,23 @@ import 'package:automobile_management/Screens/chat_list_page.dart';
 import 'package:automobile_management/Screens/notificastion_page.dart';
 import 'package:automobile_management/Screens/profile_screen.dart';
 import 'package:automobile_management/Screens/search_page.dart';
+import 'package:automobile_management/models/profile_controller.dart';
 import 'package:automobile_management/models/user_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../Common/constants.dart';
+import '../models/auth_method.dart';
 
 class HomeScreen extends StatefulWidget {
-  UserModel currentUser;
-  HomeScreen({super.key, required this.currentUser});
+  const HomeScreen({super.key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  String? username = "error";
   bool isVendor = false;
   Color userModeContainerColor = Colors.black;
   Color userModeTextColor = Colors.white;
@@ -25,7 +28,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Color vendorModeTextColor = Colors.black;
 
   @override
+  @override
   Widget build(BuildContext context) {
+    AuthMethod authMethod = Provider.of<AuthMethod>(context);
     var scaffold = Scaffold(
       backgroundColor: backgroundColor,
       body: SafeArea(
@@ -40,8 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              ProfileScreen(currentUser: widget.currentUser),
+                          builder: (context) => ProfileScreen(),
                         )),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -61,7 +65,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  widget.currentUser.username,
+                                  authMethod.currentUserData.username
+                                      .toString(),
                                   style: TextStyle(fontWeight: FontWeight.bold),
                                 ),
                                 Row(
