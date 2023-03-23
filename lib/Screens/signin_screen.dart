@@ -198,9 +198,10 @@ class _SignInScreenState extends State<SignInScreen> {
                       Center(
                         child: GestureDetector(
                           onTap: () async {
-                            var _cureentUser = await UserRepository().siginUser(
-                                email: controller.email.text.trim(),
-                                password: controller.password.text.trim());
+                            var _cureentUser = await UserRepositoryProvider()
+                                .siginUser(
+                                    email: controller.email.text.trim(),
+                                    password: controller.password.text.trim());
                             await Navigator.of(context).push(MaterialPageRoute(
                               builder: (context) => HomeScreen(
                                 currentUser: _cureentUser,

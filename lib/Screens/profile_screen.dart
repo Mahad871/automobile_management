@@ -20,7 +20,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Color userModeTextColor = Colors.white;
   Color vendorModeContainerColor = textFieldColor;
   Color vendorModeTextColor = Colors.black;
-  ProfileController controller = Get.put(ProfileController());
+  // ProfileController controller = Get.put(ProfileController());
+  ProfileProvider controller = ProfileProvider();
   bool usernameFieldDisabled = true;
   bool emailFieldDisabled = true;
   bool phoneNoFieldDisabled = true;
