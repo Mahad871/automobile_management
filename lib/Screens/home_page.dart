@@ -5,7 +5,6 @@ import 'package:automobile_management/Screens/notificastion_page.dart';
 import 'package:automobile_management/Screens/profile_screen.dart';
 import 'package:automobile_management/Screens/search_page.dart';
 import 'package:automobile_management/models/profile_controller.dart';
-import 'package:automobile_management/models/user_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -28,7 +27,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Color vendorModeTextColor = Colors.black;
 
   @override
-  @override
   Widget build(BuildContext context) {
     AuthMethod authMethod = Provider.of<AuthMethod>(context);
     var scaffold = Scaffold(
@@ -45,7 +43,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     onTap: () => Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => ProfileScreen(),
+                          builder: (context) => const ProfileScreen(),
                         )),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -60,22 +58,30 @@ class _HomeScreenState extends State<HomeScreen> {
                                     color: Colors.black),
                               ),
                             ),
-                            Column(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Text(
-                                  authMethod.currentUserData.username
-                                      .toString(),
-                                  style: TextStyle(fontWeight: FontWeight.bold),
-                                ),
-                                Row(
-                                  children: const [
-                                    Icon(CupertinoIcons.heart_solid, size: 15),
-                                    Text("3.1 k")
+                            Consumer<ProfileProvider>(
+                              builder:
+                                  (context, ProfileProvider profPro, child) {
+                                return Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      authMethod.currentUserData.username
+                                          .toString(),
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Row(
+                                      children: const [
+                                        Icon(CupertinoIcons.heart_solid,
+                                            size: 15),
+                                        Text("3.1 k")
+                                      ],
+                                    )
                                   ],
-                                )
-                              ],
+                                );
+                              },
                             )
                           ],
                         ),

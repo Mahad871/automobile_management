@@ -41,8 +41,15 @@ class AuthMethod extends ChangeNotifier {
   }
 
   updateUser() async {
-    currentUser.user!.updateEmail(currentUserData.email);
-    currentUser.user!.updatePassword(currentUserData.password);
+    await _auth
+        .signInWithEmailAndPassword(
+            email: currentUser.user!.email.toString(),
+            password: currentUserData.password)
+        .then((value) {
+      currentUser.user!.updateEmail(currentUserData.email);
+      currentUser.user!.updatePassword(currentUserData.password);
+    });
+
     await _db
         .collection('users')
         .doc(currentUser.user!.uid)

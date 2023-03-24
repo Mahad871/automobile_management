@@ -291,9 +291,12 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     bool success = false;
 
     success = await SignUpController().crateUser(context, user);
+    await Future.delayed(const Duration(seconds: 1));
     if (success) {
-      Navigator.push(context,
-          MaterialPageRoute(builder: (context) => const SignInScreen()));
+      if (context.mounted) {
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => const SignInScreen()));
+      }
     }
   }
 

@@ -205,9 +205,13 @@ class _SignInScreenState extends State<SignInScreen> {
                             if (success) {
                               await authMethod.getCurrentUserData(
                                   controller.email.text.trim());
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => HomeScreen(),
-                              ));
+                              if (context.mounted) {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => const HomeScreen(),
+                                  ),
+                                );
+                              }
                             }
                           },
                           child: Container(

@@ -31,6 +31,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     super.initState();
   }
 
+  @override
   Widget build(BuildContext context) {
     AuthMethod authMethod = Provider.of<AuthMethod>(context);
     ProfileProvider controller = Provider.of<ProfileProvider>(context);
