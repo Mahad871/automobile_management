@@ -1,7 +1,7 @@
-import 'package:automobile_management/Common/reusable_card.dart';
+import 'package:automobile_management/Widgets/reusable_card.dart';
 import 'package:flutter/material.dart';
 
-import 'constants.dart';
+import '../Common/constants.dart';
 
 class NotificationCard extends StatelessWidget {
   final String username;

@@ -1,14 +1,14 @@
-import 'package:automobile_management/Common/custom_rounded_button.dart';
-import 'package:automobile_management/Common/reusable_card.dart';
 import 'package:automobile_management/Screens/chat_list_page.dart';
 import 'package:automobile_management/Screens/notificastion_page.dart';
 import 'package:automobile_management/Screens/profile_screen.dart';
 import 'package:automobile_management/Screens/search_page.dart';
+import 'package:automobile_management/Widgets/reusable_card.dart';
 import 'package:automobile_management/models/profile_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../Common/constants.dart';
+import '../Widgets/custom_rounded_button.dart';
 import '../models/auth_method.dart';
 
 class HomeScreen extends StatefulWidget {
