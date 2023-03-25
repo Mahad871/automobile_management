@@ -1,6 +1,10 @@
+import 'dart:typed_data';
+
 import 'package:automobile_management/Screens/registration_screen.dart';
+import 'package:automobile_management/utilities/image_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import '../Common/constants.dart';
 import '../models/profile_controller.dart';
 import '../models/user_model.dart';
@@ -25,6 +29,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool emailFieldDisabled = true;
   bool phoneNoFieldDisabled = true;
   bool passwordFieldDisabled = true;
+  Uint8List? _image;
 
   @override
   void initState() {
@@ -102,12 +107,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                       1, 1), // changes position of shadow
                                 ),
                               ], borderRadius: BorderRadius.circular(20)),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(20),
-                                child: SizedBox.fromSize(
-                                  size: const Size.fromRadius(90),
-                                  child: Image.asset('assets/images/pic1.jpg',
-                                      fit: BoxFit.cover),
+                              child: ChangeNotifierProvider<AuthMethod>.value(
+                                value: authMethod,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(20),
+                                  child: SizedBox.fromSize(
+                                      size: const Size.fromRadius(90),
+                                      child: authMethod
+                                                  .currentUserData.photoUrl !=
+                                              null
+                                          ? Image.network(
+                                              authMethod
+                                                  .currentUserData.photoUrl!,
+                                              fit: BoxFit.cover,
+                                            )
+                                          : Image.network(
+                                              "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
+                                              fit: BoxFit.cover)),
                                 ),
                               ),
                             ),
@@ -118,7 +134,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 padding:
                                     const EdgeInsets.only(right: 25.0, top: 20),
                                 child: ElevatedButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    selectImage();
+                                  },
                                   style: ElevatedButton.styleFrom(
                                     shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(8),
@@ -330,7 +348,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               username: controller.username.text,
                               email: controller.email.text,
                               isVendor: isVendor,
-                              password: controller.password.text);
+                              password: controller.password.text,
+                              file: _image);
                           authMethod.currentUserData = user;
                           authMethod.updateUser();
                         },
@@ -366,6 +385,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
 
     return scaffold;
+  }
+
+  void selectImage() async {
+    Uint8List img = await pickImage(ImageSource.gallery);
+    setState(() {
+      _image = img;
+    });
   }
 
   void navigateToRegistrationScreen(

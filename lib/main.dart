@@ -8,6 +8,7 @@ import 'package:automobile_management/models/profile_controller.dart';
 import 'package:automobile_management/models/signin_controller.dart';
 import 'package:automobile_management/models/signup_controller.dart';
 import 'package:automobile_management/models/auth_method.dart';
+import 'package:automobile_management/models/storage_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'Screens/signin_screen.dart';
@@ -30,6 +31,7 @@ class MainApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => AuthMethod()),
         ChangeNotifierProvider(create: (_) => SignUpController()),
         ChangeNotifierProvider(create: (_) => SignInController()),
+        ChangeNotifierProvider(create: (_) => StorageModel()),
       ],
       child: MaterialApp(
         theme: ThemeData(

@@ -1,4 +1,6 @@
+import 'package:automobile_management/models/storage_model.dart';
 import 'package:automobile_management/models/user_model.dart';
+import 'package:automobile_management/services/databse_storage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -41,14 +43,19 @@ class AuthMethod extends ChangeNotifier {
   }
 
   updateUser() async {
-    await _auth
-        .signInWithEmailAndPassword(
-            email: currentUser.user!.email.toString(),
-            password: currentUserData.password)
-        .then((value) {
-      currentUser.user!.updateEmail(currentUserData.email);
-      currentUser.user!.updatePassword(currentUserData.password);
-    });
+    // await _auth
+    //     .signInWithEmailAndPassword(
+    //         email: currentUser.user!.email.toString(),
+    //         password: currentUserData.password)
+    //     .then((value) {
+    //   currentUser.user!.updateEmail(currentUserData.email);
+    //   currentUser.user!.updatePassword(currentUserData.password);
+    // });
+
+    String photoUrl = await StorageModel()
+        .uploadImageToFIrebase("profilePics", currentUserData.file!, false);
+
+    currentUserData.photoUrl = photoUrl;
 
     await _db
         .collection('users')
