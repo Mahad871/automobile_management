@@ -1,4 +1,5 @@
 import 'package:automobile_management/Screens/signin_screen.dart';
+import 'package:automobile_management/Widgets/custom_toast.dart';
 import 'package:automobile_management/models/signup_controller.dart';
 import 'package:automobile_management/models/user_model.dart';
 import 'package:flutter/material.dart';
@@ -13,6 +14,7 @@ class RegistrationScreen extends StatefulWidget {
 }
 
 class _RegistrationScreenState extends State<RegistrationScreen> {
+  String? status;
   bool isVendor = false;
   Color userModeContainerColor = Colors.black;
   Color userModeTextColor = Colors.white;
@@ -211,8 +213,8 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                       const SizedBox(height: 35),
                       Center(
                         child: GestureDetector(
-                          onTap: () async {
-                            await registerUser(controller, context);
+                          onTap: () {
+                            registerUser(controller, context);
                           },
                           child: Container(
                             height: 55,
@@ -221,16 +223,20 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
                               borderRadius: BorderRadius.circular(100),
                               color: Colors.black,
                             ),
-                            child: const Center(
+                            child: Center(
                               child: Padding(
-                                padding: EdgeInsets.all(10.0),
-                                child: Text(
-                                  'Sign Up',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18),
-                                ),
+                                padding: const EdgeInsets.all(10.0),
+                                child: status == "loading"
+                                    ? const CircularProgressIndicator(
+                                        color: Colors.white,
+                                      )
+                                    : const Text(
+                                        ' Sign Up',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18),
+                                      ),
                               ),
                             ),
                           ),
@@ -282,22 +288,26 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
 
   Future<void> registerUser(
       SignUpController controller, BuildContext context) async {
+    setState(() {
+      status = "loading";
+    });
     final user = UserModel(
       username: controller.username.text.trim(),
       email: controller.email.text.trim(),
       isVendor: isVendor,
       password: controller.password.text.trim(),
     );
-    bool success = false;
 
-    success = await SignUpController().crateUser(context, user);
+    status = await SignUpController().crateUser(context, user);
     await Future.delayed(const Duration(seconds: 1));
-    if (success) {
+    if (status == 'success') {
+      CustomToast.successToast(message: status!);
       if (context.mounted) {
         Navigator.push(context,
             MaterialPageRoute(builder: (context) => const SignInScreen()));
       }
-    }
+    } else
+      (CustomToast.errorToast(message: status!));
   }
 
   void swapColors() {

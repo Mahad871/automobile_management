@@ -1,7 +1,7 @@
 import 'package:automobile_management/Screens/chat_list_page.dart';
 import 'package:automobile_management/Screens/forget_password_screen.dart';
 import 'package:automobile_management/Screens/notificastion_page.dart';
-import 'package:automobile_management/Screens/registration_screen.dart';
+import 'package:automobile_management/Screens/signup_screen.dart';
 import 'package:automobile_management/Screens/search_page.dart';
 import 'package:automobile_management/Screens/update_password_screen.dart';
 import 'package:automobile_management/models/profile_controller.dart';

@@ -27,19 +27,21 @@ class AuthMethod extends ChangeNotifier {
     return true;
   }
 
-  siginUser({required String email, required String password}) async {
+  Future<String> siginUser(
+      {required String email, required String password}) async {
     try {
       UserCredential cred = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
+
       currentUser = cred;
     } catch (e) {
       print(e);
-      return false;
+      return e.toString();
     }
 
     notifyListeners();
 
-    return true;
+    return "success";
   }
 
   updateUser() async {

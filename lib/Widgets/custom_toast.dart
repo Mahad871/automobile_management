@@ -6,7 +6,7 @@ class CustomToast {
     Fluttertoast.showToast(
       msg: message,
       timeInSecForIosWeb: duration,
-      backgroundColor: Colors.green,
+      backgroundColor: Colors.black,
     );
   }
 
@@ -32,7 +32,7 @@ class CustomToast {
     required String text,
   }) {
     final SnackBar snackBar =
-        SnackBar(content: Text(text), backgroundColor: Colors.green);
+        SnackBar(content: Text(text), backgroundColor: Colors.black);
     ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 }

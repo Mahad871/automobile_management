@@ -1,6 +1,6 @@
 import 'dart:typed_data';
 
-import 'package:automobile_management/Screens/registration_screen.dart';
+import 'package:automobile_management/Screens/signup_screen.dart';
 import 'package:automobile_management/utilities/image_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

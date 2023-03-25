@@ -1,6 +1,7 @@
 import 'package:automobile_management/Screens/forget_password_screen.dart';
 import 'package:automobile_management/Screens/home_page.dart';
-import 'package:automobile_management/Screens/registration_screen.dart';
+import 'package:automobile_management/Screens/signup_screen.dart';
+import 'package:automobile_management/Widgets/custom_toast.dart';
 import 'package:automobile_management/models/auth_method.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -20,6 +21,7 @@ class _SignInScreenState extends State<SignInScreen> {
   Color userModeTextColor = Colors.white;
   Color vendorModeContainerColor = textFieldColor;
   Color vendorModeTextColor = Colors.black;
+  String status = " ";
 
   @override
   Widget build(BuildContext context) {
@@ -198,21 +200,8 @@ class _SignInScreenState extends State<SignInScreen> {
                       const SizedBox(height: 35),
                       Center(
                         child: GestureDetector(
-                          onTap: () async {
-                            bool success = await authMethod.siginUser(
-                                email: controller.email.text.trim(),
-                                password: controller.password.text.trim());
-                            if (success) {
-                              await authMethod.getCurrentUserData(
-                                  controller.email.text.trim());
-                              if (context.mounted) {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => const HomeScreen(),
-                                  ),
-                                );
-                              }
-                            }
+                          onTap: () {
+                            signUser(authMethod, controller, context);
                           },
                           child: Container(
                             height: 55,
@@ -221,16 +210,20 @@ class _SignInScreenState extends State<SignInScreen> {
                               borderRadius: BorderRadius.circular(100),
                               color: Colors.black,
                             ),
-                            child: const Center(
+                            child: Center(
                               child: Padding(
-                                padding: EdgeInsets.all(10.0),
-                                child: Text(
-                                  ' Log In',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18),
-                                ),
+                                padding: const EdgeInsets.all(10.0),
+                                child: status == "loading"
+                                    ? const CircularProgressIndicator(
+                                        color: Colors.white,
+                                      )
+                                    : const Text(
+                                        ' Log In',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18),
+                                      ),
                               ),
                             ),
                           ),
@@ -273,6 +266,29 @@ class _SignInScreenState extends State<SignInScreen> {
     );
 
     return scaffold;
+  }
+
+  Future<void> signUser(AuthMethod authMethod, SignInController controller,
+      BuildContext context) async {
+    setState(() {
+      status = "loading";
+    });
+    status = await authMethod.siginUser(
+        email: controller.email.text.trim(),
+        password: controller.password.text.trim());
+    if (status == "success") {
+      await authMethod.getCurrentUserData(controller.email.text.trim());
+      CustomToast.successToast(message: "Success");
+      if (context.mounted) {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (context) => const HomeScreen(),
+          ),
+        );
+      }
+    } else {
+      CustomToast.errorToast(message: status);
+    }
   }
 
   void navigateToRegistrationScreen(
