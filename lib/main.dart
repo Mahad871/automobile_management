@@ -49,9 +49,7 @@ class MainApp extends StatelessWidget {
           ),
         ),
         debugShowCheckedModeBanner: false,
-        home: storage.read('isLoggedin') == false
-            ? Text(storage.read('user').toString())
-            : const SignInScreen(),
+        home:const SignInScreen(),
         // initialRoute: '/',
         // routes: {
         //   '/': (context) => const SignInScreen(),

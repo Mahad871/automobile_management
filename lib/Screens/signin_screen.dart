@@ -24,10 +24,12 @@ class _SignInScreenState extends State<SignInScreen> {
   Color vendorModeContainerColor = textFieldColor;
   Color vendorModeTextColor = Colors.black;
   String status = " ";
+  GetStorage storage = GetStorage();
 
   @override
   void initState() {
     super.initState();
+    
   }
 
   @override
@@ -278,6 +280,30 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   Future<void> signUser(AuthMethod authMethod, SignInController controller,
+      BuildContext context, StorageProvider localStorage) async {
+    setState(() {
+      status = "loading";
+    });
+    status = await authMethod.signinUser(
+        email: controller.email.text.trim(),
+        password: controller.password.text.trim());
+    if (status == "success") {
+      await authMethod.getCurrentUserData(controller.email.text.trim());
+      CustomToast.successToast(message: "Success");
+      localStorage.storeUserData(authMethod.currentUserData!);
+      if (context.mounted) {
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const HomeScreen(),
+            ));
+      }
+    } else {
+      CustomToast.errorToast(message: status);
+    }
+  }
+
+   Future<void> AutoSignUser(AuthMethod authMethod, SignInController controller,
       BuildContext context, StorageProvider localStorage) async {
     setState(() {
       status = "loading";
