@@ -4,11 +4,9 @@ import 'package:get_storage/get_storage.dart';
 
 class StorageProvider extends ChangeNotifier {
   late UserModel userData;
-  bool islogged = false;
   GetStorage localStorage = GetStorage();
 
   void storeUserData(UserModel user) {
-    localStorage.write('isLogged', true);
     localStorage.write('user', user);
   }
 
@@ -18,8 +16,9 @@ class StorageProvider extends ChangeNotifier {
   }
 
   UserModel fetchUserData() {
-    islogged = localStorage.read('isLogged');
     userData = localStorage.read('user');
+    print(localStorage.read('user').toString());
+
     return userData;
   }
 }

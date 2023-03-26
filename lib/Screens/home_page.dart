@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 import '../Common/constants.dart';
 import '../Widgets/custom_rounded_button.dart';
 import '../models/auth_method.dart';
+import '../models/storage_provider.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -31,6 +32,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     AuthMethod authMethod = Provider.of<AuthMethod>(context);
+    StorageProvider localStorage = Provider.of<StorageProvider>(context);
+
     var scaffold = Scaffold(
       backgroundColor: backgroundColor,
       body: SafeArea(
@@ -328,12 +331,13 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          authMethod.signOutUser();
-          Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const SignInScreen(),
-              ));
+          localStorage.fetchUserData();
+          // authMethod.signOutUser();
+          // Navigator.pushReplacement(
+          //     context,
+          //     MaterialPageRoute(
+          //       builder: (context) => const SignInScreen(),
+          //     ));
         },
         backgroundColor: textColor,
         child: Icon(Icons.logout),
