@@ -303,11 +303,15 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
     if (status == 'success') {
       CustomToast.successToast(message: status!);
       if (context.mounted) {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const SignInScreen()));
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const SignInScreen(),
+            ));
       }
-    } else
+    } else {
       (CustomToast.errorToast(message: status!));
+    }
   }
 
   void swapColors() {

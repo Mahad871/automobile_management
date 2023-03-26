@@ -3,6 +3,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 class Product {
   final String pid;
+  final String createdByUID;
   final int amount;
   final String colors;
   final String quantity;
@@ -11,7 +12,6 @@ class Product {
   final int timestamp;
   final String category;
   final String subCategory;
-  final String createdByUID;
   final String imageurl;
   Product({
     required this.pid,

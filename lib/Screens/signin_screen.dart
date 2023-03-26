@@ -3,7 +3,9 @@ import 'package:automobile_management/Screens/home_page.dart';
 import 'package:automobile_management/Screens/signup_screen.dart';
 import 'package:automobile_management/Widgets/custom_toast.dart';
 import 'package:automobile_management/models/auth_method.dart';
+import 'package:automobile_management/models/storage_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 import '../Common/constants.dart';
 import '../models/signin_controller.dart';
@@ -24,9 +26,15 @@ class _SignInScreenState extends State<SignInScreen> {
   String status = " ";
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     AuthMethod authMethod = Provider.of<AuthMethod>(context);
     final controller = Provider.of<SignInController>(context);
+    StorageProvider localStorage = Provider.of<StorageProvider>(context);
     var scaffold = Scaffold(
       backgroundColor: backgroundColor,
       body: Column(
@@ -201,7 +209,8 @@ class _SignInScreenState extends State<SignInScreen> {
                       Center(
                         child: GestureDetector(
                           onTap: () {
-                            signUser(authMethod, controller, context);
+                            signUser(
+                                authMethod, controller, context, localStorage);
                           },
                           child: Container(
                             height: 55,
@@ -269,27 +278,45 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   Future<void> signUser(AuthMethod authMethod, SignInController controller,
-      BuildContext context) async {
+      BuildContext context, StorageProvider localStorage) async {
     setState(() {
       status = "loading";
     });
-    status = await authMethod.siginUser(
+    status = await authMethod.signinUser(
         email: controller.email.text.trim(),
         password: controller.password.text.trim());
     if (status == "success") {
       await authMethod.getCurrentUserData(controller.email.text.trim());
       CustomToast.successToast(message: "Success");
+      localStorage.storeUserData(authMethod.currentUserData!);
       if (context.mounted) {
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const HomeScreen(),
-          ),
-        );
+        Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const HomeScreen(),
+            ));
       }
     } else {
       CustomToast.errorToast(message: status);
     }
   }
+
+  // void checkIfUserLoggedIn(AuthMethod authMethod, StorageProvider localStorage,
+  //     BuildContext context) async {
+  //   if (localStorage.islogged) {
+  //     authMethod.currentUserData = GetStorage().read('user');
+  //     await authMethod.signinUser(
+  //         email: authMethod.currentUserData!.email,
+  //         password: authMethod.currentUserData!.password);
+  //   }
+  //   if (context.mounted) {
+  //     Navigator.pushReplacement(
+  //         context,
+  //         MaterialPageRoute(
+  //           builder: (context) => const HomeScreen(),
+  //         ));
+  //   }
+  // }
 
   void navigateToRegistrationScreen(
     BuildContext context,

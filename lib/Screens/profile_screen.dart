@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:automobile_management/Screens/signup_screen.dart';
 import 'package:automobile_management/utilities/image_picker.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -40,9 +41,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
   Widget build(BuildContext context) {
     AuthMethod authMethod = Provider.of<AuthMethod>(context);
     ProfileProvider controller = Provider.of<ProfileProvider>(context);
-    controller.email.text = authMethod.currentUserData.email;
-    controller.password.text = authMethod.currentUserData.password;
-    controller.username.text = authMethod.currentUserData.username;
+    controller.email.text = authMethod.currentUserData!.email;
+    controller.password.text = authMethod.currentUserData!.password;
+    controller.username.text = authMethod.currentUserData!.username;
 
     var scaffold = Scaffold(
       appBar: AppBar(
@@ -112,18 +113,45 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(20),
                                   child: SizedBox.fromSize(
-                                      size: const Size.fromRadius(90),
-                                      child: authMethod
-                                                  .currentUserData.photoUrl !=
-                                              null
-                                          ? Image.network(
-                                              authMethod
-                                                  .currentUserData.photoUrl!,
-                                              fit: BoxFit.cover,
-                                            )
-                                          : Image.network(
-                                              "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
-                                              fit: BoxFit.cover)),
+                                    size: const Size.fromRadius(90),
+                                    child: authMethod
+                                                .currentUserData!.photoUrl !=
+                                            null
+                                        ? CachedNetworkImage(
+                                            imageUrl: authMethod
+                                                .currentUserData!.photoUrl!,
+                                            placeholder: (context, url) =>
+                                                const Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 120,
+                                                  vertical: 45),
+                                              child: CircularProgressIndicator(
+                                                color: textColor,
+                                              ),
+                                            ),
+                                            errorWidget:
+                                                (context, url, error) => Text(
+                                              error,
+                                              style: const TextStyle(
+                                                  color: textColor),
+                                            ),
+                                            fit: BoxFit.cover,
+                                          )
+                                        : CachedNetworkImage(
+                                            imageUrl:
+                                                "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
+                                            placeholder: (context, url) =>
+                                                const Padding(
+                                              padding: EdgeInsets.symmetric(
+                                                  horizontal: 120,
+                                                  vertical: 45),
+                                              child: CircularProgressIndicator(
+                                                color: textColor,
+                                              ),
+                                            ),
+                                            fit: BoxFit.cover,
+                                          ),
+                                  ),
                                 ),
                               ),
                             ),
@@ -344,7 +372,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: GestureDetector(
                         onTap: () {
                           UserModel user = UserModel(
-                              id: authMethod.currentUser.user!.uid,
+                              id: authMethod.currentUser!.user!.uid,
                               username: controller.username.text,
                               email: controller.email.text,
                               isVendor: isVendor,

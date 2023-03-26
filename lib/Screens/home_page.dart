@@ -2,10 +2,12 @@ import 'package:automobile_management/Screens/chat_list_page.dart';
 import 'package:automobile_management/Screens/notificastion_page.dart';
 import 'package:automobile_management/Screens/profile_screen.dart';
 import 'package:automobile_management/Screens/search_page.dart';
+import 'package:automobile_management/Screens/signin_screen.dart';
 import 'package:automobile_management/Widgets/reusable_card.dart';
 import 'package:automobile_management/models/profile_controller.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 import '../Common/constants.dart';
 import '../Widgets/custom_rounded_button.dart';
@@ -67,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      authMethod.currentUserData.username
+                                      authMethod.currentUserData!.username
                                           .toString(),
                                       style: const TextStyle(
                                           fontWeight: FontWeight.bold),
@@ -103,7 +105,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               onPressed: () {
                                 Navigator.of(context).push(MaterialPageRoute(
                                     builder: (context) =>
-                                        const ChatListScreen()));
+                                        const SignInScreen()));
                               },
                               style: ElevatedButton.styleFrom(
                                   shape: const StadiumBorder()),
@@ -323,6 +325,18 @@ class _HomeScreenState extends State<HomeScreen> {
             ],
           ),
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          authMethod.signOutUser();
+          Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const SignInScreen(),
+              ));
+        },
+        backgroundColor: textColor,
+        child: Icon(Icons.logout),
       ),
     );
 

@@ -11,6 +11,6 @@ class SignInController extends ChangeNotifier {
   // final userRepo = Get.put(UserRepository());
   final userRepo = AuthMethod();
   signInUser({required String email, required String password}) async {
-    await userRepo.siginUser(email: email, password: password);
+    await userRepo.signinUser(email: email, password: password);
   }
 }
