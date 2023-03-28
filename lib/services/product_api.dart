@@ -1,8 +1,9 @@
 import 'package:automobile_management/Widgets/custom_toast.dart';
 import 'package:automobile_management/models/product_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 
-class ProductApi {
+class ProductApi extends ChangeNotifier{
   final FirebaseFirestore _instance = FirebaseFirestore.instance;
   static const String _collection = 'post';
   Future<bool> add(Product product) async {

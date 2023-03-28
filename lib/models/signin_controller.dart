@@ -8,9 +8,5 @@ class SignInController extends ChangeNotifier {
   final password = TextEditingController();
   final confirmPassword = TextEditingController();
 
-  // final userRepo = Get.put(UserRepository());
-  final userRepo = AuthMethod();
-  signInUser({required String email, required String password}) async {
-    await userRepo.signinUser(email: email, password: password);
-  }
+  
 }

@@ -3,6 +3,9 @@ import 'package:automobile_management/Screens/chat_list_page.dart';
 import 'package:automobile_management/Screens/notificastion_page.dart';
 import 'package:flutter/material.dart';
 
+import '../dependency_injection/injection_container.dart';
+import '../models/SearchController.dart';
+
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key, required this.title});
   final String title;
@@ -13,7 +16,7 @@ class SearchScreen extends StatefulWidget {
 
 class _SearchScreenState extends State<SearchScreen> {
   // This controller will store the value of the search bar
-  final TextEditingController _searchController = TextEditingController();
+  final SearchController _searchController = sl.get<SearchController>();
 
   @override
   Widget build(BuildContext context) {
@@ -68,12 +71,12 @@ class _SearchScreenState extends State<SearchScreen> {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: TextField(
-                      controller: _searchController,
+                      controller: _searchController.search,
                       decoration: InputDecoration(
                         hintText: '  Search',
                         suffixIcon: IconButton(
                           icon: const Icon(Icons.clear),
-                          onPressed: () => _searchController.clear(),
+                          onPressed: () => _searchController.search.clear(),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(30.0),

@@ -6,12 +6,14 @@ import 'package:automobile_management/Screens/signin_screen.dart';
 import 'package:automobile_management/Widgets/reusable_card.dart';
 import 'package:automobile_management/models/profile_controller.dart';
 import 'package:automobile_management/models/user_model.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 import '../Common/constants.dart';
 import '../Widgets/custom_rounded_button.dart';
+import '../dependency_injection/injection_container.dart';
 import '../models/auth_method.dart';
 import '../models/storage_provider.dart';
 
@@ -29,13 +31,20 @@ class _HomeScreenState extends State<HomeScreen> {
   Color userModeTextColor = Colors.white;
   Color vendorModeContainerColor = textFieldColor;
   Color vendorModeTextColor = Colors.black;
-  GetStorage _storage = GetStorage();
+  final GetStorage _storage = GetStorage();
+
+  @override
+  void initState() {
+    sl
+        .get<AuthMethod>()
+        .getCurrentUserData(_storage.read('user')['email'].toString());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    AuthMethod authMethod = Provider.of<AuthMethod>(context);
-    // StorageProvider localStorage = Provider.of<StorageProvider>(context);
-    // authMethod.getCurrentUserData(storage.read('user'));
+    AuthMethod authMethod = sl.get<AuthMethod>();
+
     var scaffold = Scaffold(
       backgroundColor: backgroundColor,
       body: SafeArea(
@@ -55,20 +64,36 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Row(
-                          children: [
-                            const Padding(
-                              padding: EdgeInsets.all(8.0),
-                              child: CircleAvatar(
-                                backgroundColor: Colors.grey,
-                                child: Icon(CupertinoIcons.person_alt,
-                                    color: Colors.black),
-                              ),
-                            ),
-                            Consumer<ProfileProvider>(
-                              builder:
-                                  (context, ProfileProvider profPro, child) {
-                                return Column(
+                        ChangeNotifierProvider<AuthMethod>.value(
+                          value: sl.get<AuthMethod>(),
+                          child: Consumer<AuthMethod>(
+                            builder: (context, value, child) => Row(
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.all(5.0),
+                                  child: Container(
+                                    width: 45.0,
+                                    height: 45.0,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: textFieldColor,
+                                      image: DecorationImage(
+                                          fit: BoxFit.cover,
+                                          image: authMethod
+                                                      .currentUserData?.photoUrl
+                                                      .toString() !=
+                                                  null
+                                              ? CachedNetworkImageProvider(
+                                                  authMethod
+                                                      .currentUserData!.photoUrl
+                                                      .toString())
+                                              : const CachedNetworkImageProvider(
+                                                  "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
+                                                )),
+                                    ),
+                                  ),
+                                ),
+                                Column(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -90,10 +115,10 @@ class _HomeScreenState extends State<HomeScreen> {
                                       ],
                                     )
                                   ],
-                                );
-                              },
-                            )
-                          ],
+                                )
+                              ],
+                            ),
+                          ),
                         ),
                         Row(
                           children: [

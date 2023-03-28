@@ -17,6 +17,7 @@ import 'Common/constants.dart';
 import 'Screens/signin_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 
+import 'dependency_injection/injection_container.dart';
 import 'models/storage_provider.dart';
 import 'models/user_model.dart';
 
@@ -24,16 +25,17 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await GetStorage.init();
-  // GetStorage().writeIfNull('isLogged', false);
+  await init();
   runApp(MainApp());
 }
 
 class MainApp extends StatelessWidget {
   MainApp({super.key});
   final _storage = GetStorage();
-  late var val = null;
+  late var val;
 
   Future<bool> checkLoginStatus() async {
+    val = null;
     val = _storage.read('user');
     print("Storage read result: $val");
     // print(val['email']);
@@ -47,62 +49,61 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(create: (_) => ProfileProvider()),
-        ChangeNotifierProvider(create: (_) => AuthMethod()),
-        ChangeNotifierProvider(create: (_) => SignUpController()),
-        ChangeNotifierProvider(create: (_) => SignInController()),
-        ChangeNotifierProvider(create: (_) => FirebaseStorageModel()),
-        // ChangeNotifierProvider(create: (_) => StorageProvider()),
-      ],
-      child: MaterialApp(
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSwatch().copyWith(
-            primary: Colors.black,
-            secondary: Colors.white,
-          ),
+    return MaterialApp(
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSwatch().copyWith(
+          primary: Colors.black,
+          secondary: Colors.white,
         ),
-        debugShowCheckedModeBanner: false,
-        home: FutureBuilder(
-          future: checkLoginStatus(),
-          builder: (context, snapshot) {
-            if (snapshot.hasData == false || val == null) {
-              return const SignInScreen();
-            }
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return SafeArea(
-                child: Container(
-                  color: Colors.white,
-                  child: const Center(
-                      child: CircularProgressIndicator(color: textColor)),
-                ),
-              );
-            }
-            AuthMethod authMethod = Provider.of<AuthMethod>(context);
-
-            if (authMethod.currentUser == null) {
-              authMethod.signinUser(
-                  email: val['email'].toString(),
-                  password: val['password'].toString());
-              authMethod.getCurrentUserData(val['email'].toString());
-            }
-
-            return const HomeScreen();
-          },
-        ),
-        // initialRoute: '/',
-        // routes: {
-        //   '/': (context) => const SignInScreen(),
-        //   '/login': (context) => const SignInScreen(),
-        //   '/register': (context) => const RegistrationScreen(),
-        //   '/forget_password': (context) => const ForgetPasswordScreen(),
-        //   '/update_password': (context) => const UpdatePasswowrdScreen(),
-        //   '/chatlist': (context) => const ChatListScreen(),
-        //   '/notification': (context) => const NotificationScreen(),
-        //   '/search': (context) => const SearchScreen(title: "Search"),
-        // },
       ),
+      debugShowCheckedModeBanner: false,
+      home: FutureBuilder(
+        future: checkLoginStatus(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData == false || val == null) {
+            return const SignInScreen();
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return SafeArea(
+              child: Container(
+                color: Colors.white,
+                child: const Center(
+                    child: CircularProgressIndicator(color: textColor)),
+              ),
+            );
+          }
+          AuthMethod authMethod = sl.get<AuthMethod>();
+
+          if (authMethod.currentUser == null) {
+            authMethod.signinUser(
+                email: val['email'].toString(),
+                password: val['password'].toString());
+            authMethod.getCurrentUserData(val['email'].toString());
+          }
+
+          return const HomeScreen();
+        },
+      ),
+      // initialRoute: '/',
+      // routes: {
+      //   '/': (context) => const SignInScreen(),
+      //   '/login': (context) => const SignInScreen(),
+      //   '/register': (context) => const RegistrationScreen(),
+      //   '/forget_password': (context) => const ForgetPasswordScreen(),
+      //   '/update_password': (context) => const UpdatePasswowrdScreen(),
+      //   '/chatlist': (context) => const ChatListScreen(),
+      //   '/notification': (context) => const NotificationScreen(),
+      //   '/search': (context) => const SearchScreen(title: "Search"),
+      // },
     );
+    // MultiProvider(
+    //   providers: [
+    //     ChangeNotifierProvider(create: (_) => ProfileProvider()),
+    //     ChangeNotifierProvider(create: (_) => AuthMethod()),
+    //     ChangeNotifierProvider(create: (_) => SignUpController()),
+    //     ChangeNotifierProvider(create: (_) => SignInController()),
+    //     ChangeNotifierProvider(create: (_) => FirebaseStorageModel()),
+    //   ],
+    // );
   }
 }

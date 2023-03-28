@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-
 import 'package:automobile_management/Screens/signup_screen.dart';
 import 'package:automobile_management/utilities/image_picker.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -7,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../Common/constants.dart';
+import '../dependency_injection/injection_container.dart';
 import '../models/profile_controller.dart';
 import '../models/user_model.dart';
 import 'package:provider/provider.dart';
@@ -39,8 +39,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
-    AuthMethod authMethod = Provider.of<AuthMethod>(context);
-    ProfileProvider controller = Provider.of<ProfileProvider>(context);
+    AuthMethod authMethod = sl.get<AuthMethod>();
+    ProfileProvider controller = sl.get<ProfileProvider>();
     controller.email.text = authMethod.currentUserData!.email;
     controller.password.text = authMethod.currentUserData!.password;
     controller.username.text = authMethod.currentUserData!.username;
@@ -110,47 +110,51 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ], borderRadius: BorderRadius.circular(20)),
                               child: ChangeNotifierProvider<AuthMethod>.value(
                                 value: authMethod,
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
-                                  child: SizedBox.fromSize(
-                                    size: const Size.fromRadius(90),
-                                    child: authMethod
-                                                .currentUserData!.photoUrl !=
-                                            null
-                                        ? CachedNetworkImage(
-                                            imageUrl: authMethod
-                                                .currentUserData!.photoUrl!,
-                                            placeholder: (context, url) =>
-                                                const Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 120,
-                                                  vertical: 45),
-                                              child: CircularProgressIndicator(
-                                                color: textColor,
+                                child: Consumer<AuthMethod>(
+                                  builder: (context, value, child) => ClipRRect(
+                                    borderRadius: BorderRadius.circular(20),
+                                    child: SizedBox.fromSize(
+                                      size: const Size.fromRadius(90),
+                                      child: authMethod
+                                                  .currentUserData!.photoUrl !=
+                                              null
+                                          ? CachedNetworkImage(
+                                              imageUrl: authMethod
+                                                  .currentUserData!.photoUrl!,
+                                              placeholder: (context, url) =>
+                                                  const Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 120,
+                                                    vertical: 45),
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  color: textColor,
+                                                ),
                                               ),
-                                            ),
-                                            errorWidget:
-                                                (context, url, error) => Text(
-                                              error,
-                                              style: const TextStyle(
-                                                  color: textColor),
-                                            ),
-                                            fit: BoxFit.cover,
-                                          )
-                                        : CachedNetworkImage(
-                                            imageUrl:
-                                                "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
-                                            placeholder: (context, url) =>
-                                                const Padding(
-                                              padding: EdgeInsets.symmetric(
-                                                  horizontal: 120,
-                                                  vertical: 45),
-                                              child: CircularProgressIndicator(
-                                                color: textColor,
+                                              errorWidget:
+                                                  (context, url, error) => Text(
+                                                error,
+                                                style: const TextStyle(
+                                                    color: textColor),
                                               ),
+                                              fit: BoxFit.cover,
+                                            )
+                                          : CachedNetworkImage(
+                                              imageUrl:
+                                                  "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
+                                              placeholder: (context, url) =>
+                                                  const Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 120,
+                                                    vertical: 45),
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  color: textColor,
+                                                ),
+                                              ),
+                                              fit: BoxFit.cover,
                                             ),
-                                            fit: BoxFit.cover,
-                                          ),
+                                    ),
                                   ),
                                 ),
                               ),

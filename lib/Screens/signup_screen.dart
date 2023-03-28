@@ -5,6 +5,7 @@ import 'package:automobile_management/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../Common/constants.dart';
+import '../dependency_injection/injection_container.dart';
 
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
@@ -23,7 +24,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final controller = Provider.of<SignUpController>(context);
+    final controller = sl.get<SignUpController>();
     var scaffold = Scaffold(
       backgroundColor: backgroundColor,
       body: Column(

@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 import '../Common/constants.dart';
+import '../dependency_injection/injection_container.dart';
 import '../models/signin_controller.dart';
 
 class SignInScreen extends StatefulWidget {
@@ -33,9 +34,8 @@ class _SignInScreenState extends State<SignInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    AuthMethod authMethod = Provider.of<AuthMethod>(context);
-    final controller = Provider.of<SignInController>(context);
-    // StorageProvider localStorage = Provider.of<StorageProvider>(context);
+    AuthMethod authMethod = sl.get<AuthMethod>();
+    final controller = sl.get<SignInController>();
     var scaffold = Scaffold(
       backgroundColor: backgroundColor,
       body: Column(
