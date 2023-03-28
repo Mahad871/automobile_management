@@ -289,8 +289,11 @@ class _SignInScreenState extends State<SignInScreen> {
       await authMethod.getCurrentUserData(controller.email.text.trim());
       CustomToast.successToast(message: "Success");
       // localStorage.storeUserData(authMethod.currentUserData!);
-      storage.write('user', controller.email.text);
+      // storage.write('user', authMethod.currentUserData);
       if (context.mounted) {
+        authMethod.writeUserdataOnStorage();
+        controller.email.clear();
+        controller.password.clear();
         Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
@@ -302,30 +305,6 @@ class _SignInScreenState extends State<SignInScreen> {
       CustomToast.errorToast(message: status);
     }
   }
-
-  // Future<void> AutoSignUser(AuthMethod authMethod, SignInController controller,
-  //     BuildContext context, StorageProvider localStorage) async {
-  //   setState(() {
-  //     status = "loading";
-  //   });
-  //   status = await authMethod.signinUser(
-  //       email: controller.email.text.trim(),
-  //       password: controller.password.text.trim());
-  //   if (status == "success") {
-  //     await authMethod.getCurrentUserData(controller.email.text.trim());
-  //     CustomToast.successToast(message: "Success");
-  //     localStorage.storeUserData(authMethod.currentUserData!);
-  //     if (context.mounted) {
-  //       Navigator.pushReplacement(
-  //           context,
-  //           MaterialPageRoute(
-  //             builder: (context) => const HomeScreen(),
-  //           ));
-  //     }
-  //   } else {
-  //     CustomToast.errorToast(message: status);
-  //   }
-  // }
 
   // void checkIfUserLoggedIn(AuthMethod authMethod, StorageProvider localStorage,
   //     BuildContext context) async {

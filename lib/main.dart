@@ -31,11 +31,13 @@ void main() async {
 class MainApp extends StatelessWidget {
   MainApp({super.key});
   final _storage = GetStorage();
-  late var val;
+  late var val = null;
+
   Future<bool> checkLoginStatus() async {
     val = _storage.read('user');
-    // print("Storage read result: $val");
+    print("Storage read result: $val");
     // print(val['email']);
+    // _storage.erase();
     if (val == null) {
       return false;
     } else {
@@ -52,7 +54,7 @@ class MainApp extends StatelessWidget {
         ChangeNotifierProvider(create: (_) => SignUpController()),
         ChangeNotifierProvider(create: (_) => SignInController()),
         ChangeNotifierProvider(create: (_) => FirebaseStorageModel()),
-        ChangeNotifierProvider(create: (_) => StorageProvider()),
+        // ChangeNotifierProvider(create: (_) => StorageProvider()),
       ],
       child: MaterialApp(
         theme: ThemeData(
@@ -85,7 +87,7 @@ class MainApp extends StatelessWidget {
                   password: val['password'].toString());
               authMethod.getCurrentUserData(val['email'].toString());
             }
-           
+
             return const HomeScreen();
           },
         ),

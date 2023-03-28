@@ -34,7 +34,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     AuthMethod authMethod = Provider.of<AuthMethod>(context);
-    StorageProvider localStorage = Provider.of<StorageProvider>(context);
+    // StorageProvider localStorage = Provider.of<StorageProvider>(context);
     // authMethod.getCurrentUserData(storage.read('user'));
     var scaffold = Scaffold(
       backgroundColor: backgroundColor,

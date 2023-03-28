@@ -4,10 +4,13 @@ import 'package:automobile_management/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:get_storage/get_storage.dart';
 
 class AuthMethod extends ChangeNotifier {
   final db = FirebaseFirestore.instance;
   final auth = FirebaseAuth.instance;
+  final _storage = GetStorage();
+
   UserCredential? currentUser;
   UserModel? currentUserData;
   Future<bool> createUser(UserModel user) async {
@@ -63,6 +66,10 @@ class AuthMethod extends ChangeNotifier {
     notifyListeners();
   }
 
+  void writeUserdataOnStorage() {
+    _storage.write('user', currentUserData);
+  }
+
   getCurrentUserData(String mail) async {
     final snapshot =
         await db.collection('users').where('email', isEqualTo: mail).get();
@@ -87,6 +94,7 @@ class AuthMethod extends ChangeNotifier {
   }
 
   void signOutUser() async {
+    _storage.remove('user');
     await auth.signOut();
   }
 }
