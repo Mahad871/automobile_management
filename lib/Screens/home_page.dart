@@ -5,6 +5,7 @@ import 'package:automobile_management/Screens/search_page.dart';
 import 'package:automobile_management/Screens/signin_screen.dart';
 import 'package:automobile_management/Widgets/reusable_card.dart';
 import 'package:automobile_management/models/profile_controller.dart';
+import 'package:automobile_management/models/user_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
@@ -28,12 +29,13 @@ class _HomeScreenState extends State<HomeScreen> {
   Color userModeTextColor = Colors.white;
   Color vendorModeContainerColor = textFieldColor;
   Color vendorModeTextColor = Colors.black;
+  GetStorage _storage = GetStorage();
 
   @override
   Widget build(BuildContext context) {
     AuthMethod authMethod = Provider.of<AuthMethod>(context);
     StorageProvider localStorage = Provider.of<StorageProvider>(context);
-    authMethod.currentUserData = localStorage.localStorage.read('user');
+    // authMethod.getCurrentUserData(storage.read('user'));
     var scaffold = Scaffold(
       backgroundColor: backgroundColor,
       body: SafeArea(
@@ -72,8 +74,11 @@ class _HomeScreenState extends State<HomeScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      authMethod.currentUserData!.username
-                                          .toString(),
+                                      authMethod.currentUserData?.username ==
+                                              null
+                                          ? "Loading..."
+                                          : authMethod.currentUserData!.username
+                                              .toString(),
                                       style: const TextStyle(
                                           fontWeight: FontWeight.bold),
                                     ),
@@ -331,16 +336,17 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          localStorage.fetchUserData();
-          // authMethod.signOutUser();
-          // Navigator.pushReplacement(
-          //     context,
-          //     MaterialPageRoute(
-          //       builder: (context) => const SignInScreen(),
-          //     ));
+          authMethod.signOutUser();
+          _storage.remove('user');
+          Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const SignInScreen(),
+              ),
+              (route) => false);
         },
         backgroundColor: textColor,
-        child: Icon(Icons.logout),
+        child: const Icon(Icons.logout),
       ),
     );
 

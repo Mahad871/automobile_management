@@ -425,8 +425,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
   void navigateToRegistrationScreen(
     BuildContext context,
   ) {
-    Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => const RegistrationScreen()));
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const SignUpScreen()));
   }
 
   void swapColors() {

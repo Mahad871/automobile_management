@@ -29,14 +29,13 @@ class _SignInScreenState extends State<SignInScreen> {
   @override
   void initState() {
     super.initState();
-    
   }
 
   @override
   Widget build(BuildContext context) {
     AuthMethod authMethod = Provider.of<AuthMethod>(context);
     final controller = Provider.of<SignInController>(context);
-    StorageProvider localStorage = Provider.of<StorageProvider>(context);
+    // StorageProvider localStorage = Provider.of<StorageProvider>(context);
     var scaffold = Scaffold(
       backgroundColor: backgroundColor,
       body: Column(
@@ -211,8 +210,7 @@ class _SignInScreenState extends State<SignInScreen> {
                       Center(
                         child: GestureDetector(
                           onTap: () {
-                            signUser(
-                                authMethod, controller, context, localStorage);
+                            signUser(authMethod, controller, context);
                           },
                           child: Container(
                             height: 55,
@@ -280,7 +278,7 @@ class _SignInScreenState extends State<SignInScreen> {
   }
 
   Future<void> signUser(AuthMethod authMethod, SignInController controller,
-      BuildContext context, StorageProvider localStorage) async {
+      BuildContext context) async {
     setState(() {
       status = "loading";
     });
@@ -290,42 +288,44 @@ class _SignInScreenState extends State<SignInScreen> {
     if (status == "success") {
       await authMethod.getCurrentUserData(controller.email.text.trim());
       CustomToast.successToast(message: "Success");
-      localStorage.storeUserData(authMethod.currentUserData!);
+      // localStorage.storeUserData(authMethod.currentUserData!);
+      storage.write('user', controller.email.text);
       if (context.mounted) {
-        Navigator.pushReplacement(
+        Navigator.pushAndRemoveUntil(
             context,
             MaterialPageRoute(
               builder: (context) => const HomeScreen(),
-            ));
+            ),
+            (route) => false);
       }
     } else {
       CustomToast.errorToast(message: status);
     }
   }
 
-   Future<void> AutoSignUser(AuthMethod authMethod, SignInController controller,
-      BuildContext context, StorageProvider localStorage) async {
-    setState(() {
-      status = "loading";
-    });
-    status = await authMethod.signinUser(
-        email: controller.email.text.trim(),
-        password: controller.password.text.trim());
-    if (status == "success") {
-      await authMethod.getCurrentUserData(controller.email.text.trim());
-      CustomToast.successToast(message: "Success");
-      localStorage.storeUserData(authMethod.currentUserData!);
-      if (context.mounted) {
-        Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => const HomeScreen(),
-            ));
-      }
-    } else {
-      CustomToast.errorToast(message: status);
-    }
-  }
+  // Future<void> AutoSignUser(AuthMethod authMethod, SignInController controller,
+  //     BuildContext context, StorageProvider localStorage) async {
+  //   setState(() {
+  //     status = "loading";
+  //   });
+  //   status = await authMethod.signinUser(
+  //       email: controller.email.text.trim(),
+  //       password: controller.password.text.trim());
+  //   if (status == "success") {
+  //     await authMethod.getCurrentUserData(controller.email.text.trim());
+  //     CustomToast.successToast(message: "Success");
+  //     localStorage.storeUserData(authMethod.currentUserData!);
+  //     if (context.mounted) {
+  //       Navigator.pushReplacement(
+  //           context,
+  //           MaterialPageRoute(
+  //             builder: (context) => const HomeScreen(),
+  //           ));
+  //     }
+  //   } else {
+  //     CustomToast.errorToast(message: status);
+  //   }
+  // }
 
   // void checkIfUserLoggedIn(AuthMethod authMethod, StorageProvider localStorage,
   //     BuildContext context) async {
@@ -347,8 +347,8 @@ class _SignInScreenState extends State<SignInScreen> {
   void navigateToRegistrationScreen(
     BuildContext context,
   ) {
-    Navigator.of(context).push(
-        MaterialPageRoute(builder: (context) => const RegistrationScreen()));
+    Navigator.of(context)
+        .push(MaterialPageRoute(builder: (context) => const SignUpScreen()));
   }
 
   void swapColors() {

@@ -16,8 +16,8 @@ class StorageProvider extends ChangeNotifier {
   }
 
   UserModel fetchUserData() {
-    userData = localStorage.read('user');
-    print(localStorage.read('user').toString());
+    // userData = localStorage.read('user');
+    // print(localStorage.read('user').toString());
 
     return userData;
   }

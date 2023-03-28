@@ -6,14 +6,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../Common/constants.dart';
 
-class RegistrationScreen extends StatefulWidget {
-  const RegistrationScreen({super.key});
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
 
   @override
-  State<RegistrationScreen> createState() => _RegistrationScreenState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _RegistrationScreenState extends State<RegistrationScreen> {
+class _SignUpScreenState extends State<SignUpScreen> {
   String? status;
   bool isVendor = false;
   Color userModeContainerColor = Colors.black;

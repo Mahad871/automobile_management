@@ -68,7 +68,7 @@ class AuthMethod extends ChangeNotifier {
         await db.collection('users').where('email', isEqualTo: mail).get();
     currentUserData =
         snapshot.docs.map((e) => UserModel.fromDocumentSnapshot(e)).single;
-    print(currentUserData!.username.toString());
+    // print(currentUserData!.username.toString());
     notifyListeners();
   }
 
