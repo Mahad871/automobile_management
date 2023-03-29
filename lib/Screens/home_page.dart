@@ -33,14 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Color vendorModeTextColor = Colors.black;
   final GetStorage _storage = GetStorage();
 
-  @override
-  void initState() {
-    sl
-        .get<AuthMethod>()
-        .getCurrentUserData(_storage.read('user')['email'].toString());
-    super.initState();
-  }
-
+ 
   @override
   Widget build(BuildContext context) {
     AuthMethod authMethod = sl.get<AuthMethod>();
