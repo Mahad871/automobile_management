@@ -6,12 +6,14 @@ import 'package:automobile_management/Widgets/custom_toast.dart';
 import 'package:automobile_management/Widgets/custom_validator.dart';
 import 'package:automobile_management/Widgets/cutom_text.dart';
 import 'package:automobile_management/function/time_date_function.dart';
+import 'package:automobile_management/models/auth_method.dart';
 import 'package:automobile_management/models/product_model.dart';
 import 'package:automobile_management/services/databse_storage.dart';
 import 'package:automobile_management/services/product_api.dart';
 import 'package:automobile_management/utilities/image_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:automobile_management/dependency_injection/injection_container.dart';
 
 import '../Common/constants.dart';
 
@@ -31,46 +33,8 @@ class _UploadScreenState extends State<UploadScreen> {
   final TextEditingController subcategory = TextEditingController();
   Uint8List? _image;
   bool _isloading = false;
-  final _formKey = GlobalKey<FormState>();
-  Future<void> uploaddata() async {
-    if (_formKey.currentState!.validate() && _image != null) {
-      setState(() {
-        _isloading = true;
-      });
-      String imageurl = await Storagemethod().uploadtostorage(
-        'post',
-        'tester',
-        _image!,
-      );
 
-      Product product = Product(
-        pid: TimeStamp.timestamp.toString(),
-        amount: int.parse(amount.text),
-        colors: '',
-        quantity: quantity.text,
-        productname: productname.text,
-        description: productdecription.text,
-        timestamp: TimeStamp.timestamp,
-        category: category.text,
-        subCategory: subcategory.text,
-        createdByUID: 'tester',
-        imageurl: imageurl,
-      );
-      bool temp = await ProductApi().add(product);
-      if (temp) {
-        CustomToast.successToast(message: 'ho giya upload');
-        productname.clear();
-        productdecription.clear();
-        amount.clear();
-        category.clear();
-        quantity.clear();
-        subcategory.clear();
-      }
-      setState(() {
-        _isloading = false;
-      });
-    }
-  }
+  final _formKey = GlobalKey<FormState>();
 
   selectImage() async {
     Uint8List? im = await pickImage(ImageSource.gallery);
@@ -82,6 +46,47 @@ class _UploadScreenState extends State<UploadScreen> {
 
   @override
   Widget build(BuildContext context) {
+    AuthMethod authMethod = sl.get<AuthMethod>();
+    Future<void> uploaddata() async {
+      if (_formKey.currentState!.validate() && _image != null) {
+        setState(() {
+          _isloading = true;
+        });
+        String imageurl = await Storagemethod().uploadtostorage(
+          'product',
+          authMethod.currentUserData!.id.toString(),
+          _image!,
+        );
+
+        Product product = Product(
+          pid: TimeStamp.timestamp.toString(),
+          amount: int.parse(amount.text),
+          colors: '',
+          quantity: quantity.text,
+          productname: productname.text,
+          description: productdecription.text,
+          timestamp: TimeStamp.timestamp,
+          category: category.text,
+          subCategory: subcategory.text,
+          createdByUID: authMethod.currentUserData!.id.toString(),
+          imageurl: imageurl,
+        );
+        bool temp = await ProductApi().add(product);
+        if (temp) {
+          CustomToast.successToast(message: 'ho giya upload');
+          productname.clear();
+          productdecription.clear();
+          amount.clear();
+          category.clear();
+          quantity.clear();
+          subcategory.clear();
+        }
+        setState(() {
+          _isloading = false;
+        });
+      }
+    }
+
     return SafeArea(
       child: Material(
         child: SingleChildScrollView(
