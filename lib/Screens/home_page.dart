@@ -1,11 +1,9 @@
-import 'package:automobile_management/Screens/chat_list_page.dart';
 import 'package:automobile_management/Screens/notificastion_page.dart';
 import 'package:automobile_management/Screens/profile_screen.dart';
 import 'package:automobile_management/Screens/search_page.dart';
 import 'package:automobile_management/Screens/signin_screen.dart';
+import 'package:automobile_management/Screens/upload_screen.dart';
 import 'package:automobile_management/Widgets/reusable_card.dart';
-import 'package:automobile_management/models/profile_controller.dart';
-import 'package:automobile_management/models/user_model.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +13,7 @@ import '../Common/constants.dart';
 import '../Widgets/custom_rounded_button.dart';
 import '../dependency_injection/injection_container.dart';
 import '../models/auth_method.dart';
-import '../models/storage_provider.dart';
+import 'package:automobile_management/Widgets/posts.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -26,6 +24,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String? username = "error";
+  String postOrientation = "grid";
   bool isVendor = false;
   Color userModeContainerColor = Colors.black;
   Color userModeTextColor = Colors.white;
@@ -33,7 +32,6 @@ class _HomeScreenState extends State<HomeScreen> {
   Color vendorModeTextColor = Colors.black;
   final GetStorage _storage = GetStorage();
 
- 
   @override
   Widget build(BuildContext context) {
     AuthMethod authMethod = sl.get<AuthMethod>();
@@ -203,6 +201,14 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       Expanded(
                         child: ReusableCard(
+                          onPress: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const UploadScreen(),
+                              ),
+                            );
+                          },
                           colour: textFieldColor,
                           cardChild: Column(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -281,72 +287,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ],
               ),
-              Column(
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: const [
-                      CustomRoundButton(
-                        buttonIcon: Icons.add,
-                        buttonIconColor: textFieldColor,
-                        buttonColor: textColor,
-                      ),
-                      CustomRoundButton(
-                        buttonIcon: Icons.add,
-                        buttonIconColor: textFieldColor,
-                        buttonColor: textColor,
-                      ),
-                      CustomRoundButton(
-                        buttonIcon: Icons.add,
-                        buttonIconColor: textFieldColor,
-                        buttonColor: textColor,
-                      ),
-                      CustomRoundButton(
-                        buttonIcon: Icons.add,
-                        buttonIconColor: textFieldColor,
-                        buttonColor: textColor,
-                      ),
-                      CustomRoundButton(
-                        buttonIcon: Icons.add,
-                        buttonIconColor: textFieldColor,
-                        buttonColor: textColor,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: const [
-                      CustomRoundButton(
-                        buttonIcon: Icons.add,
-                        buttonIconColor: textFieldColor,
-                        buttonColor: textColor,
-                      ),
-                      CustomRoundButton(
-                        buttonIcon: Icons.add,
-                        buttonIconColor: textFieldColor,
-                        buttonColor: textColor,
-                      ),
-                      CustomRoundButton(
-                        buttonIcon: Icons.add,
-                        buttonIconColor: textFieldColor,
-                        buttonColor: textColor,
-                      ),
-                      CustomRoundButton(
-                        buttonIcon: Icons.add,
-                        buttonIconColor: textFieldColor,
-                        buttonColor: textColor,
-                      ),
-                      CustomRoundButton(
-                        buttonIcon: Icons.add,
-                        buttonIconColor: textFieldColor,
-                        buttonColor: textColor,
-                      ),
-                    ],
-                  ),
-                ],
+              Expanded(
+                child: ListView(
+                  scrollDirection: Axis.vertical,
+                  children: [
+                    const ReusableCard(colour: Colors.purple),
+                    const ReusableCard(colour: Colors.purple),
+                    const ReusableCard(colour: Colors.purple),
+                    const ReusableCard(colour: Colors.purple),
+                    const ReusableCard(colour: Colors.purple),
+                    const ReusableCard(colour: Colors.purple),
+                  ],
+                ),
               )
             ],
           ),
