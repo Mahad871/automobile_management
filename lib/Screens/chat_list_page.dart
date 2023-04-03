@@ -17,7 +17,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
   Color vendorModeContainerColor = textFieldColor;
   Color vendorModeTextColor = Colors.black;
   List<NotificationCard> notificationsList = [
-    const NotificationCard(
+    NotificationCard(
       userProfileImage: Icon(
         CupertinoIcons.person_alt,
         color: Colors.black,
@@ -27,7 +27,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
   ];
   void addNotifications() {
     setState(() {
-      notificationsList.add(const NotificationCard(
+      notificationsList.add(NotificationCard(
         userProfileImage: Icon(
           CupertinoIcons.person_alt,
           color: Colors.black,

@@ -296,97 +296,6 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               SizedBox(
                 height: 180,
-                child: StreamBuilder(
-                  stream: authMethod.db.collection('product').snapshots(),
-                  builder: (BuildContext context,
-                      AsyncSnapshot<QuerySnapshot> snapshot) {
-                    if (!snapshot.hasData) {
-                      return const ReusableCard(
-                        colour: textFieldColor,
-                        cardChild: Icon(Icons.photo),
-                        cardWidth: 280,
-                      );
-                    }
-                    final List<DocumentSnapshot> documents =
-                        snapshot.data!.docs;
-                    return ListView.builder(
-                      physics: const BouncingScrollPhysics(),
-                      scrollDirection: Axis.horizontal,
-                      itemCount: documents.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final String url = documents[index]['image_url'];
-                        final String productName =
-                            documents[index]['product_name'];
-
-                        return Stack(
-                          children: <Widget>[
-                            Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Container(
-                                height: 200,
-                                // width: double.maxFinite,
-                                decoration: BoxDecoration(boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.grey.withOpacity(1),
-                                    spreadRadius: 0,
-                                    blurRadius: 8,
-                                    offset: const Offset(
-                                        1, 1), // changes position of shadow
-                                  ),
-                                ], borderRadius: BorderRadius.circular(20)),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(20),
-                                  child: SizedBox.fromSize(
-                                      size: const Size.fromRadius(90),
-                                      child: CachedNetworkImage(
-                                        imageUrl: url,
-                                        placeholder: (context, url) =>
-                                            const Padding(
-                                          padding: EdgeInsets.symmetric(
-                                              horizontal: 120, vertical: 45),
-                                          child: CircularProgressIndicator(
-                                            color: textColor,
-                                          ),
-                                        ),
-                                        errorWidget: (context, url, error) =>
-                                            Text(
-                                          error,
-                                          style:
-                                              const TextStyle(color: textColor),
-                                        ),
-                                        fit: BoxFit.cover,
-                                      )),
-                                ),
-                              ),
-                            ),
-                            Align(
-                                alignment: Alignment.bottomRight,
-                                child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      right: 25.0, top: 20),
-                                  child: ElevatedButton(
-                                    onPressed: () {},
-                                    style: ElevatedButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      backgroundColor: textFieldColor,
-                                      foregroundColor: Colors.black,
-                                      fixedSize: const Size.fromRadius(15),
-                                      elevation: 0,
-                                    ),
-                                    child: Text(
-                                      productName,
-                                      style: const TextStyle(color: textColor),
-                                    ),
-                                  ),
-                                ))
-                          ],
-                        );
-                      },
-                    );
-                  },
-                ),
               ),
             ],
           ),
@@ -397,3 +306,97 @@ class _HomeScreenState extends State<HomeScreen> {
     return scaffold;
   }
 }
+
+
+
+// StreamBuilder(
+//                   stream: authMethod.db.collection('product').snapshots(),
+//                   builder: (BuildContext context,
+//                       AsyncSnapshot<QuerySnapshot> snapshot) {
+//                     if (!snapshot.hasData) {
+//                       return const ReusableCard(
+//                         colour: textFieldColor,
+//                         cardChild: Icon(Icons.photo),
+//                         cardWidth: 280,
+//                       );
+//                     }
+//                     final List<DocumentSnapshot> documents =
+//                         snapshot.data!.docs;
+//                     return ListView.builder(
+//                       physics: const BouncingScrollPhysics(),
+//                       scrollDirection: Axis.horizontal,
+//                       itemCount: documents.length,
+//                       itemBuilder: (BuildContext context, int index) {
+//                         final String url = documents[index]['image_url'];
+//                         final String productName =
+//                             documents[index]['product_name'];
+
+//                         return Stack(
+//                           children: <Widget>[
+//                             Padding(
+//                               padding: const EdgeInsets.all(10.0),
+//                               child: Container(
+//                                 height: 200,
+//                                 // width: double.maxFinite,
+//                                 decoration: BoxDecoration(boxShadow: [
+//                                   BoxShadow(
+//                                     color: Colors.grey.withOpacity(1),
+//                                     spreadRadius: 0,
+//                                     blurRadius: 8,
+//                                     offset: const Offset(
+//                                         1, 1), // changes position of shadow
+//                                   ),
+//                                 ], borderRadius: BorderRadius.circular(20)),
+//                                 child: ClipRRect(
+//                                   borderRadius: BorderRadius.circular(20),
+//                                   child: SizedBox.fromSize(
+//                                       size: const Size.fromRadius(90),
+//                                       child: CachedNetworkImage(
+//                                         imageUrl: url,
+//                                         placeholder: (context, url) =>
+//                                             const Padding(
+//                                           padding: EdgeInsets.symmetric(
+//                                               horizontal: 120, vertical: 45),
+//                                           child: CircularProgressIndicator(
+//                                             color: textColor,
+//                                           ),
+//                                         ),
+//                                         errorWidget: (context, url, error) =>
+//                                             Text(
+//                                           error,
+//                                           style:
+//                                               const TextStyle(color: textColor),
+//                                         ),
+//                                         fit: BoxFit.cover,
+//                                       )),
+//                                 ),
+//                               ),
+//                             ),
+//                             Align(
+//                                 alignment: Alignment.bottomRight,
+//                                 child: Padding(
+//                                   padding: const EdgeInsets.only(
+//                                       right: 25.0, top: 20),
+//                                   child: ElevatedButton(
+//                                     onPressed: () {},
+//                                     style: ElevatedButton.styleFrom(
+//                                       shape: RoundedRectangleBorder(
+//                                         borderRadius: BorderRadius.circular(8),
+//                                       ),
+//                                       backgroundColor: textFieldColor,
+//                                       foregroundColor: Colors.black,
+//                                       fixedSize: const Size.fromRadius(15),
+//                                       elevation: 0,
+//                                     ),
+//                                     child: Text(
+//                                       productName,
+//                                       style: const TextStyle(color: textColor),
+//                                     ),
+//                                   ),
+//                                 ))
+//                           ],
+//                         );
+//                       },
+//                     );
+//                   },
+//                 )

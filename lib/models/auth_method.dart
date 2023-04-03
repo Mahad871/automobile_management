@@ -13,6 +13,7 @@ class AuthMethod extends ChangeNotifier {
 
   UserCredential? currentUser;
   UserModel? currentUserData;
+
   Future<bool> createUser(UserModel user) async {
     try {
       UserCredential credential = await auth.createUserWithEmailAndPassword(
@@ -91,6 +92,31 @@ class AuthMethod extends ChangeNotifier {
     List<UserModel> currentUserDataList =
         snapshot.docs.map((e) => UserModel.fromDocumentSnapshot(e)).toList();
     return currentUserDataList;
+  }
+
+  Future<List<UserModel>> getUserDataWhere() async {
+    final snapshot = await db.collection('users').get();
+    List<UserModel> currentUserDataList =
+        snapshot.docs.map((e) => UserModel.fromDocumentSnapshot(e)).toList();
+    return currentUserDataList;
+  }
+
+  getUserData(String id) async {
+    final snapshot =
+        await db.collection('users').where('uid', isEqualTo: id).get();
+    UserModel UserData =
+        snapshot.docs.map((e) => UserModel.fromDocumentSnapshot(e)).single;
+    // print(currentUserData!.username.toString());
+    return UserData;
+    notifyListeners();
+  }
+
+  Future<String> getUserProfileImage(String uid) async {
+    final snapshot =
+        await db.collection('users').where('uid', isEqualTo: uid).get();
+    UserModel UserData =
+        snapshot.docs.map((e) => UserModel.fromDocumentSnapshot(e)).single;
+    return UserData.photoUrl.toString();
   }
 
   void signOutUser() async {

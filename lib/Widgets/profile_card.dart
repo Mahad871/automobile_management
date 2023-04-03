@@ -1,27 +1,29 @@
+import 'dart:ffi';
+
 import 'package:automobile_management/Widgets/reusable_card.dart';
 import 'package:flutter/material.dart';
 
 import '../Common/constants.dart';
 
-class NotificationCard extends StatelessWidget {
+class ProfileCard extends StatelessWidget {
   final String username;
   final String notificationText;
   final Widget? userProfileImage;
   final VoidCallback? onPressed;
-  final String time;
+  final String followers;
   double height = 100;
   double width = 100;
 
-  NotificationCard({
+  ProfileCard({
     super.key,
     this.username = "Toxic",
     this.userProfileImage,
     this.notificationText =
         "Lorem ipsum dolor sit amet consectetur. Sed egestas egestas condimentum aliqu.",
     this.onPressed,
-    this.height = 100,
-    this.width = 100,
-    this.time = "2:30 pm",
+    this.height = 460,
+    this.width = 300,
+    this.followers = "2.7 K",
   });
 
   @override
@@ -30,19 +32,15 @@ class NotificationCard extends StatelessWidget {
       cardWidth: width,
       cardHeight: height,
       onPress: onPressed,
-      cardPaddinng: 20,
       colour: textFieldColor,
-      cardChild: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
+      cardChild: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: CircleAvatar(
-                radius: 25,
-                backgroundColor: Colors.grey,
-                child: userProfileImage,
-              ),
+            Expanded(
+              flex: 3,
+              child:
+                  Container(width: double.maxFinite, child: userProfileImage!),
             ),
             Flexible(
               child: Column(
@@ -52,15 +50,18 @@ class NotificationCard extends StatelessWidget {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text(
-                        username,
-                        style: const TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 17),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          username,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 15),
+                        ),
                       ),
                       Padding(
-                        padding: const EdgeInsets.only(right: 22),
+                        padding: const EdgeInsets.only(right: 10),
                         child: Text(
-                          time,
+                          followers,
                           style: TextStyle(color: textColor.withOpacity(0.5)),
                         ),
                       )
@@ -72,7 +73,7 @@ class NotificationCard extends StatelessWidget {
                       style: TextStyle(color: textColor.withOpacity(0.5)),
                       softWrap: true,
                     ),
-                  ),
+                  )
                 ],
               ),
             )
