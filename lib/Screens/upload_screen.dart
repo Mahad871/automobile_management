@@ -152,7 +152,6 @@ class _UploadScreenState extends State<UploadScreen> {
                     padding: const EdgeInsets.only(left: 16),
                     child: TextField(
                       style: const TextStyle(color: textColor),
-                      obscureText: true,
                       decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: "Name",
@@ -171,7 +170,6 @@ class _UploadScreenState extends State<UploadScreen> {
                     padding: const EdgeInsets.only(left: 16),
                     child: TextField(
                       style: const TextStyle(color: textColor),
-                      obscureText: true,
                       decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: "Description",
@@ -190,7 +188,6 @@ class _UploadScreenState extends State<UploadScreen> {
                     padding: const EdgeInsets.only(left: 16),
                     child: TextField(
                       style: const TextStyle(color: textColor),
-                      obscureText: true,
                       decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: "amount",
@@ -209,7 +206,6 @@ class _UploadScreenState extends State<UploadScreen> {
                     padding: const EdgeInsets.only(left: 16),
                     child: TextField(
                       style: const TextStyle(color: textColor),
-                      obscureText: true,
                       decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: "Quantity",
@@ -228,7 +224,6 @@ class _UploadScreenState extends State<UploadScreen> {
                     padding: const EdgeInsets.only(left: 16),
                     child: TextField(
                       style: const TextStyle(color: textColor),
-                      obscureText: true,
                       decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: "Category",
@@ -247,7 +242,6 @@ class _UploadScreenState extends State<UploadScreen> {
                     padding: const EdgeInsets.only(left: 16),
                     child: TextField(
                       style: const TextStyle(color: textColor),
-                      obscureText: true,
                       decoration: const InputDecoration(
                         border: InputBorder.none,
                         hintText: "Subcategory",
