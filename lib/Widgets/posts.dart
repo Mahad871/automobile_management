@@ -13,7 +13,7 @@ class Post extends StatefulWidget {
   final String description;
   final String mediaUrl;
 
-  Post({
+  const Post({
     required this.postId,
     required this.ownerId,
     required this.username,
@@ -156,7 +156,7 @@ class _PostState extends State<Post> {
                 ),
               ),
             ),
-            Expanded(
+            const Expanded(
               child: Text("description"),
             ),
           ],

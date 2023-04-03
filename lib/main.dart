@@ -1,25 +1,12 @@
-import 'package:automobile_management/Screens/chat_list_page.dart';
-import 'package:automobile_management/Screens/forget_password_screen.dart';
 import 'package:automobile_management/Screens/home_page.dart';
-import 'package:automobile_management/Screens/notificastion_page.dart';
-import 'package:automobile_management/Screens/signup_screen.dart';
-import 'package:automobile_management/Screens/search_page.dart';
-import 'package:automobile_management/Screens/update_password_screen.dart';
-import 'package:automobile_management/models/profile_controller.dart';
-import 'package:automobile_management/models/signin_controller.dart';
-import 'package:automobile_management/models/signup_controller.dart';
 import 'package:automobile_management/models/auth_method.dart';
-import 'package:automobile_management/models/firebase_storage_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:provider/provider.dart';
 import 'Common/constants.dart';
 import 'Screens/signin_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 import 'dependency_injection/injection_container.dart';
-import 'models/storage_provider.dart';
-import 'models/user_model.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

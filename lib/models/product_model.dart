@@ -58,18 +58,18 @@ class Product {
         imageurl: doc.data()?['image_url'] ?? '');
   }
   factory Product.fromQuerySnapshot(
-      QueryDocumentSnapshot<Map<String, dynamic>> doc) {
+      DocumentSnapshot doc) {
     return Product(
-        pid: doc.data()['pid'] ?? '',
-        amount: doc.data()['amount'] ?? 0,
-        colors: doc.data()['colors'] ?? '',
-        quantity: doc.data()['quantity'] ?? '',
-        description: doc.data()['description'] ?? '',
-        timestamp: doc.data()['timestamp'] ?? '',
-        category: doc.data()['category'] ?? '',
-        subCategory: doc.data()['sub_category'] ?? '',
-        createdByUID: doc.data()['created_by_uid'] ?? '',
-        productname: doc.data()['product_name'],
-        imageurl: doc.data()['image_url'] ?? '');
+        pid: doc['pid'] ?? '',
+        amount: doc['amount'] ?? 0,
+        colors: doc['colors'] ?? '',
+        quantity: doc['quantity'] ?? '',
+        description: doc['description'] ?? '',
+        timestamp: doc['timestamp'] ?? '',
+        category: doc['category'] ?? '',
+        subCategory: doc['sub_category'] ?? '',
+        createdByUID: doc['created_by_uid'] ?? '',
+        productname: doc['product_name'],
+        imageurl: doc['image_url'] ?? '');
   }
 }

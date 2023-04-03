@@ -3,13 +3,13 @@ import 'package:automobile_management/Screens/chat_list_page.dart';
 import 'package:automobile_management/Screens/notificastion_page.dart';
 import 'package:automobile_management/Widgets/notification_card.dart';
 import 'package:automobile_management/Widgets/profile_card.dart';
-import 'package:automobile_management/Widgets/reusable_card.dart';
 import 'package:automobile_management/models/auth_method.dart';
-import 'package:automobile_management/models/user_model.dart';
+import 'package:automobile_management/models/product_model.dart';
+import 'package:automobile_management/providers/base_view.dart';
+import 'package:automobile_management/services/product_api.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
 
 import '../dependency_injection/injection_container.dart';
 import '../models/SearchController.dart';
@@ -42,6 +42,13 @@ class _SearchScreenState extends State<SearchScreen> {
       userModeTextColor = vendorModeTextColor;
       vendorModeTextColor = temp;
     });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    sl<ProductApi>().getdata();
   }
 
   @override
@@ -97,6 +104,10 @@ class _SearchScreenState extends State<SearchScreen> {
                   padding: const EdgeInsets.all(8.0),
                   child: TextField(
                     controller: _searchController.search,
+                    onChanged: (value) async {
+                      await sl<ProductApi>().getSearchResults(value);
+                      // setState(() {});
+                    },
                     decoration: InputDecoration(
                       hintText: '  Search',
                       suffixIcon: IconButton(
@@ -215,52 +226,88 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
             ),
           ),
-          Container(
+          SizedBox(
             height: 400,
             child: Padding(
               padding: const EdgeInsets.all(20.0),
               child: PageView(
                 controller: _pageController,
                 children: [
-                  StreamBuilder<QuerySnapshot>(
-                    stream: FirebaseFirestore.instance
-                        .collection('product')
-                        .snapshots(),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<QuerySnapshot> snapshot) {
-                      if (snapshot.hasError) {
-                        return Text('Something went wrong');
-                      }
-
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Text('Loading');
-                      }
-
+                  BaseView<ProductApi>(
+                    builder: (context, value, child) {
                       return ListView.builder(
-                        physics: BouncingScrollPhysics(),
-                        itemCount: snapshot.data!.docs.length,
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: value.product.length,
                         itemBuilder: (BuildContext context, int index) {
                           return ListTile(
                             title: NotificationCard(
                               time: "",
-                              username: snapshot.data!.docs[index]
-                                  ['product_name'],
-                              notificationText: snapshot
-                                  .data!.docs[index]['amount']
-                                  .toString(),
-                              userProfileImage: sl
-                                          .get<AuthMethod>()
-                                          .getUserData(snapshot.data!
-                                              .docs[index]['created_by_uid']) !=
-                                      null
-                                  ? Icon(Icons.person)
-                                  : Icon(Icons.not_interested_rounded),
+                              username: value.product[index].productname,
+                              notificationText:
+                                  value.product[index].amount.toString(),
+                              userProfileImage:
+                                  //  sl
+                                  //         .get<AuthMethod>()
+                                  //         .getUserData(snapshot.data!
+                                  //             .docs[index]['created_by_uid']) !=
+                                  //     null
+                                  // ? CachedNetworkImage(
+                                  //     imageUrl: listOfProducts[index].imageurl,
+                                  //   )
+                                  // :
+                                  CachedNetworkImage(
+                                imageUrl: value.product[index].imageurl,
+                              ),
                             ),
                           );
                         },
                       );
                     },
+                    onModelReady: (p0) {},
                   ),
+                  // FutureBuilder<QuerySnapshot>(
+                  //   future:
+                  //       FirebaseFirestore.instance.collection('product').get(),
+                  //   builder: (BuildContext context,
+                  //       AsyncSnapshot<QuerySnapshot> snapshot) {
+                  //     if (snapshot.hasError) {
+                  //       return const Text('Something went wrong');
+                  //     }
+
+                  //     if (snapshot.connectionState == ConnectionState.waiting) {
+                  //       return const Text('Loading');
+                  //     }
+                  //     snapshot.data!.docs.forEach((element) {
+                  //       listOfProducts.add(Product.fromQuerySnapshot(element));
+                  //     });
+                  //     return ListView.builder(
+                  //       physics: const BouncingScrollPhysics(),
+                  //       itemCount: listOfProducts.length,
+                  //       itemBuilder: (BuildContext context, int index) {
+                  //         return ListTile(
+                  //           title: NotificationCard(
+                  //             time: "",
+                  //             username: listOfProducts[index].productname,
+                  //             notificationText:
+                  //                 listOfProducts[index].amount.toString(),
+                  //             userProfileImage: sl
+                  //                         .get<AuthMethod>()
+                  //                         .getUserData(snapshot.data!
+                  //                             .docs[index]['created_by_uid']) !=
+                  //                     null
+                  //                 ? CachedNetworkImage(
+                  //                     imageUrl: listOfProducts[index].imageurl,
+                  //                   )
+                  //                 : CachedNetworkImage(
+                  //                     imageUrl: listOfProducts[index].imageurl,
+                  //                   ),
+                  //           ),
+                  //         );
+                  //       },
+                  //     );
+                  //   },
+                  // ),
+
                   StreamBuilder<QuerySnapshot>(
                     stream: FirebaseFirestore.instance
                         .collection('users')
@@ -268,19 +315,19 @@ class _SearchScreenState extends State<SearchScreen> {
                     builder: (BuildContext context,
                         AsyncSnapshot<QuerySnapshot> snapshot) {
                       if (snapshot.hasError) {
-                        return Text('Something went wrong');
+                        return const Text('Something went wrong');
                       }
 
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return Text('Loading');
+                        return const Text('Loading');
                       }
 
                       return GridView.builder(
                           gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
+                              const SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: 2),
                           shrinkWrap: true,
-                          physics: BouncingScrollPhysics(),
+                          physics: const BouncingScrollPhysics(),
                           itemCount: snapshot.data!.docs.length,
                           itemBuilder: (BuildContext context, int index) {
                             return GridTile(

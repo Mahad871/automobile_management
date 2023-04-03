@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../dependency_injection/injection_container.dart';
 
 const backgroundColor = Color.fromRGBO(255, 255, 255, 1);
 const textColor = Color.fromRGBO(0, 0, 0, 1);

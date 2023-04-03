@@ -1,4 +1,3 @@
-import 'package:automobile_management/models/auth_method.dart';
 import 'package:flutter/material.dart';
 
 class SignInController extends ChangeNotifier {

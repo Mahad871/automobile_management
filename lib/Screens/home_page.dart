@@ -5,16 +5,13 @@ import 'package:automobile_management/Screens/signin_screen.dart';
 import 'package:automobile_management/Screens/upload_screen.dart';
 import 'package:automobile_management/Widgets/reusable_card.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 import '../Common/constants.dart';
-import '../Widgets/custom_rounded_button.dart';
 import '../dependency_injection/injection_container.dart';
 import '../models/auth_method.dart';
-import 'package:automobile_management/Widgets/posts.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});

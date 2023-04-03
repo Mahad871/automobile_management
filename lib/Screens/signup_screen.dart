@@ -3,7 +3,6 @@ import 'package:automobile_management/Widgets/custom_toast.dart';
 import 'package:automobile_management/models/signup_controller.dart';
 import 'package:automobile_management/models/user_model.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import '../Common/constants.dart';
 import '../dependency_injection/injection_container.dart';
 
