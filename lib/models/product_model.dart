@@ -57,4 +57,19 @@ class Product {
         productname: doc.data()?['product_name'],
         imageurl: doc.data()?['image_url'] ?? '');
   }
+  factory Product.fromQuerySnapshot(
+      QueryDocumentSnapshot<Map<String, dynamic>> doc) {
+    return Product(
+        pid: doc.data()['pid'] ?? '',
+        amount: doc.data()['amount'] ?? 0,
+        colors: doc.data()['colors'] ?? '',
+        quantity: doc.data()['quantity'] ?? '',
+        description: doc.data()['description'] ?? '',
+        timestamp: doc.data()['timestamp'] ?? '',
+        category: doc.data()['category'] ?? '',
+        subCategory: doc.data()['sub_category'] ?? '',
+        createdByUID: doc.data()['created_by_uid'] ?? '',
+        productname: doc.data()['product_name'],
+        imageurl: doc.data()['image_url'] ?? '');
+  }
 }

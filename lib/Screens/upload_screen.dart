@@ -89,7 +89,9 @@ class _UploadScreenState extends State<UploadScreen> {
 
     return SafeArea(
       child: Material(
+        color: Colors.white,
         child: SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 20),
             child: Form(
@@ -102,11 +104,13 @@ class _UploadScreenState extends State<UploadScreen> {
                             selectImage();
                           },
                           child: Container(
-                            height: 200,
-                            width: 200,
+                            height: 100,
+                            width: 100,
                             decoration: BoxDecoration(
-                                image: DecorationImage(
-                                    image: MemoryImage(_image!))),
+                              image: DecorationImage(
+                                image: MemoryImage(_image!),
+                              ),
+                            ),
                           ),
                         )
                       : Container(
@@ -138,12 +142,120 @@ class _UploadScreenState extends State<UploadScreen> {
                             ),
                           ),
                         ),
-                  textField(context, productname, 'name'),
-                  textField(context, productdecription, 'Description'),
-                  textField(context, amount, 'amount'),
-                  textField(context, quantity, 'quantity'),
-                  textField(context, category, 'category'),
-                  textField(context, subcategory, 'subcategory'),
+                  const SizedBox(height: 20),
+                  Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      color: textFieldColor,
+                    ),
+                    padding: const EdgeInsets.only(left: 16),
+                    child: TextField(
+                      style: const TextStyle(color: textColor),
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: "Name",
+                        hintStyle: TextStyle(color: hintTextColor),
+                      ),
+                      controller: productname,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      color: textFieldColor,
+                    ),
+                    padding: const EdgeInsets.only(left: 16),
+                    child: TextField(
+                      style: const TextStyle(color: textColor),
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: "Description",
+                        hintStyle: TextStyle(color: hintTextColor),
+                      ),
+                      controller: productdecription,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      color: textFieldColor,
+                    ),
+                    padding: const EdgeInsets.only(left: 16),
+                    child: TextField(
+                      style: const TextStyle(color: textColor),
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: "amount",
+                        hintStyle: TextStyle(color: hintTextColor),
+                      ),
+                      controller: amount,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      color: textFieldColor,
+                    ),
+                    padding: const EdgeInsets.only(left: 16),
+                    child: TextField(
+                      style: const TextStyle(color: textColor),
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: "Quantity",
+                        hintStyle: TextStyle(color: hintTextColor),
+                      ),
+                      controller: quantity,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      color: textFieldColor,
+                    ),
+                    padding: const EdgeInsets.only(left: 16),
+                    child: TextField(
+                      style: const TextStyle(color: textColor),
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: "Category",
+                        hintStyle: TextStyle(color: hintTextColor),
+                      ),
+                      controller: category,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                  Container(
+                    height: 50,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(4),
+                      color: textFieldColor,
+                    ),
+                    padding: const EdgeInsets.only(left: 16),
+                    child: TextField(
+                      style: const TextStyle(color: textColor),
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        hintText: "Subcategory",
+                        hintStyle: TextStyle(color: hintTextColor),
+                      ),
+                      controller: subcategory,
+                    ),
+                  ),
                   const SizedBox(height: 20),
                   _isloading
                       ? const CircularProgressIndicator()
