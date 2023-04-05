@@ -161,26 +161,27 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             ),
                           ),
                           Align(
-                              alignment: Alignment.bottomRight,
-                              child: Padding(
-                                padding:
-                                    const EdgeInsets.only(right: 25.0, top: 20),
-                                child: ElevatedButton(
-                                  onPressed: () {
-                                    selectImage();
-                                  },
-                                  style: ElevatedButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(8),
-                                    ),
-                                    backgroundColor: textFieldColor,
-                                    foregroundColor: Colors.black,
-                                    fixedSize: const Size.fromRadius(15),
-                                    elevation: 0,
+                            alignment: Alignment.bottomRight,
+                            child: Padding(
+                              padding:
+                                  const EdgeInsets.only(right: 25.0, top: 20),
+                              child: ElevatedButton(
+                                onPressed: () {
+                                  selectImage();
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
                                   ),
-                                  child: const Icon(CupertinoIcons.pencil),
+                                  backgroundColor: textFieldColor,
+                                  foregroundColor: Colors.black,
+                                  fixedSize: const Size.fromRadius(15),
+                                  elevation: 0,
                                 ),
-                              ))
+                                child: const Icon(CupertinoIcons.pencil),
+                              ),
+                            ),
+                          )
                         ],
                       ),
                     )

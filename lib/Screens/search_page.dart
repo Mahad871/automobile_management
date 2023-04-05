@@ -11,8 +11,10 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../Widgets/search_card.dart';
 import '../dependency_injection/injection_container.dart';
 import '../models/SearchController.dart';
+import '../models/user_model.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key, required this.title});
@@ -226,144 +228,143 @@ class _SearchScreenState extends State<SearchScreen> {
               ),
             ),
           ),
-          SizedBox(
-            height: 400,
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: PageView(
-                controller: _pageController,
-                children: [
-                  BaseView<ProductApi>(
-                    builder: (context, value, child) {
-                      return ListView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        itemCount: value.product.length,
-                        itemBuilder: (BuildContext context, int index) {
-                          return ListTile(
-                            title: NotificationCard(
-                              time: "",
-                              username: value.product[index].productname,
-                              notificationText:
-                                  value.product[index].amount.toString(),
-                              userProfileImage:
-                                  //  sl
-                                  //         .get<AuthMethod>()
-                                  //         .getUserData(snapshot.data!
-                                  //             .docs[index]['created_by_uid']) !=
-                                  //     null
-                                  // ? CachedNetworkImage(
-                                  //     imageUrl: listOfProducts[index].imageurl,
-                                  //   )
-                                  // :
-                                  CachedNetworkImage(
-                                imageUrl: value.product[index].imageurl,
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    },
-                    onModelReady: (p0) {},
-                  ),
-                  // FutureBuilder<QuerySnapshot>(
-                  //   future:
-                  //       FirebaseFirestore.instance.collection('product').get(),
-                  //   builder: (BuildContext context,
-                  //       AsyncSnapshot<QuerySnapshot> snapshot) {
-                  //     if (snapshot.hasError) {
-                  //       return const Text('Something went wrong');
-                  //     }
-
-                  //     if (snapshot.connectionState == ConnectionState.waiting) {
-                  //       return const Text('Loading');
-                  //     }
-                  //     snapshot.data!.docs.forEach((element) {
-                  //       listOfProducts.add(Product.fromQuerySnapshot(element));
-                  //     });
-                  //     return ListView.builder(
-                  //       physics: const BouncingScrollPhysics(),
-                  //       itemCount: listOfProducts.length,
-                  //       itemBuilder: (BuildContext context, int index) {
-                  //         return ListTile(
-                  //           title: NotificationCard(
-                  //             time: "",
-                  //             username: listOfProducts[index].productname,
-                  //             notificationText:
-                  //                 listOfProducts[index].amount.toString(),
-                  //             userProfileImage: sl
-                  //                         .get<AuthMethod>()
-                  //                         .getUserData(snapshot.data!
-                  //                             .docs[index]['created_by_uid']) !=
-                  //                     null
-                  //                 ? CachedNetworkImage(
-                  //                     imageUrl: listOfProducts[index].imageurl,
-                  //                   )
-                  //                 : CachedNetworkImage(
-                  //                     imageUrl: listOfProducts[index].imageurl,
-                  //                   ),
-                  //           ),
-                  //         );
-                  //       },
-                  //     );
-                  //   },
-                  // ),
-
-                  StreamBuilder<QuerySnapshot>(
-                    stream: FirebaseFirestore.instance
-                        .collection('users')
-                        .snapshots(),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<QuerySnapshot> snapshot) {
-                      if (snapshot.hasError) {
-                        return const Text('Something went wrong');
-                      }
-
-                      if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Text('Loading');
-                      }
-
-                      return GridView.builder(
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2),
-                          shrinkWrap: true,
+          Flexible(
+            child: SizedBox(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: PageView(
+                  controller: _pageController,
+                  children: [
+                    BaseView<ProductApi>(
+                      builder: (context, value, child) {
+                        return ListView.builder(
                           physics: const BouncingScrollPhysics(),
-                          itemCount: snapshot.data!.docs.length,
+                          itemCount: value.product.length,
                           itemBuilder: (BuildContext context, int index) {
-                            return GridTile(
-                                child: Column(
-                              children: [
-                                snapshot.data!.docs[index]['photoUrl'] != null
-                                    ? Flexible(
-                                        child: ProfileCard(
-                                          notificationText: "",
-                                          username: snapshot.data!.docs[index]
-                                              ['username'],
-                                          userProfileImage: CachedNetworkImage(
-                                            imageUrl: snapshot.data!.docs[index]
-                                                ['photoUrl'],
-                                            fit: BoxFit.cover,
+                            return ListTile(
+                              title: SearchCard(
+                                time: "",
+                                username: value.product[index].productname,
+                                notificationText:
+                                    value.product[index].amount.toString(),
+                                userProfileImage: CachedNetworkImage(
+                                  imageUrl: value.product[index].imageurl,
+                                ),
+                              ),
+                            );
+                          },
+                        );
+                      },
+                      onModelReady: (p0) {},
+                    ),
+                    // FutureBuilder<QuerySnapshot>(
+                    //   future:
+                    //       FirebaseFirestore.instance.collection('product').get(),
+                    //   builder: (BuildContext context,
+                    //       AsyncSnapshot<QuerySnapshot> snapshot) {
+                    //     if (snapshot.hasError) {
+                    //       return const Text('Something went wrong');
+                    //     }
+
+                    //     if (snapshot.connectionState == ConnectionState.waiting) {
+                    //       return const Text('Loading');
+                    //     }
+                    //     snapshot.data!.docs.forEach((element) {
+                    //       listOfProducts.add(Product.fromQuerySnapshot(element));
+                    //     });
+                    //     return ListView.builder(
+                    //       physics: const BouncingScrollPhysics(),
+                    //       itemCount: listOfProducts.length,
+                    //       itemBuilder: (BuildContext context, int index) {
+                    //         return ListTile(
+                    //           title: NotificationCard(
+                    //             time: "",
+                    //             username: listOfProducts[index].productname,
+                    //             notificationText:
+                    //                 listOfProducts[index].amount.toString(),
+                    //             userProfileImage: sl
+                    //                         .get<AuthMethod>()
+                    //                         .getUserData(snapshot.data!
+                    //                             .docs[index]['created_by_uid']) !=
+                    //                     null
+                    //                 ? CachedNetworkImage(
+                    //                     imageUrl: listOfProducts[index].imageurl,
+                    //                   )
+                    //                 : CachedNetworkImage(
+                    //                     imageUrl: listOfProducts[index].imageurl,
+                    //                   ),
+                    //           ),
+                    //         );
+                    //       },
+                    //     );
+                    //   },
+                    // ),
+
+                    StreamBuilder<QuerySnapshot>(
+                      stream: FirebaseFirestore.instance
+                          .collection('users')
+                          .snapshots(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (snapshot.hasError) {
+                          return const Text('Something went wrong');
+                        }
+
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Text('Loading');
+                        }
+
+                        return GridView.builder(
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2),
+                            shrinkWrap: true,
+                            physics: const BouncingScrollPhysics(),
+                            itemCount: snapshot.data!.docs.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              // List<UserModel> userModel = [];
+                              // for (DocumentSnapshot<Map<String, dynamic>> e
+                              //     in snapshot.) {
+                              //   userModel.add(UserModel.fromDocumentSnapshot(e));
+                              // }
+                              return GridTile(
+                                  child: Column(
+                                children: [
+                                  snapshot.data!.docs[index]['photoUrl'] != null
+                                      ? Flexible(
+                                          child: ProfileCard(
+                                            notificationText: "",
+                                            username: snapshot.data!.docs[index]
+                                                ['username'],
+                                            userProfileImage:
+                                                CachedNetworkImage(
+                                              imageUrl: snapshot.data!
+                                                  .docs[index]['photoUrl'],
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
-                                        ),
-                                      )
-                                    : Flexible(
-                                        child: ProfileCard(
-                                          notificationText: "",
-                                          username: snapshot.data!.docs[index]
-                                              ['username'],
-                                          userProfileImage: CachedNetworkImage(
-                                            imageUrl:
-                                                "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
-                                            fit: BoxFit.cover,
+                                        )
+                                      : Flexible(
+                                          child: ProfileCard(
+                                            notificationText: "",
+                                            username: snapshot.data!.docs[index]
+                                                ['username'],
+                                            userProfileImage:
+                                                CachedNetworkImage(
+                                              imageUrl:
+                                                  "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
+                                              fit: BoxFit.cover,
+                                            ),
                                           ),
-                                        ),
-                                      )
-                              ],
-                            ));
-                          });
-                    },
-                  ),
-                ],
+                                        )
+                                ],
+                              ));
+                            });
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           )

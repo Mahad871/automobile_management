@@ -1,4 +1,3 @@
-
 import 'package:automobile_management/Widgets/reusable_card.dart';
 import 'package:flutter/material.dart';
 
@@ -12,6 +11,7 @@ class ProfileCard extends StatelessWidget {
   final String followers;
   double height = 100;
   double width = 100;
+  double cardElevation;
 
   ProfileCard({
     super.key,
@@ -23,11 +23,13 @@ class ProfileCard extends StatelessWidget {
     this.height = 460,
     this.width = 300,
     this.followers = "2.7 K",
+    this.cardElevation = 0,
   });
 
   @override
   Widget build(BuildContext context) {
     return ReusableCard(
+      elevation: cardElevation,
       cardWidth: width,
       cardHeight: height,
       onPress: onPressed,
@@ -38,8 +40,14 @@ class ProfileCard extends StatelessWidget {
           children: [
             Expanded(
               flex: 3,
-              child:
-                  Container(width: double.maxFinite, child: userProfileImage!),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Container(
+                    width: double.maxFinite,
+                    child: userProfileImage!,
+                    decoration:
+                        BoxDecoration(borderRadius: BorderRadius.circular(10))),
+              ),
             ),
             Flexible(
               child: Column(
