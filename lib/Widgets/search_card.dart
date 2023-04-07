@@ -86,14 +86,54 @@ class SearchCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  ElevatedButton(
-                    onPressed: () {},
-                    style: ElevatedButton.styleFrom(
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          Expanded(
+                            flex: 2,
+                            child: SizedBox(
+                              width: 50,
+                              child: Center(
+                                child: ElevatedButton(
+                                    onPressed: () => onTopIconPressed,
+                                    style: ElevatedButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      backgroundColor: textFieldColor,
+                                      foregroundColor: textColor,
+                                      elevation: 5,
+                                    ),
+                                    child: topIcon),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Expanded(
+                            flex: 3,
+                            child: SizedBox(
+                              child: ElevatedButton(
+                                  onPressed: () {},
+                                  style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(8),
+                                    ),
+                                    backgroundColor: textFieldColor,
+                                    foregroundColor: textColor,
+                                    elevation: 5,
+                                  ),
+                                  child: cardIcon),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                    child: cardIcon,
                   )
                 ],
               ),

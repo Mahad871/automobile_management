@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class Product {
   final String pid;
   final String createdByUID;
+  late String? userImageurl;
   final int amount;
   final String colors;
   final String quantity;
@@ -25,6 +26,7 @@ class Product {
     required this.subCategory,
     required this.createdByUID,
     required this.imageurl,
+    this.userImageurl,
   });
 
   Map<String, dynamic> toMap() {
@@ -39,37 +41,41 @@ class Product {
       'sub_category': subCategory,
       'created_by_uid': createdByUID,
       'image_url': imageurl,
-      'product_name': productname
+      'product_name': productname,
+      "userImageurl": userImageurl
     };
   }
 
   factory Product.fromMap(DocumentSnapshot<Map<String, dynamic>> doc) {
     return Product(
-        pid: doc.data()?['pid'] ?? '',
-        amount: doc.data()?['amount'] ?? 0,
-        colors: doc.data()?['colors'] ?? '',
-        quantity: doc.data()?['quantity'] ?? '',
-        description: doc.data()?['description'] ?? '',
-        timestamp: doc.data()?['timestamp'] ?? '',
-        category: doc.data()?['category'] ?? '',
-        subCategory: doc.data()?['sub_category'] ?? '',
-        createdByUID: doc.data()?['created_by_uid'] ?? '',
-        productname: doc.data()?['product_name'],
-        imageurl: doc.data()?['image_url'] ?? '');
+      pid: doc.data()?['pid'] ?? '',
+      amount: doc.data()?['amount'] ?? 0,
+      colors: doc.data()?['colors'] ?? '',
+      quantity: doc.data()?['quantity'] ?? '',
+      description: doc.data()?['description'] ?? '',
+      timestamp: doc.data()?['timestamp'] ?? '',
+      category: doc.data()?['category'] ?? '',
+      subCategory: doc.data()?['sub_category'] ?? '',
+      createdByUID: doc.data()?['created_by_uid'] ?? '',
+      productname: doc.data()?['product_name'],
+      imageurl: doc.data()?['image_url'] ?? '',
+      userImageurl: doc.data()?['userImageurl'] ?? '',
+    );
   }
-  factory Product.fromQuerySnapshot(
-      DocumentSnapshot doc) {
+  factory Product.fromQuerySnapshot(DocumentSnapshot doc) {
     return Product(
-        pid: doc['pid'] ?? '',
-        amount: doc['amount'] ?? 0,
-        colors: doc['colors'] ?? '',
-        quantity: doc['quantity'] ?? '',
-        description: doc['description'] ?? '',
-        timestamp: doc['timestamp'] ?? '',
-        category: doc['category'] ?? '',
-        subCategory: doc['sub_category'] ?? '',
-        createdByUID: doc['created_by_uid'] ?? '',
-        productname: doc['product_name'],
-        imageurl: doc['image_url'] ?? '');
+      pid: doc['pid'] ?? '',
+      amount: doc['amount'] ?? 0,
+      colors: doc['colors'] ?? '',
+      quantity: doc['quantity'] ?? '',
+      description: doc['description'] ?? '',
+      timestamp: doc['timestamp'] ?? '',
+      category: doc['category'] ?? '',
+      subCategory: doc['sub_category'] ?? '',
+      createdByUID: doc['created_by_uid'] ?? '',
+      productname: doc['product_name'],
+      imageurl: doc['image_url'] ?? '',
+      userImageurl: doc['userImageurl'] ?? '',
+    );
   }
 }

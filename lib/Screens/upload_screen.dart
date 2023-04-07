@@ -67,6 +67,7 @@ class _UploadScreenState extends State<UploadScreen> {
           subCategory: subcategory.text,
           createdByUID: authMethod.currentUserData!.id.toString(),
           imageurl: imageurl,
+          userImageurl: authMethod.currentUserData?.photoUrl,
         );
         bool temp = await ProductApi().add(product);
         if (temp) {

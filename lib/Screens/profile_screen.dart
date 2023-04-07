@@ -377,12 +377,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       child: GestureDetector(
                         onTap: () {
                           UserModel user = UserModel(
-                              id: authMethod.currentUser!.user!.uid,
-                              username: controller.username.text,
-                              email: controller.email.text,
-                              isVendor: isVendor,
-                              password: controller.password.text,
-                              file: _image);
+                            id: authMethod.currentUser!.user!.uid,
+                            username: controller.username.text,
+                            email: controller.email.text,
+                            isVendor: isVendor,
+                            password: controller.password.text,
+                            file: _image,
+                            followers: authMethod.currentUserData!.followers,
+                            following: authMethod.currentUserData!.following,
+                          );
                           authMethod.currentUserData = user;
                           authMethod.updateUser();
                         },

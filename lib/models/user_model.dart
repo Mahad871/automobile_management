@@ -8,8 +8,12 @@ class UserModel {
   final String username;
   final String email;
   final String password;
+  final List<dynamic> followers;
+  final List<dynamic> following;
   final bool isVendor;
   final Uint8List? file;
+  late int noOfFollowers;
+  late int noOfFollowing;
 
   UserModel(
       {this.id,
@@ -18,6 +22,10 @@ class UserModel {
       required this.email,
       required this.isVendor,
       required this.password,
+      required this.followers,
+      required this.following,
+      this.noOfFollowers = 0,
+      this.noOfFollowing = 0,
       this.file});
 
   toJson() {
@@ -28,7 +36,11 @@ class UserModel {
       "isVendor": isVendor,
       "password": password,
       // "img": file,
-      "photoUrl": photoUrl
+      "photoUrl": photoUrl,
+      "followers": followers,
+      "following": following,
+      "noOfFollowers": noOfFollowers,
+      "noOfFollowing": noOfFollowing
     };
   }
 
@@ -42,6 +54,10 @@ class UserModel {
       isVendor: doc.data()!['isVendor'],
       // file: doc.data()!['imgUrl'],
       photoUrl: doc.data()!['photoUrl'],
+      followers: doc.data()!['followers'],
+      following: doc.data()!['following'],
+      noOfFollowing: doc.data()!['noOfFollowing'],
+      noOfFollowers: doc.data()!['noOfFollowers'],
     );
   }
 }

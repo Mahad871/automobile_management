@@ -35,6 +35,8 @@ class _SearchScreenState extends State<SearchScreen> {
   final SearchController _searchController = sl.get<SearchController>();
   late PageController _pageController =
       PageController(initialPage: 0, keepPage: true, viewportFraction: 1.0);
+  AuthMethod authMethod = sl.get<AuthMethod>();
+
   void swapColors() {
     setState(() {
       Color temp = userModeContainerColor;
@@ -257,49 +259,6 @@ class _SearchScreenState extends State<SearchScreen> {
                       },
                       onModelReady: (p0) {},
                     ),
-                    // FutureBuilder<QuerySnapshot>(
-                    //   future:
-                    //       FirebaseFirestore.instance.collection('product').get(),
-                    //   builder: (BuildContext context,
-                    //       AsyncSnapshot<QuerySnapshot> snapshot) {
-                    //     if (snapshot.hasError) {
-                    //       return const Text('Something went wrong');
-                    //     }
-
-                    //     if (snapshot.connectionState == ConnectionState.waiting) {
-                    //       return const Text('Loading');
-                    //     }
-                    //     snapshot.data!.docs.forEach((element) {
-                    //       listOfProducts.add(Product.fromQuerySnapshot(element));
-                    //     });
-                    //     return ListView.builder(
-                    //       physics: const BouncingScrollPhysics(),
-                    //       itemCount: listOfProducts.length,
-                    //       itemBuilder: (BuildContext context, int index) {
-                    //         return ListTile(
-                    //           title: NotificationCard(
-                    //             time: "",
-                    //             username: listOfProducts[index].productname,
-                    //             notificationText:
-                    //                 listOfProducts[index].amount.toString(),
-                    //             userProfileImage: sl
-                    //                         .get<AuthMethod>()
-                    //                         .getUserData(snapshot.data!
-                    //                             .docs[index]['created_by_uid']) !=
-                    //                     null
-                    //                 ? CachedNetworkImage(
-                    //                     imageUrl: listOfProducts[index].imageurl,
-                    //                   )
-                    //                 : CachedNetworkImage(
-                    //                     imageUrl: listOfProducts[index].imageurl,
-                    //                   ),
-                    //           ),
-                    //         );
-                    //       },
-                    //     );
-                    //   },
-                    // ),
-
                     StreamBuilder<QuerySnapshot>(
                       stream: FirebaseFirestore.instance
                           .collection('users')
@@ -331,33 +290,37 @@ class _SearchScreenState extends State<SearchScreen> {
                               return GridTile(
                                   child: Column(
                                 children: [
-                                  snapshot.data!.docs[index]['photoUrl'] != null
-                                      ? Flexible(
-                                          child: ProfileCard(
-                                            notificationText: "",
-                                            username: snapshot.data!.docs[index]
-                                                ['username'],
-                                            userProfileImage:
-                                                CachedNetworkImage(
-                                              imageUrl: snapshot.data!
-                                                  .docs[index]['photoUrl'],
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                        )
-                                      : Flexible(
-                                          child: ProfileCard(
-                                            notificationText: "",
-                                            username: snapshot.data!.docs[index]
-                                                ['username'],
-                                            userProfileImage:
-                                                CachedNetworkImage(
-                                              imageUrl:
-                                                  "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                        )
+                                  Flexible(
+                                    child: ProfileCard(
+                                      buttonText:
+                                          isUserFollowed(snapshot, index),
+                                      onButtonPressed: () {
+                                        isUserFollowed(snapshot, index) ==
+                                                "UnFollow"
+                                            ? authMethod.unfollowUser(
+                                                followerUid: authMethod
+                                                    .currentUserData!.id
+                                                    .toString(),
+                                                followingUid: snapshot
+                                                    .data!.docs[index]['uid'])
+                                            : authMethod.followUser(
+                                                followerUid: authMethod
+                                                    .currentUserData!.id
+                                                    .toString(),
+                                                followingUid: snapshot
+                                                    .data!.docs[index]['uid']);
+                                      },
+                                      notificationText: "",
+                                      username: snapshot.data!.docs[index]
+                                          ['username'],
+                                      userProfileImage: CachedNetworkImage(
+                                        imageUrl: snapshot.data!.docs[index]
+                                                ['photoUrl'] ??
+                                            "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  )
                                 ],
                               ));
                             });
@@ -369,6 +332,14 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
           )
         ])));
+  }
+
+  String isUserFollowed(
+      AsyncSnapshot<QuerySnapshot<Object?>> snapshot, int index) {
+    return authMethod.currentUserData!.following
+            .contains(snapshot.data!.docs[index]['uid'])
+        ? "UnFollow"
+        : "Follow";
   }
 
   getImage(AsyncSnapshot<QuerySnapshot<Object?>> snapshot, int index) async {
