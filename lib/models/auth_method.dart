@@ -1,4 +1,5 @@
 import 'package:automobile_management/Screens/home_page.dart';
+import 'package:automobile_management/Widgets/custom_toast.dart';
 import 'package:automobile_management/models/firebase_storage_model.dart';
 import 'package:automobile_management/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -101,7 +102,7 @@ class AuthMethod extends ChangeNotifier {
     return currentUserDataList;
   }
 
-  getUserData(String id) async {
+  Future<UserModel> getUserData(String id) async {
     final snapshot =
         await db.collection('users').where('uid', isEqualTo: id).get();
     UserModel UserData =
@@ -119,8 +120,51 @@ class AuthMethod extends ChangeNotifier {
     return UserData.photoUrl.toString();
   }
 
+  followUser({String followerUid = " ", String followingUid = " "}) async {
+    if (followerUid == followingUid) {
+      return false;
+    }
+
+    try {
+      UserModel user = await getUserData(followingUid);
+      user.followers.add(followerUid);
+      currentUserData?.following.add(followingUid);
+
+      await db
+          .collection('users')
+          .doc(currentUserData!.id)
+          .set(currentUserData!.toJson());
+
+      await db.collection('users').doc(user.id).set(user.toJson());
+      notifyListeners();
+      return true;
+    } catch (e) {
+      return CustomToast.errorToast(message: e.toString());
+    }
+  }
+
+  unfollowUser({String followerUid = " ", String followingUid = " "}) async {
+    try {
+      UserModel user = await getUserData(followingUid);
+      user.followers.remove(followerUid);
+      currentUserData?.following.remove(followingUid);
+
+      await db
+          .collection('users')
+          .doc(currentUserData!.id)
+          .set(currentUserData!.toJson());
+
+      await db.collection('users').doc(user.id).set(user.toJson());
+      notifyListeners();
+      return true;
+    } catch (e) {
+      return CustomToast.errorToast(message: e.toString());
+    }
+  }
+
   void signOutUser() async {
     _storage.remove('user');
     await auth.signOut();
+    notifyListeners();
   }
 }

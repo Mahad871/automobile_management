@@ -296,6 +296,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       email: controller.email.text.trim(),
       isVendor: isVendor,
       password: controller.password.text.trim(),
+      followers: [],
+      following: [],
     );
 
     status = await SignUpController().crateUser(context, user);

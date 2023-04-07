@@ -60,28 +60,54 @@ class _HomeScreenState extends State<HomeScreen> {
                               children: [
                                 Padding(
                                   padding: const EdgeInsets.all(5.0),
-                                  child: Container(
-                                    width: 45.0,
-                                    height: 45.0,
-                                    decoration: BoxDecoration(
-                                      shape: BoxShape.circle,
-                                      color: textFieldColor,
-                                      image: DecorationImage(
+                                  child: CachedNetworkImage(
+                                    imageUrl: authMethod
+                                                .currentUserData?.photoUrl !=
+                                            null
+                                        ? authMethod.currentUserData!.photoUrl
+                                            .toString()
+                                        : "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
+                                    imageBuilder: (context, imageProvider) =>
+                                        Container(
+                                      width: 45,
+                                      height: 45,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        image: DecorationImage(
+                                          image: imageProvider,
                                           fit: BoxFit.cover,
-                                          image: authMethod
-                                                      .currentUserData?.photoUrl
-                                                      .toString() !=
-                                                  null
-                                              ? CachedNetworkImageProvider(
-                                                  authMethod
-                                                      .currentUserData!.photoUrl
-                                                      .toString())
-                                              : const CachedNetworkImageProvider(
-                                                  "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
-                                                )),
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ),
+
+                                // Padding(
+                                //   padding: const EdgeInsets.all(5.0),
+                                //   child: Container(
+                                //     width: 45.0,
+                                //     height: 45.0,
+                                //     decoration: BoxDecoration(
+                                //       shape: BoxShape.circle,
+                                //       color: textFieldColor,
+                                //       image: DecorationImage(
+                                //           fit: BoxFit.cover,
+                                //           image:
+                                //               ? CachedNetworkImageProvider(
+                                //                   errorListener: () {
+                                //                   CachedNetworkImageProvider(
+                                //                     "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
+                                //                   );
+                                //                 },
+                                //                   authMethod
+                                //                       .currentUserData!.photoUrl
+                                //                       .toString())
+                                //               : const CachedNetworkImageProvider(
+                                //                   "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
+                                //                 )),
+                                //     ),
+                                //   ),
+                                // ),
                                 Column(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -303,8 +329,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return scaffold;
   }
 }
-
-
 
 // StreamBuilder(
 //                   stream: authMethod.db.collection('product').snapshots(),

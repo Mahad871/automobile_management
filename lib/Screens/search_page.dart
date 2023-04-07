@@ -54,6 +54,7 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   @override
+  AuthMethod authMethod = sl.get<AuthMethod>();
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
@@ -331,33 +332,37 @@ class _SearchScreenState extends State<SearchScreen> {
                               return GridTile(
                                   child: Column(
                                 children: [
-                                  snapshot.data!.docs[index]['photoUrl'] != null
-                                      ? Flexible(
-                                          child: ProfileCard(
-                                            notificationText: "",
-                                            username: snapshot.data!.docs[index]
-                                                ['username'],
-                                            userProfileImage:
-                                                CachedNetworkImage(
-                                              imageUrl: snapshot.data!
-                                                  .docs[index]['photoUrl'],
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                        )
-                                      : Flexible(
-                                          child: ProfileCard(
-                                            notificationText: "",
-                                            username: snapshot.data!.docs[index]
-                                                ['username'],
-                                            userProfileImage:
-                                                CachedNetworkImage(
-                                              imageUrl:
-                                                  "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
-                                              fit: BoxFit.cover,
-                                            ),
-                                          ),
-                                        )
+                                  Flexible(
+                                    child: ProfileCard(
+                                      buttonText:
+                                          isUserFollowed(snapshot, index),
+                                      onButtonPressed: () {
+                                        isUserFollowed(snapshot, index) ==
+                                                "UnFollow"
+                                            ? authMethod.unfollowUser(
+                                                followerUid: authMethod
+                                                    .currentUserData!.id
+                                                    .toString(),
+                                                followingUid: snapshot
+                                                    .data!.docs[index]['uid'])
+                                            : authMethod.followUser(
+                                                followerUid: authMethod
+                                                    .currentUserData!.id
+                                                    .toString(),
+                                                followingUid: snapshot
+                                                    .data!.docs[index]['uid']);
+                                      },
+                                      notificationText: "",
+                                      username: snapshot.data!.docs[index]
+                                          ['username'],
+                                      userProfileImage: CachedNetworkImage(
+                                        imageUrl: snapshot.data!.docs[index]
+                                                ['photoUrl'] ??
+                                            "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
+                                        fit: BoxFit.cover,
+                                      ),
+                                    ),
+                                  )
                                 ],
                               ));
                             });
@@ -369,6 +374,14 @@ class _SearchScreenState extends State<SearchScreen> {
             ),
           )
         ])));
+  }
+
+  String isUserFollowed(
+      AsyncSnapshot<QuerySnapshot<Object?>> snapshot, int index) {
+    return authMethod.currentUserData!.following
+            .contains(snapshot.data!.docs[index]['uid'])
+        ? "UnFollow"
+        : "Follow";
   }
 
   getImage(AsyncSnapshot<QuerySnapshot<Object?>> snapshot, int index) async {
