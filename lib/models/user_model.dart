@@ -39,8 +39,11 @@ class UserModel {
       "photoUrl": photoUrl,
       "followers": followers,
       "following": following,
+<<<<<<< HEAD
       "noOfFollowers": noOfFollowers,
       "noOfFollowing": noOfFollowing
+=======
+>>>>>>> cd1362fb92693422d3c77ed84f28d8890fe650d7
     };
   }
 
@@ -56,8 +59,11 @@ class UserModel {
       photoUrl: doc.data()!['photoUrl'],
       followers: doc.data()!['followers'],
       following: doc.data()!['following'],
+<<<<<<< HEAD
       noOfFollowing: doc.data()!['noOfFollowing'],
       noOfFollowers: doc.data()!['noOfFollowers'],
+=======
+>>>>>>> cd1362fb92693422d3c77ed84f28d8890fe650d7
     );
   }
 }

@@ -56,6 +56,7 @@ class _SearchScreenState extends State<SearchScreen> {
   }
 
   @override
+  AuthMethod authMethod = sl.get<AuthMethod>();
   Widget build(BuildContext context) {
     return Scaffold(
         backgroundColor: Colors.white,
