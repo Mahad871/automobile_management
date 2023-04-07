@@ -1,4 +1,5 @@
 import 'package:automobile_management/Widgets/reusable_card.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 import '../Common/constants.dart';
@@ -6,7 +7,7 @@ import '../Common/constants.dart';
 class SearchCard extends StatelessWidget {
   final String username;
   final String notificationText;
-  final Widget? userProfileImage;
+  final String? circularImageUrl;
   final Widget topIcon = Icon(Icons.pause);
   final Widget cardIcon = Icon(Icons.arrow_forward);
 
@@ -20,7 +21,7 @@ class SearchCard extends StatelessWidget {
   SearchCard({
     super.key,
     this.username = "Toxic",
-    this.userProfileImage,
+    this.circularImageUrl,
     this.notificationText =
         "Lorem ipsum dolor sit amet consectetur. Sed egestas egestas condimentum aliqu.",
     this.onPressed,
@@ -44,11 +45,22 @@ class SearchCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
-              child: CircleAvatar(
-                radius: 25,
-                backgroundColor: Colors.grey,
-                child: userProfileImage,
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: CachedNetworkImage(
+                imageUrl: circularImageUrl != null
+                    ? circularImageUrl.toString()
+                    : "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
+                imageBuilder: (context, imageProvider) => Container(
+                  width: 45,
+                  height: 45,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      image: imageProvider,
+                      fit: BoxFit.cover,
+                    ),
+                  ),
+                ),
               ),
             ),
             Flexible(

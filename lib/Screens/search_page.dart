@@ -245,14 +245,12 @@ class _SearchScreenState extends State<SearchScreen> {
                           itemBuilder: (BuildContext context, int index) {
                             return ListTile(
                               title: SearchCard(
-                                time: "",
-                                username: value.product[index].productname,
-                                notificationText:
-                                    value.product[index].amount.toString(),
-                                userProfileImage: CachedNetworkImage(
-                                  imageUrl: value.product[index].imageurl,
-                                ),
-                              ),
+                                  time: "",
+                                  username: value.product[index].productname,
+                                  notificationText:
+                                      value.product[index].amount.toString(),
+                                  circularImageUrl:
+                                      value.product[index].userImageurl),
                             );
                           },
                         );
