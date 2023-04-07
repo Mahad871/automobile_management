@@ -129,12 +129,8 @@ class AuthMethod extends ChangeNotifier {
       UserModel user = await getUserData(followingUid);
       user.followers.add(followerUid);
       currentUserData?.following.add(followingUid);
-<<<<<<< HEAD
       user.noOfFollowers = user.followers.length;
       currentUserData!.noOfFollowing = currentUserData!.following.length;
-=======
-
->>>>>>> cd1362fb92693422d3c77ed84f28d8890fe650d7
       await db
           .collection('users')
           .doc(currentUserData!.id)
@@ -153,11 +149,8 @@ class AuthMethod extends ChangeNotifier {
       UserModel user = await getUserData(followingUid);
       user.followers.remove(followerUid);
       currentUserData?.following.remove(followingUid);
-<<<<<<< HEAD
       user.noOfFollowers = user.followers.length;
       currentUserData!.noOfFollowing = currentUserData!.following.length;
-=======
->>>>>>> cd1362fb92693422d3c77ed84f28d8890fe650d7
 
       await db
           .collection('users')
