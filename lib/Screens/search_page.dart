@@ -1,10 +1,10 @@
+import 'dart:async';
+
 import 'package:automobile_management/Common/constants.dart';
 import 'package:automobile_management/Screens/chat_list_page.dart';
 import 'package:automobile_management/Screens/notificastion_page.dart';
-import 'package:automobile_management/Widgets/notification_card.dart';
 import 'package:automobile_management/Widgets/profile_card.dart';
 import 'package:automobile_management/models/auth_method.dart';
-import 'package:automobile_management/models/product_model.dart';
 import 'package:automobile_management/providers/base_view.dart';
 import 'package:automobile_management/services/product_api.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -14,7 +14,6 @@ import 'package:flutter/material.dart';
 import '../Widgets/search_card.dart';
 import '../dependency_injection/injection_container.dart';
 import '../models/SearchController.dart';
-import '../models/user_model.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key, required this.title});
@@ -243,14 +242,21 @@ class _SearchScreenState extends State<SearchScreen> {
                           physics: const BouncingScrollPhysics(),
                           itemCount: value.product.length,
                           itemBuilder: (BuildContext context, int index) {
+                            // List<int> counter = [];
+                            // counter.add(0);
+                            // Future.delayed(Duration(seconds: 10), () {
+                            //   setState(() {
+                            //     value.product.removeAt(index);
+                            //   });
+                            // });
                             return ListTile(
                               title: SearchCard(
-                                  time: "",
-                                  username: value.product[index].productname,
-                                  notificationText:
-                                      value.product[index].amount.toString(),
-                                  circularImageUrl:
-                                      value.product[index].userImageurl),
+                                time: "",
+                                username: value.product[index].productname,
+                                notificationText:
+                                    value.product[index].amount.toString(),
+                                circularImageUrl: value.product[index].imageurl,
+                              ),
                             );
                           },
                         );
