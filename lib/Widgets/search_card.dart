@@ -128,11 +128,14 @@ class _SearchCardState extends State<SearchCard> with TickerProviderStateMixin {
                                   ],
                                 ),
                                 Flexible(
-                                  child: Text(
-                                    widget.notificationText,
-                                    style: TextStyle(
-                                        color: textColor.withOpacity(0.5)),
-                                    softWrap: true,
+                                  child: SizedBox(
+                                    width: 150,
+                                    child: Text(
+                                      widget.notificationText,
+                                      style: TextStyle(
+                                          color: textColor.withOpacity(0.5)),
+                                      softWrap: true,
+                                    ),
                                   ),
                                 ),
                               ],
