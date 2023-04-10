@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../Common/constants.dart';
-import '../Widgets/notification_card.dart';
+import '../Widgets/custom_chat_list_card.dart';
 
 class ChatListScreen extends StatefulWidget {
   const ChatListScreen({super.key});
@@ -16,8 +16,8 @@ class _ChatListScreenState extends State<ChatListScreen> {
   Color userModeTextColor = Colors.white;
   Color vendorModeContainerColor = textFieldColor;
   Color vendorModeTextColor = Colors.black;
-  List<NotificationCard> notificationsList = [
-    NotificationCard(
+  List<ChatListCard> chatsList = [
+    ChatListCard(
       userProfileImage: Icon(
         CupertinoIcons.person_alt,
         color: Colors.black,
@@ -27,7 +27,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
   ];
   void addNotifications() {
     setState(() {
-      notificationsList.add(NotificationCard(
+      chatsList.add(ChatListCard(
         userProfileImage: Icon(
           CupertinoIcons.person_alt,
           color: Colors.black,
@@ -66,10 +66,10 @@ class _ChatListScreenState extends State<ChatListScreen> {
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
               child: ListView.builder(
-                itemCount: notificationsList.length,
+                itemCount: chatsList.length,
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
-                itemBuilder: (context, index) => notificationsList[index],
+                itemBuilder: (context, index) => chatsList[index],
               ),
             ),
           ),
