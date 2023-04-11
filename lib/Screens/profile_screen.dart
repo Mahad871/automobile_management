@@ -384,7 +384,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             password: controller.password.text,
                             file: _image,
                             followers: authMethod.currentUserData!.followers,
-                            following: authMethod.currentUserData!.following,
+                            following: authMethod.currentUserData!.following, deviceToken: [],
                           );
                           authMethod.currentUserData = user;
                           authMethod.updateUser();

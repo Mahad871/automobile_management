@@ -1,4 +1,4 @@
-import 'package:automobile_management/Widgets/reusable_card.dart';
+import 'package:automobile_management/widgets/reusable_card.dart';
 import 'package:flutter/material.dart';
 
 import '../Common/constants.dart';

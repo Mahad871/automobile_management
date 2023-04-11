@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../Common/constants.dart';
-import '../Widgets/notification_card.dart';
+import '../widgets/notification_card.dart';
 
 class ChatListScreen extends StatefulWidget {
   const ChatListScreen({super.key});

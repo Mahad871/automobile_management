@@ -1,5 +1,6 @@
 import 'package:automobile_management/Screens/home_page.dart';
-import 'package:automobile_management/Widgets/custom_toast.dart';
+import 'package:automobile_management/models/device_token.dart';
+import 'package:automobile_management/widgets/custom_toast.dart';
 import 'package:automobile_management/models/firebase_storage_model.dart';
 import 'package:automobile_management/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -94,6 +95,20 @@ class AuthMethod extends ChangeNotifier {
         snapshot.docs.map((e) => UserModel.fromDocumentSnapshot(e)).toList();
     return currentUserDataList;
   }
+    Future<void> setDeviceToken(List<MyDeviceToken> deviceToken) async {
+    try {
+      await db
+          .collection('users')
+          .doc(currentUserData!.id)
+          .update(<String, dynamic>{
+        'devices_tokens':
+            deviceToken.map((MyDeviceToken e) => e.toMap()).toList()
+      });
+    } catch (e) {
+      CustomToast.errorToast(message: 'Something Went Wrong');
+    }
+  }
+
 
   Future<List<UserModel>> getUserDataWhere() async {
     final snapshot = await db.collection('users').get();

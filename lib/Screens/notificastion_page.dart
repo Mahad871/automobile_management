@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../Common/constants.dart';
-import '../Widgets/notification_card.dart';
+import '../widgets/notification_card.dart';
 
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({super.key});

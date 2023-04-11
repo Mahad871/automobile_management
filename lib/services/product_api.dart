@@ -1,4 +1,4 @@
-import 'package:automobile_management/Widgets/custom_toast.dart';
+import 'package:automobile_management/widgets/custom_toast.dart';
 import 'package:automobile_management/models/product_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';

@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:automobile_management/models/device_token.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
@@ -8,9 +9,11 @@ class UserModel {
   final String username;
   final String email;
   final String password;
+  final List<MyDeviceToken>? deviceToken;
   final List<dynamic> followers;
   final List<dynamic> following;
   final bool isVendor;
+  final bool isOnline;
   final Uint8List? file;
   late int noOfFollowers;
   late int noOfFollowing;
@@ -21,9 +24,11 @@ class UserModel {
       required this.username,
       required this.email,
       required this.isVendor,
+      this.isOnline = true,
       required this.password,
       required this.followers,
       required this.following,
+      required this.deviceToken,
       this.noOfFollowers = 0,
       this.noOfFollowing = 0,
       this.file});
@@ -34,24 +39,53 @@ class UserModel {
       "username": username,
       "email": email,
       "isVendor": isVendor,
+      "isOnline": isOnline,
       "password": password,
       // "img": file,
       "photoUrl": photoUrl,
       "followers": followers,
       "following": following,
+      "deviceToken": deviceToken,
       "noOfFollowers": noOfFollowers,
       "noOfFollowing": noOfFollowing
     };
   }
 
+  factory UserModel.fromMap(Map<String, dynamic> map) {
+    return UserModel(
+      id: map['uid'] ?? '',
+      password: map['password'] ?? '',
+      username: map['username'] ?? '',
+      email: map['email'] ?? '',
+      deviceToken: map['deviceToken'] ?? '',
+      isVendor: map['isVendor'] ?? false,
+      isOnline: map['isOnline'] ?? true,
+      // file: map['img'] ?? '',
+      photoUrl: map['photoUrl'] ?? '',
+      followers: map['followers'] ?? [],
+      following: map['following'] ?? [],
+      noOfFollowing: map['noOfFollowing'] ?? 0,
+      noOfFollowers: map['noOfFollowers'] ?? 0,
+    );
+  }
+
   factory UserModel.fromDocumentSnapshot(
       DocumentSnapshot<Map<String, dynamic>> doc) {
+    List<MyDeviceToken> dtData = <MyDeviceToken>[];
+
+    if (doc.data()!['devices_tokens'] != null) {
+      doc.data()!['devices_tokens'].forEach((dynamic e) {
+        dtData.add(MyDeviceToken.fromMap(e));
+      });
+    }
     return UserModel(
       id: doc.id,
       password: doc.data()!["password"],
       username: doc.data()!["username"],
       email: doc.data()!["email"],
       isVendor: doc.data()!['isVendor'],
+      isOnline: doc.data()!['isOnline'],
+      deviceToken: dtData,
       // file: doc.data()!['imgUrl'],
       photoUrl: doc.data()!['photoUrl'],
       followers: doc.data()!['followers'],

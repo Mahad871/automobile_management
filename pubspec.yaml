@@ -22,6 +22,12 @@ dependencies:
   cached_network_image: ^3.2.3
   get_storage: ^2.1.1
   geolocator: ^9.0.2
+  flutter_riverpod: ^2.3.4
+  swipe_to: 
+  path_provider: 
+  permission_handler:
+  firebase_messaging:
+  flutter_local_notifications: 13.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

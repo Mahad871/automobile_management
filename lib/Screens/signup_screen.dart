@@ -1,5 +1,5 @@
 import 'package:automobile_management/Screens/signin_screen.dart';
-import 'package:automobile_management/Widgets/custom_toast.dart';
+import 'package:automobile_management/widgets/custom_toast.dart';
 import 'package:automobile_management/models/signup_controller.dart';
 import 'package:automobile_management/models/user_model.dart';
 import 'package:flutter/material.dart';
@@ -298,6 +298,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       password: controller.password.text.trim(),
       followers: [],
       following: [],
+      deviceToken: [],
     );
 
     status = await SignUpController().crateUser(context, user);

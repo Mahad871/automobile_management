@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:automobile_management/Common/constants.dart';
 import 'package:automobile_management/Screens/chat_list_page.dart';
 import 'package:automobile_management/Screens/notificastion_page.dart';
-import 'package:automobile_management/Widgets/profile_card.dart';
+import 'package:automobile_management/widgets/profile_card.dart';
 import 'package:automobile_management/models/auth_method.dart';
 import 'package:automobile_management/providers/base_view.dart';
 import 'package:automobile_management/services/product_api.dart';
@@ -11,7 +11,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import '../Widgets/search_card.dart';
+import '../widgets/search_card.dart';
 import '../dependency_injection/injection_container.dart';
 import '../models/SearchController.dart';
 

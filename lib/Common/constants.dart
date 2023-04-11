@@ -16,6 +16,10 @@ const mobileChatBoxColor = Color.fromRGBO(31, 44, 52, 1);
 const greyColor = Colors.grey;
 const blackColor = Colors.black;
 
+
+   String get firebaseServerID =>
+      'AAAAQMJ0r5c:APA91bH5D1WnjJYGwk3GMTVy7or-Wh3N5QQRYqhIoDnQEMBJ5EyiMU_qTcR-cFfTllm518sUZ__IePwsEmC5UZOeXo9WzznjlNLKhfv8kNPt4YG0HJ_1DY1Nq6xYlGzNScdsn3hoTW5h';
+
 const kSendButtonTextStyle = TextStyle(
   color: Colors.lightBlueAccent,
   fontWeight: FontWeight.bold,

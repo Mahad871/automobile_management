@@ -1,5 +1,7 @@
 import 'package:automobile_management/Screens/home_page.dart';
 import 'package:automobile_management/models/auth_method.dart';
+import 'package:automobile_management/services/notification_service.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'Common/constants.dart';
@@ -8,10 +10,17 @@ import 'package:firebase_core/firebase_core.dart';
 
 import 'dependency_injection/injection_container.dart';
 
+Future<void> _firebaseMessBackgroundHand(RemoteMessage message) async {
+  RemoteNotification? notification = message.notification;
+  if (notification == null) return;
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await GetStorage.init();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessBackgroundHand);
+  NotificationsServices.init();
   await init();
   runApp(MainApp());
 }
