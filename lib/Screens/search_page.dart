@@ -260,7 +260,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                     username: snapshot.data!.docs[index]
                                         ['product_name'],
                                     notificationText: snapshot.data!.docs[index]
-                                        ['created_by_uid'],
+                                        ['description'],
                                     circularImageUrl: snapshot.data!.docs[index]
                                         ['image_url'],
                                   ),
