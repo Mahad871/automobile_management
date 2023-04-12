@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import 'package:automobile_management/Common/constants.dart';
-import 'package:automobile_management/Screens/chat/controller/chat_controller.dart';
-import 'package:automobile_management/Screens/chat/screens/mobile_chat_screen.dart';
+import 'package:automobile_management/Screens/chat_dead/controller/chat_controller.dart';
+import 'package:automobile_management/Screens/chat_dead/screens/mobile_chat_screen.dart';
 import 'package:automobile_management/models/chat_contact.dart';
 import 'package:automobile_management/models/user_model.dart';
 import 'package:automobile_management/utilities/utils.dart';

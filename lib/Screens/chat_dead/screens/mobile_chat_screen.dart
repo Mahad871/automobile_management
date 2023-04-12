@@ -1,6 +1,6 @@
 import 'package:automobile_management/Common/constants.dart';
-import 'package:automobile_management/Screens/chat/widgets/bottom_chat_field.dart';
-import 'package:automobile_management/Screens/chat/widgets/chat_list.dart';
+import 'package:automobile_management/Screens/chat_dead/widgets/bottom_chat_field.dart';
+import 'package:automobile_management/Screens/chat_dead/widgets/chat_list.dart';
 import 'package:automobile_management/models/user_model.dart';
 import 'package:automobile_management/providers/auth_controller.dart';
 import 'package:automobile_management/widgets/loader.dart';

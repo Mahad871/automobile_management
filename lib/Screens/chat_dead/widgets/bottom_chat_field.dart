@@ -1,9 +1,9 @@
 import 'dart:io';
 // import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 import 'package:automobile_management/Common/constants.dart';
-import 'package:automobile_management/Screens/chat/controller/chat_controller.dart';
-import 'package:automobile_management/Screens/chat/widgets/data.dart';
-import 'package:automobile_management/Screens/chat/widgets/message_reply_preview.dart';
+import 'package:automobile_management/Screens/chat_dead/controller/chat_controller.dart';
+import 'package:automobile_management/Screens/chat_dead/widgets/data.dart';
+import 'package:automobile_management/Screens/chat_dead/widgets/message_reply_preview.dart';
 import 'package:automobile_management/enums/message_enum.dart';
 import 'package:automobile_management/providers/message_reply_provider.dart';
 import 'package:automobile_management/utilities/utils.dart';

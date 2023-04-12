@@ -1,5 +1,5 @@
 import 'package:automobile_management/Common/constants.dart';
-import 'package:automobile_management/Screens/chat/widgets/display_text_image_gif.dart';
+import 'package:automobile_management/Screens/chat_dead/widgets/display_text_image_gif.dart';
 import 'package:automobile_management/enums/message_enum.dart';
 import 'package:flutter/material.dart';
 import 'package:swipe_to/swipe_to.dart';

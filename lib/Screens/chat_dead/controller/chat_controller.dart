@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:automobile_management/Screens/chat/repositories/chat_repository.dart';
+import 'package:automobile_management/Screens/chat_dead/repositories/chat_repository.dart';
 import 'package:automobile_management/enums/message_enum.dart';
 import 'package:automobile_management/models/chat_contact.dart';
 import 'package:automobile_management/models/message.dart';
