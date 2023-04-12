@@ -112,6 +112,6 @@ class UserProvider extends ChangeNotifier {
         email: 'null',
         photoUrl: 'null',
         id: 'null',
-        username: 'null', following: [], isVendor: false, followers: [], password: '',
+        username: 'null', following: [], isVendor: false, followers: [], password: '', latitude: 0.0, longitude: 0.0,
       );
 }

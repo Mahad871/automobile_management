@@ -1,4 +1,5 @@
 import 'package:automobile_management/Screens/signin_screen.dart';
+import 'package:automobile_management/services/location_api.dart';
 import 'package:automobile_management/widgets/custom_toast.dart';
 import 'package:automobile_management/models/signup_controller.dart';
 import 'package:automobile_management/models/user_model.dart';
@@ -20,6 +21,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Color userModeTextColor = Colors.white;
   Color vendorModeContainerColor = textFieldColor;
   Color vendorModeTextColor = Colors.black;
+
+  LocationApi locationApi = sl.get<LocationApi>();
 
   @override
   Widget build(BuildContext context) {
@@ -299,6 +302,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
       followers: [],
       following: [],
       deviceToken: [],
+      longitude: locationApi.currentPosistion.longitude,
+      latitude: locationApi.currentPosistion.latitude,
     );
 
     status = await SignUpController().crateUser(context, user);

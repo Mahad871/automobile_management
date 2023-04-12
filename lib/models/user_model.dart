@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-
 import 'package:automobile_management/models/device_token.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -17,6 +16,8 @@ class UserModel {
   final Uint8List? file;
   late int noOfFollowers;
   late int noOfFollowing;
+  final double longitude;
+  final double latitude;
 
   UserModel(
       {this.id,
@@ -29,6 +30,8 @@ class UserModel {
       required this.followers,
       required this.following,
       required this.deviceToken,
+      required this.longitude,
+      required this.latitude,
       this.noOfFollowers = 0,
       this.noOfFollowing = 0,
       this.file});
@@ -47,7 +50,9 @@ class UserModel {
       "following": following,
       "deviceToken": deviceToken,
       "noOfFollowers": noOfFollowers,
-      "noOfFollowing": noOfFollowing
+      "noOfFollowing": noOfFollowing,
+      "longitude": longitude,
+      "latitude": latitude
     };
   }
 
@@ -66,6 +71,8 @@ class UserModel {
       following: map['following'] ?? [],
       noOfFollowing: map['noOfFollowing'] ?? 0,
       noOfFollowers: map['noOfFollowers'] ?? 0,
+      longitude: map['longitude'] ?? 0,
+      latitude: map['latitude'] ?? 0,
     );
   }
 
@@ -92,6 +99,8 @@ class UserModel {
       following: doc.data()!['following'],
       noOfFollowing: doc.data()!['noOfFollowing'],
       noOfFollowers: doc.data()!['noOfFollowers'],
+      longitude: doc.data()?['longitude'],
+      latitude: doc.data()?['latitude'],
     );
   }
 }

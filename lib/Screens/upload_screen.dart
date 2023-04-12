@@ -13,6 +13,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:automobile_management/dependency_injection/injection_container.dart';
 
 import '../Common/constants.dart';
+import '../services/location_api.dart';
 
 class UploadScreen extends StatefulWidget {
   const UploadScreen({super.key});
@@ -28,6 +29,7 @@ class _UploadScreenState extends State<UploadScreen> {
   final TextEditingController quantity = TextEditingController();
   final TextEditingController category = TextEditingController();
   final TextEditingController subcategory = TextEditingController();
+  final LocationApi locationApi  = sl.get<LocationApi>();
   Uint8List? _image;
   bool _isloading = false;
 
@@ -68,6 +70,8 @@ class _UploadScreenState extends State<UploadScreen> {
           createdByUID: authMethod.currentUserData!.id.toString(),
           imageurl: imageurl,
           userImageurl: authMethod.currentUserData?.photoUrl,
+          longitude: locationApi.currentPosistion.longitude,
+          latitude: locationApi.currentPosistion.latitude,
         );
         bool temp = await ProductApi().add(product);
         if (temp) {

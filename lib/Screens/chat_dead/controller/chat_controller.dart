@@ -9,6 +9,8 @@ import 'package:automobile_management/providers/message_reply_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../repositories/chat_repository.dart';
+
 final chatControllerProvider = Provider((ref) {
   final chatRepository = ref.watch(chatRepositoryProvider);
   return ChatController(

@@ -1,7 +1,6 @@
 import 'package:automobile_management/widgets/reusable_card.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:get_storage/get_storage.dart';
 
 import '../Common/constants.dart';
 
@@ -38,9 +37,9 @@ class SearchCard extends StatefulWidget {
 }
 
 class _SearchCardState extends State<SearchCard> with TickerProviderStateMixin {
-  final Widget topIcon = Icon(Icons.pause);
+  final Widget topIcon = const Icon(Icons.pause);
 
-  final Widget cardIcon = Icon(Icons.arrow_forward);
+  final Widget cardIcon = const Icon(Icons.arrow_forward);
   late AnimationController controller;
   @override
   @override
@@ -145,12 +144,12 @@ class _SearchCardState extends State<SearchCard> with TickerProviderStateMixin {
                                   const EdgeInsets.symmetric(horizontal: 8.0),
                               child: SizedBox(
                                 child: ElevatedButton(
-                                    onPressed: () {},
+                                    onPressed: widget.onCardIconPressed,
                                     style: ElevatedButton.styleFrom(
                                       shape: RoundedRectangleBorder(
                                         borderRadius: BorderRadius.circular(8),
                                       ),
-                                      padding: EdgeInsets.all(10),
+                                      padding: const EdgeInsets.all(10),
                                       backgroundColor: textFieldColor,
                                       foregroundColor: textColor,
                                       elevation: 5,

@@ -5,7 +5,7 @@ import 'package:automobile_management/enums/notification_enum.dart';
 class MyNotification {
   MyNotification({
     required this.notificationID,
-    required this.postID,
+    required this.productID,
     required this.fromUID,
     required this.toUID,
     required this.type,
@@ -15,7 +15,7 @@ class MyNotification {
   });
 
   final String notificationID;
-  final String postID;
+  final String productID;
   final String fromUID;
   final String toUID;
   final NotificationType type;
@@ -26,7 +26,7 @@ class MyNotification {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'notification_id': notificationID,
-      'post_id': postID,
+      'product_id': productID,
       'from_uid': fromUID,
       'to_uid': toUID,
       'type': type.json,
@@ -40,7 +40,7 @@ class MyNotification {
   factory MyNotification.fromDoc(DocumentSnapshot<Map<String, dynamic>> doc) {
     return MyNotification(
       notificationID: doc.data()?['notification_id'] ?? '',
-      postID: doc.data()?['post_id'] ?? '',
+      productID: doc.data()?['product_id'] ?? '',
       fromUID: doc.data()?['from_uid'] ?? '',
       toUID: doc.data()?['to_uid'] ?? '',
       type: NotificationTypeConvertor.toEnum(

@@ -25,7 +25,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
       ),
     ),
   ];
-  void addNotifications() {
+  void addChat() {
     setState(() {
       chatsList.add(ChatListCard(
         userProfileImage: Icon(
@@ -46,7 +46,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
               color: textColor,
             ),
             onPressed: () {
-              addNotifications();
+              addChat();
             }),
         backgroundColor: backgroundColor,
         body: SafeArea(

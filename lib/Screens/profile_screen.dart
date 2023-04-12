@@ -82,6 +82,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: Padding(
         padding: const EdgeInsets.all(30.0),
         child: ListView(
+          physics: BouncingScrollPhysics(),
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -384,7 +385,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             password: controller.password.text,
                             file: _image,
                             followers: authMethod.currentUserData!.followers,
-                            following: authMethod.currentUserData!.following, deviceToken: [],
+                            following: authMethod.currentUserData!.following,
+                            deviceToken: [],
+                            latitude: authMethod.currentUserData!.latitude,
+                            longitude: authMethod.currentUserData!.longitude,
                           );
                           authMethod.currentUserData = user;
                           authMethod.updateUser();
