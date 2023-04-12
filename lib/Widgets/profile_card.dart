@@ -51,12 +51,13 @@ class ProfileCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10),
                   child: Container(
                       width: double.maxFinite,
-                      child: userProfileImage!,
                       decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10))),
+                          borderRadius: BorderRadius.circular(10)),
+                      child: userProfileImage!),
                 ),
               ),
               Flexible(
+                flex: 2,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -66,10 +67,14 @@ class ProfileCard extends StatelessWidget {
                       children: [
                         Padding(
                           padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            username,
-                            style: const TextStyle(
-                                fontWeight: FontWeight.bold, fontSize: 15),
+                          child: SizedBox(
+                            width: 100,
+                            child: Text(
+                              username,
+                              style: const TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 15),
+                              softWrap: true,
+                            ),
                           ),
                         ),
                         Padding(

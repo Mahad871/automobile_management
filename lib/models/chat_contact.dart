@@ -1,3 +1,4 @@
+
 class ChatContact {
   final String name;
   final String profilePic;

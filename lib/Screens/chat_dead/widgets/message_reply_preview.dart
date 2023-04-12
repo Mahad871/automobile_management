@@ -1,4 +1,4 @@
-import 'package:automobile_management/Screens/chat/widgets/display_text_image_gif.dart';
+import 'package:automobile_management/Screens/chat_dead/widgets/display_text_image_gif.dart';
 import 'package:automobile_management/providers/message_reply_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

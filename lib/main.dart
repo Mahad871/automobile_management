@@ -1,5 +1,6 @@
 import 'package:automobile_management/Screens/home_page.dart';
 import 'package:automobile_management/models/auth_method.dart';
+import 'package:automobile_management/services/location_api.dart';
 import 'package:automobile_management/services/notification_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
@@ -22,6 +23,7 @@ void main() async {
   FirebaseMessaging.onBackgroundMessage(_firebaseMessBackgroundHand);
   NotificationsServices.init();
   await init();
+  await sl.get<LocationApi>().determinePosition();
   runApp(MainApp());
 }
 

@@ -8,12 +8,12 @@ import 'package:automobile_management/models/my_notification.dart';
 // import '/widgets/custom_widgets/custom_toast.dart';
 // import 'auth_methods.dart';
 
-
 class NotificationAPI {
   static final FirebaseFirestore _instance = FirebaseFirestore.instance;
   static const String _collection = 'notifications';
+
   sendNotification(MyNotification value) async {
-          //TODO: fix it
+    //TODO: fix it
     // if (value.toUID == AuthMethods.uid) return;
     await _instance
         .collection(_collection)
@@ -37,7 +37,6 @@ class NotificationAPI {
         notice.add(MyNotification.fromDoc(element));
       }
     } catch (e) {
-     
       CustomToast.errorToast(message: e.toString());
     }
     return notice;

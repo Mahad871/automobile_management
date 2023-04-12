@@ -1,6 +1,8 @@
 import 'package:automobile_management/models/auth_method.dart';
+import 'package:automobile_management/services/location_api.dart';
 import 'package:get_it/get_it.dart';
 
+// import '../Screens/chat/repositories/chat_repository.dart';
 import '../models/SearchController.dart';
 import '../models/firebase_storage_model.dart';
 import '../models/profile_controller.dart';
@@ -35,4 +37,10 @@ init() {
   sl.registerLazySingleton<ProductApi>(
     () => ProductApi(),
   );
+  sl.registerLazySingleton<LocationApi>(
+    () => LocationApi(),
+  );
+  // sl.registerLazySingleton<ChatRepository>(
+  //   () => ChatRepository(),
+  // );
 }

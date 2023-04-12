@@ -14,6 +14,8 @@ class Product {
   final String category;
   final String subCategory;
   final String imageurl;
+  final double longitude;
+  final double latitude;
   Product({
     required this.pid,
     required this.amount,
@@ -26,6 +28,8 @@ class Product {
     required this.subCategory,
     required this.createdByUID,
     required this.imageurl,
+    required this.longitude,
+    required this.latitude,
     this.userImageurl,
   });
 
@@ -42,7 +46,9 @@ class Product {
       'created_by_uid': createdByUID,
       'image_url': imageurl,
       'product_name': productname,
-      "userImageurl": userImageurl
+      "userImageurl": userImageurl,
+      "longitude": longitude,
+      "latitude": latitude,
     };
   }
 
@@ -60,6 +66,8 @@ class Product {
       productname: doc.data()?['product_name'],
       imageurl: doc.data()?['image_url'] ?? '',
       userImageurl: doc.data()?['userImageurl'] ?? '',
+      longitude: doc.data()?['longitude'] ?? 0,
+      latitude: doc.data()?['latitude'] ?? 0,
     );
   }
   factory Product.fromQuerySnapshot(DocumentSnapshot doc) {
@@ -76,6 +84,8 @@ class Product {
       productname: doc['product_name'],
       imageurl: doc['image_url'] ?? '',
       userImageurl: doc['userImageurl'] ?? '',
+      longitude: doc['longitude'] ?? 0,
+      latitude: doc['longitude'] ?? 0,
     );
   }
 }

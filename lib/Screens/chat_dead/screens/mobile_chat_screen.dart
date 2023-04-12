@@ -1,11 +1,14 @@
 import 'package:automobile_management/Common/constants.dart';
-import 'package:automobile_management/Screens/chat/widgets/bottom_chat_field.dart';
-import 'package:automobile_management/Screens/chat/widgets/chat_list.dart';
+import 'package:automobile_management/Screens/chat_dead/widgets/chat_list.dart';
+import 'package:automobile_management/models/auth_method.dart';
 import 'package:automobile_management/models/user_model.dart';
 import 'package:automobile_management/providers/auth_controller.dart';
 import 'package:automobile_management/widgets/loader.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../../dependency_injection/injection_container.dart';
+import '../widgets/bottom_chat_field.dart';
 
 class MobileChatScreen extends ConsumerWidget {
   static const String routeName = '/mobile-chat-screen';
@@ -42,8 +45,8 @@ class MobileChatScreen extends ConsumerWidget {
         backgroundColor: appBarColor,
         title: isGroupChat
             ? Text(name)
-            : StreamBuilder<UserModel>(
-                stream: ref.read(authControllerProvider).userDataById(uid),
+            : FutureBuilder<UserModel>(
+                future: sl.get<AuthMethod>().getUserData(uid),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Loader();

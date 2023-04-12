@@ -24,7 +24,7 @@ class _SignInScreenState extends State<SignInScreen> {
   Color vendorModeTextColor = Colors.black;
   String status = " ";
   GetStorage storage = GetStorage();
-
+  
   @override
   void initState() {
     super.initState();

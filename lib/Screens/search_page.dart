@@ -1,8 +1,10 @@
 import 'dart:async';
 
 import 'package:automobile_management/Common/constants.dart';
+// import 'package:automobile_management/Screens/chat/screens/mobile_chat_screen.dart';
 import 'package:automobile_management/Screens/chat_list_page.dart';
 import 'package:automobile_management/Screens/notificastion_page.dart';
+import 'package:automobile_management/models/user_model.dart';
 import 'package:automobile_management/widgets/profile_card.dart';
 import 'package:automobile_management/models/auth_method.dart';
 import 'package:automobile_management/providers/base_view.dart';
@@ -14,6 +16,7 @@ import 'package:flutter/material.dart';
 import '../widgets/search_card.dart';
 import '../dependency_injection/injection_container.dart';
 import '../models/SearchController.dart';
+// import 'chat/repositories/chat_repository.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key, required this.title});
@@ -263,6 +266,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                         ['description'],
                                     circularImageUrl: snapshot.data!.docs[index]
                                         ['image_url'],
+                                    onCardIconPressed: () => openChatScreen(
+                                        snapshot, index, context),
                                   ),
                                 );
                               },
@@ -343,6 +348,28 @@ class _SearchScreenState extends State<SearchScreen> {
           ],
         ),
       ),
+    );
+  }
+
+  void openChatScreen(AsyncSnapshot<QuerySnapshot<Object?>> snapshot, int index,
+      BuildContext context) {
+    String uploaderID = snapshot.data!.docs[index]['created_by_uid'];
+    UserModel productUser;
+    sl.get<AuthMethod>().recieveUserData(uploaderID).then(
+      (value) {
+        productUser = value;
+        print(productUser.username);
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(
+        //     builder: (context) => MobileChatScreen(
+        //         name: productUser.username,
+        //         uid: productUser.id!,
+        //         isGroupChat: false,
+        //         profilePic: productUser.photoUrl!),
+        //   ),
+        // );
+      },
     );
   }
 

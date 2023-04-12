@@ -3,6 +3,7 @@ import 'package:automobile_management/Screens/profile_screen.dart';
 import 'package:automobile_management/Screens/search_page.dart';
 import 'package:automobile_management/Screens/signin_screen.dart';
 import 'package:automobile_management/Screens/upload_screen.dart';
+import 'package:automobile_management/services/location_api.dart';
 import 'package:automobile_management/widgets/reusable_card.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -12,6 +13,7 @@ import 'package:provider/provider.dart';
 import '../Common/constants.dart';
 import '../dependency_injection/injection_container.dart';
 import '../models/auth_method.dart';
+import 'package:geolocator/geolocator.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -33,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     AuthMethod authMethod = sl.get<AuthMethod>();
-
+    var position = sl.get<LocationApi>().determinePosition();
     var scaffold = Scaffold(
       backgroundColor: backgroundColor,
       body: SafeArea(
@@ -317,7 +319,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 180,
               ),
             ],

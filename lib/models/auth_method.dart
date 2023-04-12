@@ -95,7 +95,8 @@ class AuthMethod extends ChangeNotifier {
         snapshot.docs.map((e) => UserModel.fromDocumentSnapshot(e)).toList();
     return currentUserDataList;
   }
-    Future<void> setDeviceToken(List<MyDeviceToken> deviceToken) async {
+
+  Future<void> setDeviceToken(List<MyDeviceToken> deviceToken) async {
     try {
       await db
           .collection('users')
@@ -109,12 +110,21 @@ class AuthMethod extends ChangeNotifier {
     }
   }
 
-
   Future<List<UserModel>> getUserDataWhere() async {
     final snapshot = await db.collection('users').get();
     List<UserModel> currentUserDataList =
         snapshot.docs.map((e) => UserModel.fromDocumentSnapshot(e)).toList();
     return currentUserDataList;
+  }
+
+  Future<UserModel> recieveUserData(String id) async {
+    final snapshot =
+        await db.collection('users').where('uid', isEqualTo: id).get();
+    UserModel UserData =
+        snapshot.docs.map((e) => UserModel.fromDocumentSnapshot(e)).single;
+    // print(currentUserData!.username.toString());
+    return UserData;
+    notifyListeners();
   }
 
   Future<UserModel> getUserData(String id) async {
@@ -135,13 +145,21 @@ class AuthMethod extends ChangeNotifier {
     return UserData.photoUrl.toString();
   }
 
+  Stream<UserModel> userDatabyUid(String userId) {
+    return db.collection('users').doc(userId).snapshots().map(
+          (event) => UserModel.fromMap(
+            event.data()!,
+          ),
+        );
+  }
+
   followUser({String followerUid = " ", String followingUid = " "}) async {
     if (followerUid == followingUid) {
       return false;
     }
 
     try {
-      UserModel user = await getUserData(followingUid);
+      UserModel user = await recieveUserData(followingUid);
       user.followers.add(followerUid);
       currentUserData?.following.add(followingUid);
       user.noOfFollowers = user.followers.length;
@@ -161,7 +179,7 @@ class AuthMethod extends ChangeNotifier {
 
   unfollowUser({String followerUid = " ", String followingUid = " "}) async {
     try {
-      UserModel user = await getUserData(followingUid);
+      UserModel user = await recieveUserData(followingUid);
       user.followers.remove(followerUid);
       currentUserData?.following.remove(followingUid);
       user.noOfFollowers = user.followers.length;

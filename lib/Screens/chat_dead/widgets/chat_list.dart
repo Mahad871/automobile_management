@@ -1,6 +1,6 @@
-import 'package:automobile_management/Screens/chat/controller/chat_controller.dart';
-import 'package:automobile_management/Screens/chat/widgets/my_message_card.dart';
-import 'package:automobile_management/Screens/chat/widgets/sender_message_card.dart';
+import 'package:automobile_management/Screens/chat_dead/controller/chat_controller.dart';
+import 'package:automobile_management/Screens/chat_dead/widgets/my_message_card.dart';
+import 'package:automobile_management/Screens/chat_dead/widgets/sender_message_card.dart';
 import 'package:automobile_management/enums/message_enum.dart';
 import 'package:automobile_management/models/message.dart';
 import 'package:automobile_management/providers/message_reply_provider.dart';
