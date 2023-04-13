@@ -58,6 +58,14 @@ class ChatAPI {
     });
   }
 
+  Stream<QuerySnapshot<Map<String, dynamic>>> getAllChats() {
+    // Firebase Index need to add
+    // Composite Index
+    // Collection ID -> chat
+    // Field Indexed -> persons Arrays is_group Ascending timestamp Descending
+    return _instance.collection(_collection).snapshots();
+  }
+
   Stream<List<Chat>> groups() {
     // Firebase Index need to add
     // Composite Index

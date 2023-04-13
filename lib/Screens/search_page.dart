@@ -84,7 +84,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         side: const BorderSide(style: BorderStyle.solid)),
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const PersonalChatDashboard(),
+                        builder: (context) => ChatListScreen(),
                       ));
                     },
                     child: const Icon(Icons.chat_rounded)),
@@ -355,8 +355,8 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  Future<void> openChatScreen(AsyncSnapshot<QuerySnapshot<Object?>> snapshot, int index,
-      BuildContext context) async{
+  Future<void> openChatScreen(AsyncSnapshot<QuerySnapshot<Object?>> snapshot,
+      int index, BuildContext context) async {
     String uploaderID = snapshot.data!.docs[index]['created_by_uid'];
     UserModel productUser;
     sl.get<AuthMethod>().recieveUserData(uploaderID).then((value) async {

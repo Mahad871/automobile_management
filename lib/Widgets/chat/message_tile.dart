@@ -53,7 +53,7 @@ class MessageTile extends StatelessWidget {
                     borderRadius: BorderRadius.circular(_borderRadius),
                     boxShadow: <BoxShadow>[
                       BoxShadow(
-                        color: Colors.grey.withOpacity(0.5),
+                        color: Colors.grey.withOpacity(1),
                         spreadRadius: 1,
                         blurRadius: 6,
                         offset: const Offset(1, 1),

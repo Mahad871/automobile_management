@@ -1,3 +1,4 @@
+import 'package:automobile_management/Common/constants.dart';
 import 'package:automobile_management/databases/auth_methods.dart';
 import 'package:automobile_management/databases/chat_api.dart';
 import 'package:automobile_management/models/user_model.dart';
@@ -21,13 +22,14 @@ class PersonalChatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // List<String> chats = [];
-    // chats.add(AuthMethods.uid);
-    // chats.add(chatWith.id!);
-    // ChatAPI().createChat(chat.chatID, chats);
     return SafeArea(
       child: Scaffold(
+        backgroundColor: Colors.white,
         appBar: AppBar(
+          elevation: 0,
+          shadowColor: Colors.white,
+          foregroundColor: textColor,
+          backgroundColor: textFieldColor,
           centerTitle: false,
           title: InkWell(
             onTap: () {
@@ -46,11 +48,14 @@ class PersonalChatScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(chatWith.username ?? 'no name'),
+                      Text(
+                        chatWith.username ?? 'no name',
+                        style: TextStyle(color: textColor),
+                      ),
                       Text(
                         'Tab here to open profile',
                         style: TextStyle(
-                          color: Colors.grey.shade700,
+                          color: Colors.grey,
                           fontSize: 10,
                         ),
                       ),

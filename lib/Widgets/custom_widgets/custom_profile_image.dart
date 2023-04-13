@@ -31,7 +31,7 @@ class CustomProfileImage extends StatelessWidget {
             ),
           )
         : ClipRRect(
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(30),
             child: CachedNetworkImage(
               imageUrl: imageURL,
               width: radius,
