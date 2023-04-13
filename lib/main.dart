@@ -37,7 +37,7 @@ class MainApp extends StatelessWidget {
   Future<bool> checkLoginStatus() async {
     val = null;
     val = _storage.read('user');
-    print("Storage read result: $val");
+    // print("Storage read result: $val");
     // print(val['email']);
     // _storage.erase();
     if (val == null) {
