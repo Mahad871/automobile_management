@@ -13,7 +13,7 @@ class SearchCard extends StatefulWidget {
   final VoidCallback? onTopIconPressed;
   final String time;
   double height = 100;
-  double width = 100;
+  double width = 150;
   double timer;
   bool iscardEnabled = true;
 
@@ -28,7 +28,7 @@ class SearchCard extends StatefulWidget {
     this.onCardIconPressed,
     this.onTopIconPressed,
     this.height = 150,
-    this.width = 100,
+    this.width = 150,
     this.time = "2:30 pm",
   });
 
@@ -128,7 +128,7 @@ class _SearchCardState extends State<SearchCard> with TickerProviderStateMixin {
                                 ),
                                 Flexible(
                                   child: SizedBox(
-                                    width: 150,
+                                    width: 120,
                                     child: Text(
                                       widget.notificationText,
                                       style: TextStyle(

@@ -355,8 +355,8 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  void openChatScreen(AsyncSnapshot<QuerySnapshot<Object?>> snapshot, int index,
-      BuildContext context) {
+  Future<void> openChatScreen(AsyncSnapshot<QuerySnapshot<Object?>> snapshot, int index,
+      BuildContext context) async{
     String uploaderID = snapshot.data!.docs[index]['created_by_uid'];
     UserModel productUser;
     sl.get<AuthMethod>().recieveUserData(uploaderID).then((value) async {
@@ -366,17 +366,18 @@ class _SearchScreenState extends State<SearchScreen> {
       persons.add(productUser.id!);
       persons.add(authMethod.currentUserData!.id!);
 
-      Chat chat = await ChatAPI()
-          .createChat(snapshot.data?.docs[index]['pid'], persons);
-      print(chat.persons.toString());
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) =>
-              PersonalChatScreen(chat: chat, chatWith: productUser),
-        ),
-      );
-    });
+        Chat chat =
+          await  ChatAPI().createChat(snapshot.data?.docs[index]['pid'], persons);
+        print(chat.chatID);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                PersonalChatScreen(chat: chat, chatWith: productUser),
+          ),
+        );
+      },
+    );
   }
 
   String isUserFollowed(

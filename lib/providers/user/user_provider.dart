@@ -4,6 +4,7 @@ import 'package:automobile_management/databases/auth_methods.dart';
 import 'package:automobile_management/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:automobile_management/databases/user_api.dart';
+
 class UserProvider extends ChangeNotifier {
   UserProvider() {
     init();
@@ -66,7 +67,6 @@ class UserProvider extends ChangeNotifier {
   //   await UserAPI().updateProfile(user: _user[index]);
   // }
 
-
   // List<UserModel> usersFromListOfString({required List<String> uidsList}) {
   //   List<UserModel> tempList = <UserModel>[];
   //   for (String element in uidsList) {
@@ -75,7 +75,6 @@ class UserProvider extends ChangeNotifier {
   //   return tempList;
   // }
 
-  
   onSearch(String? value) {
     _searchText = value ?? '';
     notifyListeners();
@@ -108,10 +107,16 @@ class UserProvider extends ChangeNotifier {
   }
 
   static UserModel get _null => UserModel(
-         deviceToken: [],
+        deviceToken: [],
         email: 'null',
         photoUrl: 'null',
         id: 'null',
-        username: 'null', following: [], isVendor: false, followers: [], password: '', latitude: 0.0, longitude: 0.0,
+        username: 'null',
+        following: [],
+        isVendor: false,
+        followers: [],
+        password: '',
+        latitude: 0.0,
+        longitude: 0.0,
       );
 }

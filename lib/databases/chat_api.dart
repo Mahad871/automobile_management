@@ -145,7 +145,7 @@ class ChatAPI {
     return chatExists;
   }
 
-  Future<Chat> createChat(String chatID, List<String> persons) async{
+  Future createChat(String chatID, List<String> persons) async {
     var chatExist = await chatExists(persons);
     if (!chatExist) {
       print("chat does not exist");
