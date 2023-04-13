@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 import 'package:automobile_management/Screens/signup_screen.dart';
+import 'package:automobile_management/providers/profile_controller.dart';
 import 'package:automobile_management/utilities/image_picker.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
@@ -7,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import '../Common/constants.dart';
 import '../dependency_injection/injection_container.dart';
-import '../models/profile_controller.dart';
 import '../models/user_model.dart';
 import 'package:provider/provider.dart';
 

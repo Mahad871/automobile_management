@@ -4,7 +4,11 @@ import 'package:automobile_management/Common/constants.dart';
 // import 'package:automobile_management/Screens/chat/screens/mobile_chat_screen.dart';
 import 'package:automobile_management/Screens/chat_list_page.dart';
 import 'package:automobile_management/Screens/notificastion_page.dart';
+import 'package:automobile_management/databases/chat_api.dart';
+import 'package:automobile_management/models/chat/chat.dart';
 import 'package:automobile_management/models/user_model.dart';
+import 'package:automobile_management/providers/SearchController.dart';
+import 'package:automobile_management/screens/chat_screens/personal_chat_page/personal_chat_screen.dart';
 import 'package:automobile_management/widgets/profile_card.dart';
 import 'package:automobile_management/models/auth_method.dart';
 import 'package:automobile_management/providers/base_view.dart';
@@ -15,7 +19,7 @@ import 'package:flutter/material.dart';
 
 import '../widgets/search_card.dart';
 import '../dependency_injection/injection_container.dart';
-import '../models/SearchController.dart';
+import 'chat_screens/personal_chat_page/personal_chat_dashboard.dart';
 // import 'chat/repositories/chat_repository.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -80,7 +84,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         side: const BorderSide(style: BorderStyle.solid)),
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => const ChatListScreen(),
+                        builder: (context) => const PersonalChatDashboard(),
                       ));
                     },
                     child: const Icon(Icons.chat_rounded)),
@@ -356,19 +360,23 @@ class _SearchScreenState extends State<SearchScreen> {
     String uploaderID = snapshot.data!.docs[index]['created_by_uid'];
     UserModel productUser;
     sl.get<AuthMethod>().recieveUserData(uploaderID).then(
-      (value) {
+      (value) async {
         productUser = value;
-        print(productUser.username);
-        // Navigator.push(
-        //   context,
-        //   MaterialPageRoute(
-        //     builder: (context) => MobileChatScreen(
-        //         name: productUser.username,
-        //         uid: productUser.id!,
-        //         isGroupChat: false,
-        //         profilePic: productUser.photoUrl!),
-        //   ),
-        // );
+
+        List<String> persons = [];
+        persons.add(productUser.id!);
+        persons.add(authMethod.currentUserData!.id!);
+
+        Chat chat =
+            ChatAPI().createChat(snapshot.data?.docs[index]['pid'], persons);
+        print(chat.chatID);
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                PersonalChatScreen(chat: chat, chatWith: productUser),
+          ),
+        );
       },
     );
   }

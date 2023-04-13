@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-
 import 'chat_group_info.dart';
 import 'message.dart';
 
@@ -31,6 +30,19 @@ class Chat {
       'is_group': isGroup,
       'group_info': groupInfo?.toMap(),
       'last_message': lastMessage!.toMap(),
+      'pid': pid,
+      'prod_is_video': prodIsVideo ?? false,
+      'timestamp': timestamp,
+    };
+  }
+
+  toJson() {
+    return {
+      'chat_id': chatID,
+      'persons': persons,
+      'is_group': isGroup,
+      'group_info': groupInfo?.toMap(),
+      'last_message': lastMessage?.toMap(),
       'pid': pid,
       'prod_is_video': prodIsVideo ?? false,
       'timestamp': timestamp,

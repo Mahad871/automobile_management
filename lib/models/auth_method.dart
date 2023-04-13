@@ -5,8 +5,11 @@ import 'package:automobile_management/models/firebase_storage_model.dart';
 import 'package:automobile_management/models/user_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
+
+import '../databases/user_api.dart';
 
 class AuthMethod extends ChangeNotifier {
   final db = FirebaseFirestore.instance;
@@ -28,6 +31,50 @@ class AuthMethod extends ChangeNotifier {
     }
     notifyListeners();
     return true;
+  }
+
+  Future<int> verifyOTP(String verificationId, String otp) async {
+    try {
+      PhoneAuthCredential phoneAuthCredential = PhoneAuthProvider.credential(
+          verificationId: verificationId, smsCode: otp);
+      final UserCredential authCredential =
+          await auth.signInWithCredential(phoneAuthCredential);
+
+      if (authCredential.user != null) {
+        final UserModel? userModel =
+            await UserAPI().user(uid: authCredential.user!.uid);
+        if (UserModel == null) return 0; // User is New on App
+        return 1; // User Already Exist NO new info needed
+      }
+      return -1; // ERROR while Entering OTP
+    } catch (ex) {
+      CustomToast.errorToast(message: ex.toString());
+      return -1;
+    }
+  }
+
+  Future<void> deleteAccount() async {
+    await FirebaseFirestore.instance
+        .collection('users')
+        .doc(currentUserData!.id)
+        .delete();
+    final QuerySnapshot<Map<String, dynamic>> products = await FirebaseFirestore
+        .instance
+        .collection('products')
+        .where('uid', isEqualTo: currentUserData!.id)
+        .get();
+    if (products.docs.isNotEmpty) {
+      for (DocumentSnapshot<Map<String, dynamic>> doc in products.docs) {
+        await FirebaseFirestore.instance
+            .collection('products')
+            .doc(doc.data()?['pid'])
+            .delete();
+      }
+      await FirebaseStorage.instance
+          .ref('products/${currentUserData?.id}')
+          .delete();
+    }
+    await auth.currentUser!.delete();
   }
 
   Future<String> signinUser(

@@ -1,7 +1,6 @@
 import 'package:automobile_management/enums/notification_enum.dart';
 import 'package:automobile_management/widgets/custom_toast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:automobile_management/models/SearchController.dart';
 import 'package:automobile_management/models/my_notification.dart';
 // import '../enums/notification_enum.dart';
 // import '../models/mynotification.dart';

@@ -1,7 +1,7 @@
 import 'package:automobile_management/Screens/signin_screen.dart';
+import 'package:automobile_management/providers/signup_controller.dart';
 import 'package:automobile_management/services/location_api.dart';
 import 'package:automobile_management/widgets/custom_toast.dart';
-import 'package:automobile_management/models/signup_controller.dart';
 import 'package:automobile_management/models/user_model.dart';
 import 'package:flutter/material.dart';
 import '../Common/constants.dart';

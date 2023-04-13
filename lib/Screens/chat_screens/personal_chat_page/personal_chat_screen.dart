@@ -1,3 +1,4 @@
+import 'package:automobile_management/databases/auth_methods.dart';
 import 'package:automobile_management/databases/chat_api.dart';
 import 'package:automobile_management/models/user_model.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,10 @@ class PersonalChatScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // List<String> chats = [];
+    // chats.add(AuthMethods.uid);
+    // chats.add(chatWith.id!);
+    // ChatAPI().createChat(chat.chatID, chats);
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
@@ -41,7 +46,7 @@ class PersonalChatScreen extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: <Widget>[
-                      Text(chatWith.photoUrl ?? 'no name'),
+                      Text(chatWith.username ?? 'no name'),
                       Text(
                         'Tab here to open profile',
                         style: TextStyle(

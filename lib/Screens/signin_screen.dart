@@ -1,13 +1,13 @@
 import 'package:automobile_management/Screens/forget_password_screen.dart';
 import 'package:automobile_management/Screens/home_page.dart';
 import 'package:automobile_management/Screens/signup_screen.dart';
+import 'package:automobile_management/providers/signin_controller.dart';
 import 'package:automobile_management/widgets/custom_toast.dart';
 import 'package:automobile_management/models/auth_method.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import '../Common/constants.dart';
 import '../dependency_injection/injection_container.dart';
-import '../models/signin_controller.dart';
 
 class SignInScreen extends StatefulWidget {
   const SignInScreen({super.key});
