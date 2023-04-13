@@ -359,26 +359,24 @@ class _SearchScreenState extends State<SearchScreen> {
       BuildContext context) {
     String uploaderID = snapshot.data!.docs[index]['created_by_uid'];
     UserModel productUser;
-    sl.get<AuthMethod>().recieveUserData(uploaderID).then(
-      (value) async {
-        productUser = value;
+    sl.get<AuthMethod>().recieveUserData(uploaderID).then((value) async {
+      productUser = value;
 
-        List<String> persons = [];
-        persons.add(productUser.id!);
-        persons.add(authMethod.currentUserData!.id!);
+      List<String> persons = [];
+      persons.add(productUser.id!);
+      persons.add(authMethod.currentUserData!.id!);
 
-        Chat chat =
-            ChatAPI().createChat(snapshot.data?.docs[index]['pid'], persons);
-        print(chat.chatID);
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>
-                PersonalChatScreen(chat: chat, chatWith: productUser),
-          ),
-        );
-      },
-    );
+      Chat chat = await ChatAPI()
+          .createChat(snapshot.data?.docs[index]['pid'], persons);
+      print(chat.persons.toString());
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+              PersonalChatScreen(chat: chat, chatWith: productUser),
+        ),
+      );
+    });
   }
 
   String isUserFollowed(
@@ -389,16 +387,16 @@ class _SearchScreenState extends State<SearchScreen> {
         : "Follow";
   }
 
-  getImage(AsyncSnapshot<QuerySnapshot<Object?>> snapshot, int index) async {
-    String uid = snapshot.data!.docs[index]['created_by_uid'];
-    String ans = "none";
-    print('uid ' + uid);
+  // getImage(AsyncSnapshot<QuerySnapshot<Object?>> snapshot, int index) async {
+  //   String uid = snapshot.data!.docs[index]['created_by_uid'];
+  //   String ans = "none";
+  //   print('uid ' + uid);
 
-    DocumentSnapshot snapshott =
-        await FirebaseFirestore.instance.collection('users').doc(uid).get();
-    Map<String, dynamic> data = snapshott.data() as Map<String, dynamic>;
-    String result = data.toString();
-    print(result.toString());
-    return result;
-  }
+  //   DocumentSnapshot snapshott =
+  //       await FirebaseFirestore.instance.collection('users').doc(uid).get();
+  //   Map<String, dynamic> data = snapshott.data() as Map<String, dynamic>;
+  //   String result = data.toString();
+  //   print(result.toString());
+  //   return result;
+  // }
 }

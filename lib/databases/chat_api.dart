@@ -145,7 +145,7 @@ class ChatAPI {
     return chatExists;
   }
 
-   createChat(String chatID, List<String> persons) async{
+  Future<Chat> createChat(String chatID, List<String> persons) async{
     var chatExist = await chatExists(persons);
     if (!chatExist) {
       print("chat does not exist");
@@ -156,11 +156,11 @@ class ChatAPI {
           .set(chat.toJson())
           .whenComplete(() => chat);
 
-      // return chat;
+      return chat;
     }
     print("chat exists");
 
-    // return Chat(chatID: '-1', persons: persons);
+    return Chat(chatID: '-1', persons: persons);
   }
 
   Future<String?> uploadAttachment({
