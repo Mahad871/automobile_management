@@ -366,18 +366,17 @@ class _SearchScreenState extends State<SearchScreen> {
       persons.add(productUser.id!);
       persons.add(authMethod.currentUserData!.id!);
 
-        Chat chat =
-          await  ChatAPI().createChat(snapshot.data?.docs[index]['pid'], persons);
-        print(chat.chatID);
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) =>
-                PersonalChatScreen(chat: chat, chatWith: productUser),
-          ),
-        );
-      },
-    );
+      Chat chat = await ChatAPI().createChat(
+          snapshot.data?.docs[index]['pid'] + authMethod.currentUserData?.id,
+          persons);
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+              PersonalChatScreen(chat: chat, chatWith: productUser),
+        ),
+      );
+    });
   }
 
   String isUserFollowed(
