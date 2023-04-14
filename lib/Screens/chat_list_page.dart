@@ -88,10 +88,10 @@ class _ChatListScreenState extends State<ChatListScreen> {
                       List<UserModel> listUsers = sl
                           .get<UserProvider>()
                           .usersFromListOfString(uidsList: participants);
-                      var lastMessage =
-                          snapshot.data!.docs[index]["last_message"]['text'];
-                      int lastTime = snapshot.data!.docs[index]["last_message"]
-                          ['timestamp'];
+                      var lastMessageDetails =
+                          snapshot.data!.docs[index]["last_message"];
+                      // print(lastMessageDetails['text']);
+
                       Chat currentChat = Chat(
                           isGroup: false,
                           chatID: snapshot.data!.docs[index]["chat_id"],
@@ -117,8 +117,13 @@ class _ChatListScreenState extends State<ChatListScreen> {
                             ),
                           ),
                         ),
-                        time: TimeDateFunctions.timeInDigits(lastTime) ?? "",
-                        lastMessageText: lastMessage.toString() ?? "",
+                        time: lastMessageDetails != null
+                            ? TimeDateFunctions.timeInDigits(
+                                lastMessageDetails['timestamp'])
+                            : "",
+                        lastMessageText: lastMessageDetails != null
+                            ? lastMessageDetails['text']
+                            : "",
                         username: listUsers[0].id !=
                                 sl.get<AuthMethod>().currentUserData?.id
                             ? listUsers[0].username
