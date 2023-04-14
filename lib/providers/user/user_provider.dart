@@ -67,13 +67,13 @@ class UserProvider extends ChangeNotifier {
   //   await UserAPI().updateProfile(user: _user[index]);
   // }
 
-  // List<UserModel> usersFromListOfString({required List<String> uidsList}) {
-  //   List<UserModel> tempList = <UserModel>[];
-  //   for (String element in uidsList) {
-  //     tempList.add(_user[_indexOf(element)]);
-  //   }
-  //   return tempList;
-  // }
+  List<UserModel> usersFromListOfString({required List<String> uidsList}) {
+    List<UserModel> tempList = <UserModel>[];
+    for (String element in uidsList) {
+      tempList.add(_user[_indexOf(element)]);
+    }
+    return tempList;
+  }
 
   onSearch(String? value) {
     _searchText = value ?? '';

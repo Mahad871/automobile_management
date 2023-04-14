@@ -270,7 +270,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                         ['description'],
                                     circularImageUrl: snapshot.data!.docs[index]
                                         ['image_url'],
-                                    onCardIconPressed: () => openChatScreen(
+                                    onCardIconPressed: () => createChat(
                                         snapshot, index, context),
                                   ),
                                 );
@@ -355,7 +355,7 @@ class _SearchScreenState extends State<SearchScreen> {
     );
   }
 
-  Future<void> openChatScreen(AsyncSnapshot<QuerySnapshot<Object?>> snapshot,
+  Future<void> createChat(AsyncSnapshot<QuerySnapshot<Object?>> snapshot,
       int index, BuildContext context) async {
     String uploaderID = snapshot.data!.docs[index]['created_by_uid'];
     UserModel productUser;
@@ -378,6 +378,8 @@ class _SearchScreenState extends State<SearchScreen> {
       );
     });
   }
+
+  
 
   String isUserFollowed(
       AsyncSnapshot<QuerySnapshot<Object?>> snapshot, int index) {

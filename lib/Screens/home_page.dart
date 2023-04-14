@@ -3,6 +3,7 @@ import 'package:automobile_management/Screens/profile_screen.dart';
 import 'package:automobile_management/Screens/search_page.dart';
 import 'package:automobile_management/Screens/signin_screen.dart';
 import 'package:automobile_management/Screens/upload_screen.dart';
+import 'package:automobile_management/providers/user/user_provider.dart';
 import 'package:automobile_management/services/location_api.dart';
 import 'package:automobile_management/widgets/reusable_card.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -36,6 +37,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     AuthMethod authMethod = sl.get<AuthMethod>();
     var position = sl.get<LocationApi>().determinePosition();
+    sl.get<UserProvider>().init();
     var scaffold = Scaffold(
       backgroundColor: backgroundColor,
       body: SafeArea(

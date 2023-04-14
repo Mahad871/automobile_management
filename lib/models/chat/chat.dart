@@ -79,4 +79,6 @@ class Chat {
       timestamp: map['timestamp'] ?? 0,
     );
   }
+
+  
 }

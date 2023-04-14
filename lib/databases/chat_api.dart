@@ -63,7 +63,10 @@ class ChatAPI {
     // Composite Index
     // Collection ID -> chat
     // Field Indexed -> persons Arrays is_group Ascending timestamp Descending
-    return _instance.collection(_collection).snapshots();
+    return _instance
+        .collection(_collection)
+        .where("persons", arrayContains: authMethod.currentUserData?.id)
+        .snapshots();
   }
 
   Stream<List<Chat>> groups() {
@@ -73,7 +76,7 @@ class ChatAPI {
     // Field Indexed -> persons Arrays is_group Descending timestamp Descending
     return _instance
         .collection(_collection)
-        .where('persons', arrayContains: authMethod.currentUserData?.id)
+        .where('persons', arrayContains: authMethod.currentUserData!.id)
         .where('is_group', isEqualTo: true)
         .orderBy('timestamp', descending: true)
         .snapshots()
@@ -146,6 +149,9 @@ class ChatAPI {
     StreamBuilder(
         builder: (context, snapshot) {
           print(snapshot.data?.asMap());
+          if (snapshot.hasData) {
+            chatExists = true;
+          }
           return Text('data');
         },
         stream: chatsList);

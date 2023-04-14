@@ -1,4 +1,10 @@
+import 'package:automobile_management/Screens/chat_screens/personal_chat_page/personal_chat_dashboard.dart';
+import 'package:automobile_management/Screens/chat_screens/personal_chat_page/personal_chat_screen.dart';
 import 'package:automobile_management/databases/chat_api.dart';
+import 'package:automobile_management/dependency_injection/injection_container.dart';
+import 'package:automobile_management/models/chat/chat.dart';
+import 'package:automobile_management/models/user_model.dart';
+import 'package:automobile_management/providers/user/user_provider.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -75,6 +81,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Text('Loading');
                   }
+                  // List<Chat> chatsList = [];
                   return ListView.builder(
                     itemCount: snapshot.data?.docs.length,
                     scrollDirection: Axis.vertical,
@@ -87,7 +94,34 @@ class _ChatListScreenState extends State<ChatListScreen> {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return const Text('Loading');
                       }
-                      return ListTile(title: ChatListCard());
+
+                      print(snapshot.data!.docs[index]["persons"]);
+                      List<String> participants = [];
+                      participants.add(
+                          snapshot.data!.docs[index]["persons"][0].toString());
+                      participants.add(
+                          snapshot.data!.docs[index]["persons"][1].toString());
+                      List<UserModel> listUsers = sl
+                          .get<UserProvider>()
+                          .usersFromListOfString(uidsList: participants);
+                      Chat currentChat = Chat(
+                          // lastMessage: snapshot.data!.docs[index]
+                          //     ["last_message"],
+                          chatID: snapshot.data!.docs[index]["chat_id"],
+                          persons: participants);
+                      participants.clear();
+                      return ListTile(
+                          title: ChatListCard(
+                        username: listUsers[0].username,
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => PersonalChatScreen(
+                                    chat: currentChat, chatWith: listUsers[0]),
+                              ));
+                        },
+                      ));
                     },
                   );
                 }),
