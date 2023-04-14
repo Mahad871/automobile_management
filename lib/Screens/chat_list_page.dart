@@ -2,6 +2,7 @@ import 'package:automobile_management/Screens/chat_screens/personal_chat_page/pe
 import 'package:automobile_management/Screens/chat_screens/personal_chat_page/personal_chat_screen.dart';
 import 'package:automobile_management/databases/chat_api.dart';
 import 'package:automobile_management/dependency_injection/injection_container.dart';
+import 'package:automobile_management/function/time_date_functions.dart';
 import 'package:automobile_management/models/chat/chat.dart';
 import 'package:automobile_management/models/user_model.dart';
 import 'package:automobile_management/providers/user/user_provider.dart';
@@ -33,29 +34,10 @@ class _ChatListScreenState extends State<ChatListScreen> {
       ),
     ),
   ];
-  void addChat() {
-    setState(() {
-      chatsList.add(ChatListCard(
-        userProfileImage: Icon(
-          CupertinoIcons.person_alt,
-          color: Colors.black,
-          size: 30,
-        ),
-      ));
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
     var scaffold = Scaffold(
-        floatingActionButton: FloatingActionButton(
-            child: const Icon(
-              Icons.notification_add_outlined,
-              color: textColor,
-            ),
-            onPressed: () {
-              addChat();
-            }),
         backgroundColor: backgroundColor,
         body: SafeArea(
           child: Scaffold(
@@ -95,7 +77,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
                         return const Text('Loading');
                       }
 
-                      print(snapshot.data!.docs[index]["persons"]);
+                      // print(snapshot.data!.docs[index]["persons"]);
                       List<String> participants = [];
                       participants.add(
                           snapshot.data!.docs[index]["persons"][0].toString());
@@ -104,14 +86,18 @@ class _ChatListScreenState extends State<ChatListScreen> {
                       List<UserModel> listUsers = sl
                           .get<UserProvider>()
                           .usersFromListOfString(uidsList: participants);
+                      var lastMessage =
+                          snapshot.data!.docs[index]["last_message"]['text'];
+                      int lastTime = snapshot.data!.docs[index]["last_message"]
+                          ['timestamp'];
                       Chat currentChat = Chat(
-                          // lastMessage: snapshot.data!.docs[index]
-                          //     ["last_message"],
+                          isGroup: false,
                           chatID: snapshot.data!.docs[index]["chat_id"],
                           persons: participants);
-                      participants.clear();
                       return ListTile(
                           title: ChatListCard(
+                        time: TimeDateFunctions.timeInDigits(lastTime),
+                        lastMessageText: lastMessage.toString() ?? "none",
                         username: listUsers[0].username,
                         onPressed: () {
                           Navigator.push(
