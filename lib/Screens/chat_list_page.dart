@@ -3,9 +3,11 @@ import 'package:automobile_management/Screens/chat_screens/personal_chat_page/pe
 import 'package:automobile_management/databases/chat_api.dart';
 import 'package:automobile_management/dependency_injection/injection_container.dart';
 import 'package:automobile_management/function/time_date_functions.dart';
+import 'package:automobile_management/models/auth_method.dart';
 import 'package:automobile_management/models/chat/chat.dart';
 import 'package:automobile_management/models/user_model.dart';
 import 'package:automobile_management/providers/user/user_provider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -94,17 +96,46 @@ class _ChatListScreenState extends State<ChatListScreen> {
                           isGroup: false,
                           chatID: snapshot.data!.docs[index]["chat_id"],
                           persons: participants);
+                      String? userPic = listUsers[0].id !=
+                              sl.get<AuthMethod>().currentUserData?.id
+                          ? listUsers[0].photoUrl
+                          : listUsers[1].photoUrl;
                       return ListTile(
                           title: ChatListCard(
-                        time: TimeDateFunctions.timeInDigits(lastTime),
-                        lastMessageText: lastMessage.toString() ?? "none",
-                        username: listUsers[0].username,
+                        userProfileImage: CachedNetworkImage(
+                          imageUrl: userPic ??
+                              "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
+                          imageBuilder: (context, imageProvider) => Container(
+                            width: 45,
+                            height: 45,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              image: DecorationImage(
+                                image: imageProvider,
+                                fit: BoxFit.cover,
+                              ),
+                            ),
+                          ),
+                        ),
+                        time: TimeDateFunctions.timeInDigits(lastTime) ?? "",
+                        lastMessageText: lastMessage.toString() ?? "",
+                        username: listUsers[0].id !=
+                                sl.get<AuthMethod>().currentUserData?.id
+                            ? listUsers[0].username
+                            : listUsers[1].username,
                         onPressed: () {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => PersonalChatScreen(
-                                    chat: currentChat, chatWith: listUsers[0]),
+                                    chat: currentChat,
+                                    chatWith: listUsers[0].id !=
+                                            sl
+                                                .get<AuthMethod>()
+                                                .currentUserData
+                                                ?.id
+                                        ? listUsers[0]
+                                        : listUsers[1]),
                               ));
                         },
                       ));

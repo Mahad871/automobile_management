@@ -1,3 +1,4 @@
+import 'package:automobile_management/Common/constants.dart';
 import 'package:automobile_management/databases/auth_methods.dart';
 import 'package:automobile_management/function/time_date_functions.dart';
 import 'package:automobile_management/models/user_model.dart';
@@ -124,7 +125,7 @@ class MessageTile extends StatelessWidget {
                                     message.text ?? 'no message',
                                     textAlign: TextAlign.left,
                                     style: isMe
-                                        ? const TextStyle(color: Colors.black)
+                                        ? const TextStyle(color: textColor)
                                         : null,
                                   ),
                                 ),
@@ -133,7 +134,7 @@ class MessageTile extends StatelessWidget {
                         ),
                         Text(
                           TimeDateFunctions.timeInDigits(message.timestamp),
-                          style: const TextStyle(color: Colors.grey),
+                          style: const TextStyle(color: Colors.white),
                         )
                       ],
                     ),
