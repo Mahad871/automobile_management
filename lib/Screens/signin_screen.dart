@@ -1,6 +1,8 @@
 import 'package:automobile_management/Screens/forget_password_screen.dart';
 import 'package:automobile_management/Screens/home_page.dart';
 import 'package:automobile_management/Screens/signup_screen.dart';
+import 'package:automobile_management/databases/notification_service.dart';
+import 'package:automobile_management/models/device_token.dart';
 import 'package:automobile_management/providers/signin_controller.dart';
 import 'package:automobile_management/widgets/custom_toast.dart';
 import 'package:automobile_management/models/auth_method.dart';
@@ -24,7 +26,7 @@ class _SignInScreenState extends State<SignInScreen> {
   Color vendorModeTextColor = Colors.black;
   String status = " ";
   GetStorage storage = GetStorage();
-  
+
   @override
   void initState() {
     super.initState();
@@ -286,6 +288,12 @@ class _SignInScreenState extends State<SignInScreen> {
     if (status == "success") {
       await authMethod.getCurrentUserData(controller.email.text.trim());
       CustomToast.successToast(message: "Success");
+      String token = await NotificationsServices.getToken() ?? "";
+
+      print("Device Token ## " + token);
+      List<MyDeviceToken> deviceToken = [];
+      deviceToken.add(MyDeviceToken(token: token));
+      authMethod.setDeviceToken(deviceToken);
       // localStorage.storeUserData(authMethod.currentUserData!);
       // storage.write('user', authMethod.currentUserData);
       if (context.mounted) {
@@ -301,6 +309,7 @@ class _SignInScreenState extends State<SignInScreen> {
       }
     } else {
       CustomToast.errorToast(message: status);
+      setState(() {});
     }
   }
 

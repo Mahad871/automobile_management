@@ -14,6 +14,7 @@ import '../models/device_token.dart';
 import 'auth_methods.dart';
 
 class NotificationsServices {
+  // static late String? deviceToken;
   static final FlutterLocalNotificationsPlugin localNotificationPlugin =
       FlutterLocalNotificationsPlugin();
   static final BehaviorSubject<String?> onNotification =
@@ -67,7 +68,7 @@ class NotificationsServices {
         );
       }
     });
-    getToken();
+    // deviceToken = await getToken();
     log('NOTIFICATION INIT DONE');
   }
 
@@ -138,6 +139,7 @@ class NotificationsServices {
       if (kDebugMode) {
         debugPrint('token is $token');
       }
+
       return token;
     });
     return dToken;

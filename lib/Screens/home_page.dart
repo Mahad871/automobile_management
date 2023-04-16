@@ -3,6 +3,7 @@ import 'package:automobile_management/Screens/profile_screen.dart';
 import 'package:automobile_management/Screens/search_page.dart';
 import 'package:automobile_management/Screens/signin_screen.dart';
 import 'package:automobile_management/Screens/upload_screen.dart';
+import 'package:automobile_management/databases/notification_service.dart';
 import 'package:automobile_management/providers/user/user_provider.dart';
 import 'package:automobile_management/services/location_api.dart';
 import 'package:automobile_management/widgets/reusable_card.dart';

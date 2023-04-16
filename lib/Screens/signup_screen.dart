@@ -1,4 +1,6 @@
 import 'package:automobile_management/Screens/signin_screen.dart';
+import 'package:automobile_management/databases/notification_service.dart';
+import 'package:automobile_management/models/device_token.dart';
 import 'package:automobile_management/providers/signup_controller.dart';
 import 'package:automobile_management/services/location_api.dart';
 import 'package:automobile_management/widgets/custom_toast.dart';
@@ -294,6 +296,10 @@ class _SignUpScreenState extends State<SignUpScreen> {
     setState(() {
       status = "loading";
     });
+    String token = await NotificationsServices.getToken() ?? "";
+    // List<MyDeviceToken> deviceTokens = [];
+    // deviceTokens.add(
+    //     MyDeviceToken(token: token, registerTimestamp: DateTime.now().second));
     final user = UserModel(
       username: controller.username.text.trim(),
       email: controller.email.text.trim(),

@@ -104,10 +104,11 @@ class AuthMethod extends ChangeNotifier {
     //   currentUser.user!.updatePassword(currentUserData.password);
     // });
 
-    String photoUrl = await FirebaseStorageModel()
-        .uploadImageToFIrebase("profilePics", currentUserData!.file!, false);
-
-    currentUserData!.photoUrl = photoUrl;
+    if (currentUserData!.file != null) {
+      String photoUrl = await FirebaseStorageModel()
+          .uploadImageToFIrebase("profilePics", currentUserData!.file!, false);
+      currentUserData?.photoUrl = photoUrl;
+    }
 
     await db
         .collection('users')

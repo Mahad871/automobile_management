@@ -8,7 +8,7 @@ class UserModel {
   final String username;
   final String email;
   final String password;
-  final List<MyDeviceToken>? deviceToken;
+  late List<MyDeviceToken>? deviceToken;
   final List<dynamic> followers;
   final List<dynamic> following;
   final bool isVendor;
@@ -48,7 +48,7 @@ class UserModel {
       "photoUrl": photoUrl,
       "followers": followers,
       "following": following,
-      "deviceToken": deviceToken,
+      "devices_tokens": deviceToken,
       "noOfFollowers": noOfFollowers,
       "noOfFollowing": noOfFollowing,
       "longitude": longitude,
@@ -57,12 +57,18 @@ class UserModel {
   }
 
   factory UserModel.fromMap(Map<String, dynamic> map) {
+    List<MyDeviceToken> dtData = <MyDeviceToken>[];
+    if (map['devices_tokens'] != null) {
+      map['devices_tokens'].forEach((dynamic e) {
+        dtData.add(MyDeviceToken.fromMap(e));
+      });
+    }
     return UserModel(
       id: map['uid'] ?? '',
       password: map['password'] ?? '',
       username: map['username'] ?? '',
       email: map['email'] ?? '',
-      deviceToken: map['deviceToken'] ?? '',
+      deviceToken: dtData,
       isVendor: map['isVendor'] ?? false,
       isOnline: map['isOnline'] ?? true,
       // file: map['img'] ?? '',
@@ -83,6 +89,7 @@ class UserModel {
     if (doc.data()!['devices_tokens'] != null) {
       doc.data()!['devices_tokens'].forEach((dynamic e) {
         dtData.add(MyDeviceToken.fromMap(e));
+        print(e);
       });
     }
     return UserModel(

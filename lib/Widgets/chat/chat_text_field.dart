@@ -75,14 +75,14 @@ class _ChatTextFieldState extends State<ChatTextField> {
                       itemCount: files.length,
                       itemBuilder: (BuildContext context, int index) {
                         return SizedBox(
-                          height: 80,
-                          width: 80,
-                          child:
-                          //  types == MessageTypeEnum.image
-                          //     ? 
-                              Image.file(files[index], fit: BoxFit.cover)
-                              // : AssetVideoPlayer(path: files[index].path),
-                        );
+                            height: 80,
+                            width: 80,
+                            child:
+                                //  types == MessageTypeEnum.image
+                                //     ?
+                                Image.file(files[index], fit: BoxFit.cover)
+                            // : AssetVideoPlayer(path: files[index].path),
+                            );
                       },
                     ),
                   ),
@@ -203,7 +203,8 @@ class _ChatTextFieldState extends State<ChatTextField> {
                       final List<String> allUsers = widget.chat.persons;
                       final String otherUID = ChatAPI.othersUID(allUsers)[0];
                       final UserModel receiver = userPro.user(uid: otherUID);
-                      final UserModel sender = userPro.user(uid: AuthMethods.uid);
+                      final UserModel sender =
+                          userPro.user(uid: AuthMethods.uid);
                       final int time = TimeDateFunctions.timestamp;
                       List<MessageAttachment> attachments =
                           <MessageAttachment>[];
@@ -247,6 +248,7 @@ class _ChatTextFieldState extends State<ChatTextField> {
                         receiver: receiver,
                         sender: sender,
                       );
+                      
                     },
                     splashRadius: 16,
                     icon: Icon(
