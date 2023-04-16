@@ -118,7 +118,7 @@ class AuthMethod extends ChangeNotifier {
   }
 
   void writeUserdataOnStorage() {
-    _storage.write('user', currentUserData);
+    _storage.write('user', currentUserData!.toJson());
   }
 
   getCurrentUserData(String mail) async {

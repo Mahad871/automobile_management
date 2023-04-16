@@ -44,288 +44,283 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 30),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Column(
-                children: [
-                  GestureDetector(
-                    onTap: () => Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const ProfileScreen(),
-                        )),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        ChangeNotifierProvider<AuthMethod>.value(
-                          value: sl.get<AuthMethod>(),
-                          child: Consumer<AuthMethod>(
-                            builder: (context, value, child) => Row(
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(5.0),
-                                  child: CachedNetworkImage(
-                                    imageUrl: authMethod
-                                                .currentUserData?.photoUrl !=
-                                            null
-                                        ? authMethod.currentUserData!.photoUrl
-                                            .toString()
-                                        : "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
-                                    imageBuilder: (context, imageProvider) =>
-                                        Container(
-                                      width: 45,
-                                      height: 45,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        image: DecorationImage(
-                                          image: imageProvider,
-                                          fit: BoxFit.cover,
-                                        ),
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                GestureDetector(
+                  onTap: () => Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const ProfileScreen(),
+                      )),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ChangeNotifierProvider<AuthMethod>.value(
+                        value: sl.get<AuthMethod>(),
+                        child: Consumer<AuthMethod>(
+                          builder: (context, value, child) => Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(5.0),
+                                child: CachedNetworkImage(
+                                  imageUrl: authMethod
+                                              .currentUserData?.photoUrl !=
+                                          null
+                                      ? authMethod.currentUserData!.photoUrl
+                                          .toString()
+                                      : "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
+                                  imageBuilder: (context, imageProvider) =>
+                                      Container(
+                                    width: 45,
+                                    height: 45,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      image: DecorationImage(
+                                        image: imageProvider,
+                                        fit: BoxFit.cover,
                                       ),
                                     ),
                                   ),
                                 ),
+                              ),
 
-                                // Padding(
-                                //   padding: const EdgeInsets.all(5.0),
-                                //   child: Container(
-                                //     width: 45.0,
-                                //     height: 45.0,
-                                //     decoration: BoxDecoration(
-                                //       shape: BoxShape.circle,
-                                //       color: textFieldColor,
-                                //       image: DecorationImage(
-                                //           fit: BoxFit.cover,
-                                //           image:
-                                //               ? CachedNetworkImageProvider(
-                                //                   errorListener: () {
-                                //                   CachedNetworkImageProvider(
-                                //                     "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
-                                //                   );
-                                //                 },
-                                //                   authMethod
-                                //                       .currentUserData!.photoUrl
-                                //                       .toString())
-                                //               : const CachedNetworkImageProvider(
-                                //                   "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
-                                //                 )),
-                                //     ),
-                                //   ),
-                                // ),
-                                Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      authMethod.currentUserData?.username ==
-                                              null
-                                          ? "Loading..."
-                                          : authMethod.currentUserData!.username
-                                              .toString(),
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Row(
-                                      children: const [
-                                        Icon(CupertinoIcons.heart_solid,
-                                            size: 15),
-                                        Text("3.1 k")
-                                      ],
-                                    )
-                                  ],
-                                )
-                              ],
-                            ),
+                              // Padding(
+                              //   padding: const EdgeInsets.all(5.0),
+                              //   child: Container(
+                              //     width: 45.0,
+                              //     height: 45.0,
+                              //     decoration: BoxDecoration(
+                              //       shape: BoxShape.circle,
+                              //       color: textFieldColor,
+                              //       image: DecorationImage(
+                              //           fit: BoxFit.cover,
+                              //           image:
+                              //               ? CachedNetworkImageProvider(
+                              //                   errorListener: () {
+                              //                   CachedNetworkImageProvider(
+                              //                     "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
+                              //                   );
+                              //                 },
+                              //                   authMethod
+                              //                       .currentUserData!.photoUrl
+                              //                       .toString())
+                              //               : const CachedNetworkImageProvider(
+                              //                   "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
+                              //                 )),
+                              //     ),
+                              //   ),
+                              // ),
+                              Column(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    authMethod.currentUserData?.username == null
+                                        ? "Loading..."
+                                        : authMethod.currentUserData!.username
+                                            .toString(),
+                                    style: const TextStyle(
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Row(
+                                    children: const [
+                                      Icon(CupertinoIcons.heart_solid,
+                                          size: 15),
+                                      Text("3.1 k")
+                                    ],
+                                  )
+                                ],
+                              )
+                            ],
                           ),
                         ),
-                        Row(
-                          children: [
-                            OutlinedButton(
-                                style: OutlinedButton.styleFrom(
-                                    shape: const CircleBorder(),
-                                    side: const BorderSide(
-                                        style: BorderStyle.solid)),
-                                onPressed: () {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) =>
-                                        const NotificationScreen(),
-                                  ));
-                                },
-                                child: const Icon(Icons.notifications)),
-                            ElevatedButton(
+                      ),
+                      Row(
+                        children: [
+                          OutlinedButton(
+                              style: OutlinedButton.styleFrom(
+                                  shape: const CircleBorder(),
+                                  side: const BorderSide(
+                                      style: BorderStyle.solid)),
                               onPressed: () {
-                                authMethod.signOutUser();
-                                _storage.remove('user');
-                                Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          const SignInScreen(),
-                                    ),
-                                    (route) => false);
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) =>
+                                      const NotificationScreen(),
+                                ));
                               },
-                              style: ElevatedButton.styleFrom(
-                                  shape: const StadiumBorder()),
-                              child: const Text('+ User'),
+                              child: const Icon(Icons.notifications)),
+                          ElevatedButton(
+                            onPressed: () {
+                              authMethod.signOutUser();
+                              _storage.remove('user');
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const SignInScreen(),
+                                  ),
+                                  (route) => false);
+                            },
+                            style: ElevatedButton.styleFrom(
+                                shape: const StadiumBorder()),
+                            child: const Text('+ User'),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () =>
+                            Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) =>
+                              const SearchScreen(title: "Toxic\nOnline"),
+                        )),
+                        child: Container(
+                          decoration: const BoxDecoration(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(30.0)),
+                              color: textFieldColor),
+                          padding: const EdgeInsets.all(16),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: const [
+                              Text("| Search",
+                                  style: TextStyle(
+                                      color: textColor, fontSize: 18)),
+                              Icon(CupertinoIcons.mic_fill)
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        shape: const CircleBorder(),
+                        backgroundColor: textFieldColor,
+                        foregroundColor: Colors.black,
+                        fixedSize: const Size.fromRadius(25),
+                        elevation: 0,
+                      ),
+                      child: const Icon(Icons.person_2_outlined),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {},
+                      style: ElevatedButton.styleFrom(
+                        shape: const CircleBorder(),
+                        backgroundColor: textFieldColor,
+                        foregroundColor: Colors.black,
+                        fixedSize: const Size.fromRadius(25),
+                        elevation: 0,
+                      ),
+                      child: const Icon(Icons.storefront_sharp),
+                    )
+                  ],
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: ReusableCard(
+                        onPress: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const UploadScreen(),
+                            ),
+                          );
+                        },
+                        colour: textFieldColor,
+                        cardChild: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: const [
+                            Icon(
+                              CupertinoIcons.photo_fill,
+                              size: 40,
+                            ),
+                            Text("Add Picture here")
+                          ],
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: ReusableCard(
+                        colour: textFieldColor,
+                        cardChild: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Text(
+                              "3.0M",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 35),
+                            ),
+                            Text(
+                              "Active Users",
+                              style: TextStyle(fontWeight: FontWeight.bold),
                             )
                           ],
-                        )
-                      ],
+                        ),
+                      ),
                     ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () =>
-                              Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) =>
-                                const SearchScreen(title: "Toxic\nOnline"),
-                          )),
-                          child: Container(
-                            decoration: const BoxDecoration(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(30.0)),
-                                color: textFieldColor),
-                            padding: const EdgeInsets.all(16),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: const [
-                                Text("| Search",
-                                    style: TextStyle(
-                                        color: textColor, fontSize: 18)),
-                                Icon(CupertinoIcons.mic_fill)
-                              ],
+                    Expanded(
+                      child: ReusableCard(
+                        colour: textFieldColor,
+                        cardChild: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Text(
+                              "48M",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 35),
                             ),
-                          ),
+                            Text(
+                              "Searched",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            )
+                          ],
                         ),
                       ),
-                      ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          shape: const CircleBorder(),
-                          backgroundColor: textFieldColor,
-                          foregroundColor: Colors.black,
-                          fixedSize: const Size.fromRadius(25),
-                          elevation: 0,
-                        ),
-                        child: const Icon(Icons.person_2_outlined),
-                      ),
-                      ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          shape: const CircleBorder(),
-                          backgroundColor: textFieldColor,
-                          foregroundColor: Colors.black,
-                          fixedSize: const Size.fromRadius(25),
-                          elevation: 0,
-                        ),
-                        child: const Icon(Icons.storefront_sharp),
-                      )
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: ReusableCard(
-                          onPress: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const UploadScreen(),
-                              ),
-                            );
-                          },
-                          colour: textFieldColor,
-                          cardChild: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: const [
-                              Icon(
-                                CupertinoIcons.photo_fill,
-                                size: 40,
-                              ),
-                              Text("Add Picture here")
-                            ],
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: ReusableCard(
-                          colour: textFieldColor,
-                          cardChild: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Text(
-                                "3.0M",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 35),
-                              ),
-                              Text(
-                                "Active Users",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              )
-                            ],
-                          ),
+                    ),
+                    Expanded(
+                      child: ReusableCard(
+                        colour: textFieldColor,
+                        cardChild: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Text(
+                              "1.3K",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold, fontSize: 35),
+                            ),
+                            Text(
+                              "Active Pin",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            )
+                          ],
                         ),
                       ),
-                      Expanded(
-                        child: ReusableCard(
-                          colour: textFieldColor,
-                          cardChild: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Text(
-                                "48M",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 35),
-                              ),
-                              Text(
-                                "Searched",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      Expanded(
-                        child: ReusableCard(
-                          colour: textFieldColor,
-                          cardChild: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Text(
-                                "1.3K",
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 35),
-                              ),
-                              Text(
-                                "Active Pin",
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              )
-                            ],
-                          ),
-                        ),
-                      )
-                    ],
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 180,
-              ),
-            ],
+                    )
+                  ],
+                ),
+                const SizedBox(
+                  height: 180,
+                ),
+              ],
+            ),
           ),
         ),
       ),
