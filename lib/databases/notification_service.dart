@@ -68,7 +68,7 @@ class NotificationsServices {
         );
       }
     });
-    // deviceToken = await getToken();
+    await getToken();
     log('NOTIFICATION INIT DONE');
   }
 
@@ -148,7 +148,9 @@ class NotificationsServices {
   static NotificationDetails _notificationDetails() {
     return const NotificationDetails(
       android: AndroidNotificationDetails('channel Id', 'channel Name',
-          playSound: true, importance: Importance.max),
+          channelDescription: 'channel description',
+          playSound: true,
+          importance: Importance.max),
       iOS: DarwinNotificationDetails(
         presentAlert: true,
         presentSound: true,

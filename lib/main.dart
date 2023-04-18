@@ -32,15 +32,17 @@ void main() async {
 class MainApp extends StatelessWidget {
   MainApp({super.key});
   final _storage = GetStorage();
-  late var val;
+  late var mail;
+  late var pass;
 
   Future<bool> checkLoginStatus() async {
-    val = null;
-    val = _storage.read('user');
-    // print("Storage read result: $val");
+    mail = null;
+    mail = _storage.read('mail');
+    pass = _storage.read('pass');
+    print("Storage read result: $mail");
     // print(val['email']);
     // _storage.erase();
-    if (val == null) {
+    if (mail == null) {
       return false;
     } else {
       return true;
@@ -65,7 +67,7 @@ class MainApp extends StatelessWidget {
           home: FutureBuilder(
             future: checkLoginStatus(),
             builder: (context, snapshot) {
-              if (snapshot.hasData == false || val == null) {
+              if (snapshot.hasData == false || mail == null) {
                 return const SignInScreen();
               }
               if (snapshot.connectionState == ConnectionState.waiting) {
@@ -81,9 +83,8 @@ class MainApp extends StatelessWidget {
 
               if (authMethod.currentUser == null) {
                 authMethod.signinUser(
-                    email: val['email'].toString(),
-                    password: val['password'].toString());
-                authMethod.getCurrentUserData(val['email'].toString());
+                    email: mail.toString(), password: pass.toString());
+                authMethod.getCurrentUserData(mail.toString());
               }
 
               return const HomeScreen();

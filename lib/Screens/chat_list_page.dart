@@ -63,7 +63,10 @@ class _ChatListScreenState extends State<ChatListScreen> {
                   }
 
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Text('Loading');
+                    return const Center(
+                        child: CircularProgressIndicator(
+                      color: Colors.black,
+                    ));
                   }
                   // List<Chat> chatsList = [];
                   return ListView.builder(
@@ -76,7 +79,10 @@ class _ChatListScreenState extends State<ChatListScreen> {
                       }
 
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Text('Loading');
+                        return const Center(
+                            child: CircularProgressIndicator(
+                          color: Colors.black,
+                        ));
                       }
 
                       // print(snapshot.data!.docs[index]["persons"]);

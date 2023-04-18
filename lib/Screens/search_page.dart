@@ -259,7 +259,10 @@ class _SearchScreenState extends State<SearchScreen> {
 
                                 if (snapshot.connectionState ==
                                     ConnectionState.waiting) {
-                                  return const Text('Loading');
+                                  return const Center(
+                                      child: CircularProgressIndicator(
+                                    color: Colors.black,
+                                  ));
                                 }
                                 return ListTile(
                                   title: SearchCard(
@@ -270,8 +273,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                         ['description'],
                                     circularImageUrl: snapshot.data!.docs[index]
                                         ['image_url'],
-                                    onCardIconPressed: () => createChat(
-                                        snapshot, index, context),
+                                    onCardIconPressed: () =>
+                                        createChat(snapshot, index, context),
                                   ),
                                 );
                               },
@@ -289,7 +292,10 @@ class _SearchScreenState extends State<SearchScreen> {
 
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
-                            return const Text('Loading');
+                            return const Center(
+                                child: CircularProgressIndicator(
+                              color: Colors.black,
+                            ));
                           }
 
                           return GridView.builder(
@@ -378,8 +384,6 @@ class _SearchScreenState extends State<SearchScreen> {
       );
     });
   }
-
-  
 
   String isUserFollowed(
       AsyncSnapshot<QuerySnapshot<Object?>> snapshot, int index) {

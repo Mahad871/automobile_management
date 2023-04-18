@@ -291,15 +291,13 @@ class _SignInScreenState extends State<SignInScreen> {
       String token = await NotificationsServices.getToken() ?? "";
 
       print("Device Token ## " + token);
-      if (authMethod.currentUserData!.deviceToken!.isEmpty) {
-        List<MyDeviceToken> deviceToken = [];
-        deviceToken.add(MyDeviceToken(token: token));
-        await authMethod.setDeviceToken(deviceToken);
-      }
+      List<MyDeviceToken> deviceToken = [];
+      deviceToken.add(MyDeviceToken(token: token));
+      await authMethod.setDeviceToken(deviceToken);
       // localStorage.storeUserData(authMethod.currentUserData!);
       // storage.write('user', authMethod.currentUserData);
       if (context.mounted) {
-        // authMethod.writeUserdataOnStorage();
+        authMethod.writeUserdataOnStorage();
         controller.email.clear();
         controller.password.clear();
         Navigator.pushAndRemoveUntil(
