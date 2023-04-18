@@ -87,10 +87,15 @@ class ProfileCard extends StatelessWidget {
                       ],
                     ),
                     Flexible(
-                      child: Text(
-                        notificationText,
-                        style: TextStyle(color: textColor.withOpacity(0.5)),
-                        softWrap: true,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        child: Text(
+                          notificationText + ' m Away',
+                          style: TextStyle(
+                              color: textColor.withOpacity(0.75),
+                              fontWeight: FontWeight.bold),
+                          softWrap: true,
+                        ),
                       ),
                     )
                   ],

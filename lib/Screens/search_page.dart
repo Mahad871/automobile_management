@@ -16,11 +16,11 @@ import 'package:automobile_management/services/product_api.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 
 import '../widgets/search_card.dart';
 import '../dependency_injection/injection_container.dart';
-import 'chat_screens/personal_chat_page/personal_chat_dashboard.dart';
 // import 'chat/repositories/chat_repository.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -31,7 +31,8 @@ class SearchScreen extends StatefulWidget {
   State<SearchScreen> createState() => _SearchScreenState();
 }
 
-class _SearchScreenState extends State<SearchScreen> {
+class _SearchScreenState extends State<SearchScreen>
+    with TickerProviderStateMixin {
   // This controller will store the value of the search bar
   bool isVendor = false;
   Color userModeContainerColor = Colors.black;
@@ -40,9 +41,9 @@ class _SearchScreenState extends State<SearchScreen> {
   Color vendorModeTextColor = Colors.black;
   final listUsers = sl.get<AuthMethod>().getAllUserData();
   final SearchController _searchController = sl.get<SearchController>();
-  late PageController _pageController =
-      PageController(initialPage: 0, keepPage: true, viewportFraction: 1.0);
+  late TabController _pageController;
   AuthMethod authMethod = sl.get<AuthMethod>();
+  int _tab = 0;
 
   void swapColors() {
     setState(() {
@@ -60,6 +61,7 @@ class _SearchScreenState extends State<SearchScreen> {
     // TODO: implement initState
     super.initState();
     sl<ProductApi>().getdata();
+    _pageController = TabController(length: 2, vsync: this);
   }
 
   @override
@@ -161,7 +163,7 @@ class _SearchScreenState extends State<SearchScreen> {
               ],
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20),
+              padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
               child: Center(
                 child: Row(
                   children: [
@@ -172,10 +174,8 @@ class _SearchScreenState extends State<SearchScreen> {
                             if (isVendor) {
                               isVendor = false;
                               swapColors();
-                              _pageController = PageController(
-                                  initialPage: 0,
-                                  keepPage: true,
-                                  viewportFraction: 1.0);
+                              _pageController.animateTo(0);
+                              _tab = 0;
                             }
                           });
                         },
@@ -208,10 +208,8 @@ class _SearchScreenState extends State<SearchScreen> {
                             if (!isVendor) {
                               isVendor = true;
                               swapColors();
-                              _pageController = PageController(
-                                  initialPage: 1,
-                                  keepPage: true,
-                                  viewportFraction: 1.0);
+                              _pageController.animateTo(1);
+                              _tab = 1;
                             }
                           });
                         },
@@ -241,8 +239,9 @@ class _SearchScreenState extends State<SearchScreen> {
             Flexible(
               child: SizedBox(
                 child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: PageView(
+                  padding: const EdgeInsets.all(15.0),
+                  child: TabBarView(
+                    physics: const NeverScrollableScrollPhysics(),
                     controller: _pageController,
                     children: [
                       StreamBuilder<QuerySnapshot>(
@@ -299,66 +298,86 @@ class _SearchScreenState extends State<SearchScreen> {
                             ));
                           }
 
+                          // List<UserModel> userModel = [];
+                          // if (snapshot.data != null) {
+                          //   for (var e
+                          //       in snapshot.data!.docs) {
+                          //     userModel.add(UserModel.fromDocumentSnapshot(e));
+                          //   }
+                          // }
+
                           return GridView.builder(
-                              gridDelegate:
-                                  const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 2),
-                              shrinkWrap: true,
-                              physics: const BouncingScrollPhysics(),
-                              itemCount: snapshot.data!.docs.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                // List<UserModel> userModel = [];
-                                // for (DocumentSnapshot<Map<String, dynamic>> e
-                                //     in snapshot.) {
-                                //   userModel.add(UserModel.fromDocumentSnapshot(e));
-                                // }
-                                return ChangeNotifierProvider.value(
-                                  value: sl.get<AuthMethod>(),
-                                  child: Consumer<AuthMethod>(
-                                    builder: (context, value, child) =>
-                                        GridTile(
-                                            child: Column(
-                                      children: [
-                                        Flexible(
-                                          child: ProfileCard(
-                                            buttonText:
-                                                isUserFollowed(snapshot, index),
-                                            onButtonPressed: () {
-                                              isUserFollowed(snapshot, index) ==
-                                                      "UnFollow"
-                                                  ? authMethod.unfollowUser(
-                                                      followerUid: authMethod
-                                                          .currentUserData!.id
-                                                          .toString(),
-                                                      followingUid: snapshot
-                                                          .data!
-                                                          .docs[index]['uid'])
-                                                  : authMethod.followUser(
-                                                      followerUid: authMethod
-                                                          .currentUserData!.id
-                                                          .toString(),
-                                                      followingUid: snapshot
-                                                          .data!
-                                                          .docs[index]['uid']);
-                                            },
-                                            notificationText: "",
-                                            username: snapshot.data!.docs[index]
-                                                ['username'],
-                                            userProfileImage:
-                                                CachedNetworkImage(
-                                              imageUrl: snapshot
-                                                          .data!.docs[index]
-                                                      ['photoUrl'] ??
-                                                  "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
-                                              fit: BoxFit.cover,
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2),
+                            shrinkWrap: true,
+                            physics: const BouncingScrollPhysics(),
+                            itemCount: snapshot.data!.docs.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              return ChangeNotifierProvider.value(
+                                value: sl.get<AuthMethod>(),
+                                child: Consumer<AuthMethod>(
+                                    builder: (context, value, child) {
+                                  double distance = Geolocator.distanceBetween(
+                                      authMethod.currentUserData?.latitude ??
+                                          0.0,
+                                      authMethod.currentUserData?.longitude ??
+                                          0.0,
+                                      snapshot.data?.docs[index]['latitude'] ??
+                                          0.0,
+                                      snapshot.data?.docs[index]['longitude'] ??
+                                          0.0);
+                                  if (distance < 30) {
+                                    return GridTile(
+                                      child: Column(
+                                        children: [
+                                          Flexible(
+                                            child: ProfileCard(
+                                              buttonText: isUserFollowed(
+                                                  snapshot, index),
+                                              onButtonPressed: () {
+                                                isUserFollowed(snapshot, index) ==
+                                                        "UnFollow"
+                                                    ? authMethod.unfollowUser(
+                                                        followerUid: authMethod
+                                                            .currentUserData!.id
+                                                            .toString(),
+                                                        followingUid: snapshot
+                                                            .data!
+                                                            .docs[index]['uid'])
+                                                    : authMethod.followUser(
+                                                        followerUid: authMethod
+                                                            .currentUserData!.id
+                                                            .toString(),
+                                                        followingUid: snapshot
+                                                                .data!
+                                                                .docs[index]
+                                                            ['uid']);
+                                              },
+                                              notificationText:
+                                                  distance.toString(),
+                                              username: snapshot.data!
+                                                  .docs[index]['username'],
+                                              userProfileImage:
+                                                  CachedNetworkImage(
+                                                imageUrl: snapshot
+                                                            .data!.docs[index]
+                                                        ['photoUrl'] ??
+                                                    "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
+                                                fit: BoxFit.cover,
+                                              ),
                                             ),
-                                          ),
-                                        )
-                                      ],
-                                    )),
-                                  ),
-                                );
-                              });
+                                          )
+                                        ],
+                                      ),
+                                    );
+                                  }
+                                  return Visibility(
+                                      visible: false, child: Text("visible"));
+                                }),
+                              );
+                            },
+                          );
                         },
                       ),
                     ],

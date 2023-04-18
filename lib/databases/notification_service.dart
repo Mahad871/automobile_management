@@ -34,7 +34,7 @@ class NotificationsServices {
                 String? payload) async {});
     InitializationSettings initializationSettings = InitializationSettings(
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
-    // await localNotificationPlugin.initialize(initializationSettings);
+    await localNotificationPlugin.initialize(initializationSettings);
     await FlutterLocalNotificationsPlugin().initialize(
       initializationSettings,
       onDidReceiveNotificationResponse: (NotificationResponse details) {
