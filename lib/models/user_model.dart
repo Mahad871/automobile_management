@@ -37,6 +37,12 @@ class UserModel {
       this.file});
 
   toJson() {
+    List<Map<String, dynamic>> tokenList = [];
+    deviceToken?.forEach(
+      (element) {
+        tokenList.add(element.toMap());
+      },
+    );
     return {
       "uid": id,
       "username": username,
@@ -48,7 +54,7 @@ class UserModel {
       "photoUrl": photoUrl,
       "followers": followers,
       "following": following,
-      "devices_tokens": deviceToken,
+      "devices_tokens": tokenList,
       "noOfFollowers": noOfFollowers,
       "noOfFollowing": noOfFollowing,
       "longitude": longitude,

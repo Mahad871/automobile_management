@@ -16,6 +16,7 @@ import 'package:automobile_management/services/product_api.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../widgets/search_card.dart';
 import '../dependency_injection/injection_container.dart';
@@ -311,42 +312,52 @@ class _SearchScreenState extends State<SearchScreen> {
                                 //     in snapshot.) {
                                 //   userModel.add(UserModel.fromDocumentSnapshot(e));
                                 // }
-                                return GridTile(
-                                    child: Column(
-                                  children: [
-                                    Flexible(
-                                      child: ProfileCard(
-                                        buttonText:
-                                            isUserFollowed(snapshot, index),
-                                        onButtonPressed: () {
-                                          isUserFollowed(snapshot, index) ==
-                                                  "UnFollow"
-                                              ? authMethod.unfollowUser(
-                                                  followerUid: authMethod
-                                                      .currentUserData!.id
-                                                      .toString(),
-                                                  followingUid: snapshot
-                                                      .data!.docs[index]['uid'])
-                                              : authMethod.followUser(
-                                                  followerUid: authMethod
-                                                      .currentUserData!.id
-                                                      .toString(),
-                                                  followingUid: snapshot.data!
-                                                      .docs[index]['uid']);
-                                        },
-                                        notificationText: "",
-                                        username: snapshot.data!.docs[index]
-                                            ['username'],
-                                        userProfileImage: CachedNetworkImage(
-                                          imageUrl: snapshot.data!.docs[index]
-                                                  ['photoUrl'] ??
-                                              "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
-                                          fit: BoxFit.cover,
-                                        ),
-                                      ),
-                                    )
-                                  ],
-                                ));
+                                return ChangeNotifierProvider.value(
+                                  value: sl.get<AuthMethod>(),
+                                  child: Consumer<AuthMethod>(
+                                    builder: (context, value, child) =>
+                                        GridTile(
+                                            child: Column(
+                                      children: [
+                                        Flexible(
+                                          child: ProfileCard(
+                                            buttonText:
+                                                isUserFollowed(snapshot, index),
+                                            onButtonPressed: () {
+                                              isUserFollowed(snapshot, index) ==
+                                                      "UnFollow"
+                                                  ? authMethod.unfollowUser(
+                                                      followerUid: authMethod
+                                                          .currentUserData!.id
+                                                          .toString(),
+                                                      followingUid: snapshot
+                                                          .data!
+                                                          .docs[index]['uid'])
+                                                  : authMethod.followUser(
+                                                      followerUid: authMethod
+                                                          .currentUserData!.id
+                                                          .toString(),
+                                                      followingUid: snapshot
+                                                          .data!
+                                                          .docs[index]['uid']);
+                                            },
+                                            notificationText: "",
+                                            username: snapshot.data!.docs[index]
+                                                ['username'],
+                                            userProfileImage:
+                                                CachedNetworkImage(
+                                              imageUrl: snapshot
+                                                          .data!.docs[index]
+                                                      ['photoUrl'] ??
+                                                  "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
+                                        )
+                                      ],
+                                    )),
+                                  ),
+                                );
                               });
                         },
                       ),

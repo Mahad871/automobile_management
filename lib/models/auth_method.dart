@@ -241,6 +241,7 @@ class AuthMethod extends ChangeNotifier {
 
       await db.collection('users').doc(user.id).set(user.toJson());
       notifyListeners();
+
       return true;
     } catch (e) {
       return CustomToast.errorToast(message: e.toString());
