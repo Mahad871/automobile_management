@@ -4,6 +4,8 @@ import 'package:automobile_management/Common/constants.dart';
 // import 'package:automobile_management/Screens/chat/screens/mobile_chat_screen.dart';
 import 'package:automobile_management/Screens/chat_list_page.dart';
 import 'package:automobile_management/Screens/notificastion_page.dart';
+import 'package:automobile_management/Widgets/custom_toast.dart';
+import 'package:automobile_management/Widgets/reusable_card.dart';
 import 'package:automobile_management/databases/chat_api.dart';
 import 'package:automobile_management/models/chat/chat.dart';
 import 'package:automobile_management/models/user_model.dart';
@@ -87,7 +89,7 @@ class _SearchScreenState extends State<SearchScreen>
                         side: const BorderSide(style: BorderStyle.solid)),
                     onPressed: () {
                       Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => ChatListScreen(),
+                        builder: (context) => const ChatListScreen(),
                       ));
                     },
                     child: const Icon(Icons.chat_rounded)),
@@ -298,85 +300,113 @@ class _SearchScreenState extends State<SearchScreen>
                             ));
                           }
 
-                          // List<UserModel> userModel = [];
-                          // if (snapshot.data != null) {
-                          //   for (var e
-                          //       in snapshot.data!.docs) {
-                          //     userModel.add(UserModel.fromDocumentSnapshot(e));
-                          //   }
-                          // }
+                          List<UserModel> userModel = [];
+                          if (snapshot.data != null) {
+                            for (var e
+                                in snapshot.data!.docs) {
+                              userModel.add(UserModel.fromDocumentSnapshot(e));
+                            }
+                          }
 
-                          return GridView.builder(
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2),
-                            shrinkWrap: true,
-                            physics: const BouncingScrollPhysics(),
-                            itemCount: snapshot.data!.docs.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              return ChangeNotifierProvider.value(
-                                value: sl.get<AuthMethod>(),
-                                child: Consumer<AuthMethod>(
-                                    builder: (context, value, child) {
-                                  double distance = Geolocator.distanceBetween(
-                                      authMethod.currentUserData?.latitude ??
-                                          0.0,
-                                      authMethod.currentUserData?.longitude ??
-                                          0.0,
-                                      snapshot.data?.docs[index]['latitude'] ??
-                                          0.0,
-                                      snapshot.data?.docs[index]['longitude'] ??
-                                          0.0);
-                                  if (distance < 30) {
-                                    return GridTile(
-                                      child: Column(
-                                        children: [
-                                          Flexible(
-                                            child: ProfileCard(
-                                              buttonText: isUserFollowed(
-                                                  snapshot, index),
-                                              onButtonPressed: () {
-                                                isUserFollowed(snapshot, index) ==
-                                                        "UnFollow"
-                                                    ? authMethod.unfollowUser(
-                                                        followerUid: authMethod
-                                                            .currentUserData!.id
-                                                            .toString(),
-                                                        followingUid: snapshot
-                                                            .data!
-                                                            .docs[index]['uid'])
-                                                    : authMethod.followUser(
-                                                        followerUid: authMethod
-                                                            .currentUserData!.id
-                                                            .toString(),
-                                                        followingUid: snapshot
-                                                                .data!
-                                                                .docs[index]
-                                                            ['uid']);
-                                              },
-                                              notificationText:
-                                                  distance.toString(),
-                                              username: snapshot.data!
-                                                  .docs[index]['username'],
-                                              userProfileImage:
-                                                  CachedNetworkImage(
-                                                imageUrl: snapshot
+                          return Column(
+                            children: [
+                              const ReusableCard(
+                                  cardHeight: 40,
+                                  cardWidth: double.infinity,
+                                  colour: textFieldColor,
+                                  cardChild: Center(
+                                      child: Text(
+                                    "Vendors within 3 Km",
+                                    style: TextStyle(
+                                        color: textColor,
+                                        fontWeight: FontWeight.bold),
+                                  ))),
+                              Flexible(
+                                child: GridView.builder(
+                                  gridDelegate:
+                                      const SliverGridDelegateWithFixedCrossAxisCount(
+                                          crossAxisCount: 2),
+                                  shrinkWrap: true,
+                                  physics: const BouncingScrollPhysics(),
+                                  itemCount: snapshot.data!.docs.length,
+                                  itemBuilder:
+                                      (BuildContext context, int index) {
+                                    return ChangeNotifierProvider.value(
+                                      value: sl.get<AuthMethod>(),
+                                      child: Consumer<AuthMethod>(
+                                          builder: (context, value, child) {
+                                        double distance =
+                                            Geolocator.distanceBetween(
+                                                authMethod.currentUserData
+                                                        ?.latitude ??
+                                                    0.0,
+                                                authMethod.currentUserData
+                                                        ?.longitude ??
+                                                    0.0,
+                                                snapshot.data?.docs[index]
+                                                        ['latitude'] ??
+                                                    0.0,
+                                                snapshot.data?.docs[index]
+                                                        ['longitude'] ??
+                                                    0.0);
+                                        if (distance < 3000) {
+                                          return GridTile(
+                                            child: Column(
+                                              children: [
+                                                Flexible(
+                                                  child: ProfileCard(
+                                                    buttonText: isUserFollowed(
+                                                        snapshot, index),
+                                                    onButtonPressed: () {
+                                                      isUserFollowed(snapshot, index) ==
+                                                              "UnFollow"
+                                                          ? authMethod.unfollowUser(
+                                                              followerUid: authMethod
+                                                                  .currentUserData!
+                                                                  .id
+                                                                  .toString(),
+                                                              followingUid: snapshot
+                                                                      .data!
+                                                                      .docs[index]
+                                                                  ['uid'])
+                                                          : authMethod.followUser(
+                                                              followerUid: authMethod
+                                                                  .currentUserData!
+                                                                  .id
+                                                                  .toString(),
+                                                              followingUid: snapshot
+                                                                      .data!
+                                                                      .docs[index]
+                                                                  ['uid']);
+                                                    },
+                                                    notificationText:
+                                                        distance.toString(),
+                                                    username: snapshot
                                                             .data!.docs[index]
-                                                        ['photoUrl'] ??
-                                                    "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
-                                                fit: BoxFit.cover,
-                                              ),
+                                                        ['username'],
+                                                    userProfileImage:
+                                                        CachedNetworkImage(
+                                                      imageUrl: snapshot.data!
+                                                                  .docs[index]
+                                                              ['photoUrl'] ??
+                                                          "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
+                                                      fit: BoxFit.cover,
+                                                    ),
+                                                  ),
+                                                )
+                                              ],
                                             ),
-                                          )
-                                        ],
-                                      ),
+                                          );
+                                        }
+                                        return const Visibility(
+                                            visible: false,
+                                            child: Text("visible"));
+                                      }),
                                     );
-                                  }
-                                  return Visibility(
-                                      visible: false, child: Text("visible"));
-                                }),
-                              );
-                            },
+                                  },
+                                ),
+                              ),
+                            ],
                           );
                         },
                       ),

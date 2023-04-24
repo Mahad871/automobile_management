@@ -31,6 +31,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool phoneNoFieldDisabled = true;
   bool passwordFieldDisabled = true;
   Uint8List? _image;
+  bool isloading = false;
 
   @override
   void initState() {
@@ -82,7 +83,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       body: Padding(
         padding: const EdgeInsets.all(30.0),
         child: ListView(
-          physics: BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           children: [
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -376,7 +377,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     const SizedBox(height: 20),
                     Center(
                       child: GestureDetector(
-                        onTap: () {
+                        onTap: () async {
                           UserModel user = UserModel(
                             id: authMethod.currentUser!.user!.uid,
                             username: controller.username.text,
@@ -391,7 +392,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             longitude: authMethod.currentUserData!.longitude,
                           );
                           authMethod.currentUserData = user;
-                          authMethod.updateUser();
+                          setState(() {
+                            isloading = true;
+                          });
+                          await authMethod.updateUser();
+                          isloading = false;
+                          setState(() {});
+                          Navigator.pop(context);
                         },
                         child: Container(
                           height: 55,
@@ -400,17 +407,20 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             borderRadius: BorderRadius.circular(100),
                             color: Colors.black,
                           ),
-                          child: const Center(
+                          child: Center(
                             child: Padding(
-                              padding: EdgeInsets.all(10.0),
-                              child: Text(
-                                'Update',
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 18),
-                              ),
-                            ),
+                                padding: const EdgeInsets.all(10.0),
+                                child: isloading
+                                    ? const CircularProgressIndicator(
+                                        color: Colors.white,
+                                      )
+                                    : const Text(
+                                        'Update',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18),
+                                      )),
                           ),
                         ),
                       ),

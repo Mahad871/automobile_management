@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 
 import '../databases/user_api.dart';
+import '../dependency_injection/injection_container.dart';
+import '../services/location_api.dart';
 
 class AuthMethod extends ChangeNotifier {
   final db = FirebaseFirestore.instance;
@@ -84,6 +86,13 @@ class AuthMethod extends ChangeNotifier {
           email: email, password: password);
 
       currentUser = cred;
+      await getCurrentUserData(email);
+      await sl.get<LocationApi>().determinePosition();
+      currentUserData?.longitude =
+          sl.get<LocationApi>().currentPosistion.longitude;
+      currentUserData?.latitude =
+          sl.get<LocationApi>().currentPosistion.latitude;
+      await updateUserLocation();
     } catch (e) {
       print(e);
       return e.toString();
@@ -110,6 +119,14 @@ class AuthMethod extends ChangeNotifier {
       currentUserData?.photoUrl = photoUrl;
     }
 
+    await db
+        .collection('users')
+        .doc(currentUser!.user!.uid)
+        .set(currentUserData!.toJson());
+    notifyListeners();
+  }
+
+  updateUserLocation() async {
     await db
         .collection('users')
         .doc(currentUser!.user!.uid)

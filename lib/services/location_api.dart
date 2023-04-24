@@ -6,6 +6,7 @@ import 'package:geolocator/geolocator.dart';
 
 class LocationApi {
   late Position currentPosistion;
+
   Future<Position> determinePosition() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -16,7 +17,9 @@ class LocationApi {
       // Location services are not enabled don't continue
       // accessing the position and request users of the
       // App to enable the location services.
-      return Future.error('Location services are disabled.');
+      await Geolocator.openLocationSettings();
+      await determinePosition();
+      // return Future.error('Location services are disabled.');
     }
 
     permission = await Geolocator.checkPermission();
@@ -28,20 +31,28 @@ class LocationApi {
         // Android's shouldShowRequestPermissionRationale
         // returned true. According to Android guidelines
         // your App should show an explanatory UI now.
-        return Future.error('Location permissions are denied');
+        await Geolocator.openAppSettings();
+        try {
+          await determinePosition();
+        } on Exception catch (e) {
+          // TODO
+        }
+        // return Future.error('Location permissions are denied');
       }
     }
 
     if (permission == LocationPermission.deniedForever) {
       // Permissions are denied forever, handle appropriately.
-      return Future.error(
-          'Location permissions are permanently denied, we cannot request permissions.');
+
+      CustomToast.errorToast(
+          message: "Cannot proceed Without Location permisiion.");
+      await Geolocator.openAppSettings();
+      await determinePosition();
     }
 
     // When we reach here, permissions are granted and we can
     // continue accessing the position of the device.
-    currentPosistion = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.best);
+    currentPosistion = await Geolocator.getCurrentPosition();
     return currentPosistion;
   }
 }

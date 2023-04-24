@@ -75,7 +75,7 @@ class _UploadScreenState extends State<UploadScreen> {
         );
         bool temp = await ProductApi().add(product);
         if (temp) {
-          CustomToast.successToast(message: 'ho giya upload');
+          CustomToast.successToast(message: 'uploaded');
           productname.clear();
           productdecription.clear();
           amount.clear();

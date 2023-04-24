@@ -16,8 +16,8 @@ class UserModel {
   final Uint8List? file;
   late int noOfFollowers;
   late int noOfFollowing;
-  final double longitude;
-  final double latitude;
+   double longitude;
+   double latitude;
 
   UserModel(
       {this.id,

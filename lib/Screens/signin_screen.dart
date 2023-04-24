@@ -4,6 +4,7 @@ import 'package:automobile_management/Screens/signup_screen.dart';
 import 'package:automobile_management/databases/notification_service.dart';
 import 'package:automobile_management/models/device_token.dart';
 import 'package:automobile_management/providers/signin_controller.dart';
+import 'package:automobile_management/services/location_api.dart';
 import 'package:automobile_management/widgets/custom_toast.dart';
 import 'package:automobile_management/models/auth_method.dart';
 import 'package:flutter/material.dart';
@@ -289,13 +290,13 @@ class _SignInScreenState extends State<SignInScreen> {
       await authMethod.getCurrentUserData(controller.email.text.trim());
       CustomToast.successToast(message: "Success");
       String token = await NotificationsServices.getToken() ?? "";
-
-      print("Device Token ## " + token);
+      // print("Device Token ## " + token);
       List<MyDeviceToken> deviceToken = [];
       deviceToken.add(MyDeviceToken(token: token));
       await authMethod.setDeviceToken(deviceToken);
       // localStorage.storeUserData(authMethod.currentUserData!);
       // storage.write('user', authMethod.currentUserData);
+      
       if (context.mounted) {
         authMethod.writeUserdataOnStorage();
         controller.email.clear();

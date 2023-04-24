@@ -1,4 +1,5 @@
 import 'package:automobile_management/Screens/home_page.dart';
+import 'package:automobile_management/Widgets/custom_toast.dart';
 import 'package:automobile_management/models/auth_method.dart';
 import 'package:automobile_management/providers/user/user_provider.dart';
 import 'package:automobile_management/services/location_api.dart';
@@ -22,10 +23,12 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   await GetStorage.init();
+  await init();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessBackgroundHand);
   NotificationsServices.init();
-  await init();
-  await sl.get<LocationApi>().determinePosition();
+  try {
+    await sl.get<LocationApi>().determinePosition();
+  } on Exception catch (e) {}
   runApp(MainApp());
 }
 
@@ -51,57 +54,53 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-        providers: [
-          ChangeNotifierProvider(create: (_) => UserProvider()),
-        ],
-        child: MaterialApp(
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSwatch().copyWith(
-              primary: Colors.black,
-              secondary: Colors.white,
-            ),
-          ),
+    return MaterialApp(
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSwatch().copyWith(
+          primary: Colors.black,
+          secondary: Colors.white,
+        ),
+      ),
 
-          debugShowCheckedModeBanner: false,
-          home: FutureBuilder(
-            future: checkLoginStatus(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData == false || mail == null) {
-                return const SignInScreen();
-              }
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return SafeArea(
-                  child: Container(
-                    color: Colors.white,
-                    child: const Center(
-                        child: CircularProgressIndicator(color: textColor)),
-                  ),
-                );
-              }
-              AuthMethod authMethod = sl.get<AuthMethod>();
+      debugShowCheckedModeBanner: false,
+      home: FutureBuilder(
+        future: checkLoginStatus(),
+        builder: (context, snapshot) {
+          if (snapshot.hasData == false || mail == null) {
+            return const SignInScreen();
+          }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return SafeArea(
+              child: Container(
+                color: Colors.white,
+                child: const Center(
+                    child: CircularProgressIndicator(color: textColor)),
+              ),
+            );
+          }
+          AuthMethod authMethod = sl.get<AuthMethod>();
 
-              if (authMethod.currentUser == null) {
-                authMethod.signinUser(
-                    email: mail.toString(), password: pass.toString());
-                authMethod.getCurrentUserData(mail.toString());
-              }
+          if (authMethod.currentUser == null) {
+            authMethod.signinUser(
+                email: mail.toString(), password: pass.toString());
+            authMethod.getCurrentUserData(mail.toString());
+          }
 
-              return const HomeScreen();
-            },
-          ),
+          return const HomeScreen();
+        },
+      ),
 
-          // initialRoute: '/',
-          // routes: {
-          //   '/': (context) => const SignInScreen(),
-          //   '/login': (context) => const SignInScreen(),
-          //   '/register': (context) => const RegistrationScreen(),
-          //   '/forget_password': (context) => const ForgetPasswordScreen(),
-          //   '/update_password': (context) => const UpdatePasswowrdScreen(),
-          //   '/chatlist': (context) => const ChatListScreen(),
-          //   '/notification': (context) => const NotificationScreen(),
-          //   '/search': (context) => const SearchScreen(title: "Search"),
-          // },
-        ));
+      // initialRoute: '/',
+      // routes: {
+      //   '/': (context) => const SignInScreen(),
+      //   '/login': (context) => const SignInScreen(),
+      //   '/register': (context) => const RegistrationScreen(),
+      //   '/forget_password': (context) => const ForgetPasswordScreen(),
+      //   '/update_password': (context) => const UpdatePasswowrdScreen(),
+      //   '/chatlist': (context) => const ChatListScreen(),
+      //   '/notification': (context) => const NotificationScreen(),
+      //   '/search': (context) => const SearchScreen(title: "Search"),
+      // },
+    );
   }
 }
