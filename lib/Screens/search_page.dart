@@ -282,74 +282,84 @@ class _SearchScreenState extends State<SearchScreen>
                               },
                             );
                           }),
-                      StreamBuilder<QuerySnapshot>(
-                        stream: FirebaseFirestore.instance
+                      FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                        future: FirebaseFirestore.instance
                             .collection('users')
-                            .snapshots(),
+                            .get(),
                         builder: (BuildContext context,
-                            AsyncSnapshot<QuerySnapshot> snapshot) {
+                            AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
+                                snapshot) {
                           if (snapshot.hasError) {
                             return const Text('Something went wrong');
                           }
-
                           if (snapshot.connectionState ==
                               ConnectionState.waiting) {
                             return const Center(
-                                child: CircularProgressIndicator(
-                              color: Colors.black,
-                            ));
+                              child: CircularProgressIndicator(
+                                color: Colors.black,
+                              ),
+                            );
                           }
-
+                          double distance;
+                          final QuerySnapshot<Map<String, dynamic>> users =
+                              snapshot.data!;
                           List<UserModel> userModel = [];
                           if (snapshot.data != null) {
-                            for (var e
-                                in snapshot.data!.docs) {
-                              userModel.add(UserModel.fromDocumentSnapshot(e));
+                            for (var e in users.docs) {
+                              UserModel model =
+                                  UserModel.fromDocumentSnapshot(e);
+                              distance = Geolocator.distanceBetween(
+                                authMethod.currentUserData?.latitude ?? 0.0,
+                                authMethod.currentUserData?.longitude ?? 0.0,
+                                model.latitude ?? 0.0,
+                                model.longitude ?? 0.0,
+                              );
+                              if (distance < 3000) {
+                                userModel
+                                    .add(UserModel.fromDocumentSnapshot(e));
+                              }
                             }
                           }
-
                           return Column(
                             children: [
                               const ReusableCard(
-                                  cardHeight: 40,
-                                  cardWidth: double.infinity,
-                                  colour: textFieldColor,
-                                  cardChild: Center(
-                                      child: Text(
+                                cardHeight: 40,
+                                cardWidth: double.infinity,
+                                colour: textFieldColor,
+                                cardChild: Center(
+                                  child: Text(
                                     "Vendors within 3 Km",
                                     style: TextStyle(
-                                        color: textColor,
-                                        fontWeight: FontWeight.bold),
-                                  ))),
+                                      color: textColor,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
                               Flexible(
                                 child: GridView.builder(
                                   gridDelegate:
                                       const SliverGridDelegateWithFixedCrossAxisCount(
-                                          crossAxisCount: 2),
+                                    crossAxisCount: 2,
+                                  ),
                                   shrinkWrap: true,
                                   physics: const BouncingScrollPhysics(),
-                                  itemCount: snapshot.data!.docs.length,
+                                  itemCount: userModel.length,
                                   itemBuilder:
                                       (BuildContext context, int index) {
+                                    final user = userModel[index];
+                                    distance = Geolocator.distanceBetween(
+                                      authMethod.currentUserData?.latitude ??
+                                          0.0,
+                                      authMethod.currentUserData?.longitude ??
+                                          0.0,
+                                      user.latitude ?? 0.0,
+                                      user.longitude ?? 0.0,
+                                    );
                                     return ChangeNotifierProvider.value(
                                       value: sl.get<AuthMethod>(),
                                       child: Consumer<AuthMethod>(
-                                          builder: (context, value, child) {
-                                        double distance =
-                                            Geolocator.distanceBetween(
-                                                authMethod.currentUserData
-                                                        ?.latitude ??
-                                                    0.0,
-                                                authMethod.currentUserData
-                                                        ?.longitude ??
-                                                    0.0,
-                                                snapshot.data?.docs[index]
-                                                        ['latitude'] ??
-                                                    0.0,
-                                                snapshot.data?.docs[index]
-                                                        ['longitude'] ??
-                                                    0.0);
-                                        if (distance < 3000) {
+                                        builder: (context, value, child) {
                                           return GridTile(
                                             child: Column(
                                               children: [
@@ -358,50 +368,51 @@ class _SearchScreenState extends State<SearchScreen>
                                                     buttonText: isUserFollowed(
                                                         snapshot, index),
                                                     onButtonPressed: () {
-                                                      isUserFollowed(snapshot, index) ==
+                                                      isUserFollowed(snapshot,
+                                                                  index) ==
                                                               "UnFollow"
-                                                          ? authMethod.unfollowUser(
+                                                          ? authMethod
+                                                              .unfollowUser(
                                                               followerUid: authMethod
                                                                   .currentUserData!
                                                                   .id
                                                                   .toString(),
-                                                              followingUid: snapshot
-                                                                      .data!
-                                                                      .docs[index]
-                                                                  ['uid'])
-                                                          : authMethod.followUser(
+                                                              followingUid: user
+                                                                  .id
+                                                                  .toString(),
+                                                            )
+                                                          : authMethod
+                                                              .followUser(
                                                               followerUid: authMethod
                                                                   .currentUserData!
                                                                   .id
                                                                   .toString(),
-                                                              followingUid: snapshot
-                                                                      .data!
-                                                                      .docs[index]
-                                                                  ['uid']);
+                                                              followingUid: user
+                                                                  .id
+                                                                  .toString(),
+                                                            );
                                                     },
                                                     notificationText:
                                                         distance.toString(),
-                                                    username: snapshot
-                                                            .data!.docs[index]
-                                                        ['username'],
+                                                    username: user.username,
                                                     userProfileImage:
                                                         CachedNetworkImage(
-                                                      imageUrl: snapshot.data!
-                                                                  .docs[index]
-                                                              ['photoUrl'] ??
+                                                      imageUrl: user.photoUrl ??
                                                           "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
                                                       fit: BoxFit.cover,
                                                     ),
                                                   ),
-                                                )
+                                                ),
                                               ],
                                             ),
                                           );
-                                        }
-                                        return const Visibility(
-                                            visible: false,
-                                            child: Text("visible"));
-                                      }),
+
+                                          // return const Visibility(
+                                          //   visible: false,
+                                          //   child: Text("visible"),
+                                          // );
+                                        },
+                                      ),
                                     );
                                   },
                                 ),
@@ -459,7 +470,7 @@ class _SearchScreenState extends State<SearchScreen>
   //   print('uid ' + uid);
 
   //   DocumentSnapshot snapshott =
-  //       await FirebaseFirestore.instance.collection('users').doc(uid).get();
+  //       await FirebaseFirestore.instance.collection('userModel').doc(uid).get();
   //   Map<String, dynamic> data = snapshott.data() as Map<String, dynamic>;
   //   String result = data.toString();
   //   print(result.toString());

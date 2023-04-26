@@ -29,6 +29,7 @@ void main() async {
   try {
     await sl.get<LocationApi>().determinePosition();
   } on Exception catch (e) {}
+  sl.get<UserProvider>().init();
   runApp(MainApp());
 }
 

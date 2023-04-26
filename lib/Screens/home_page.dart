@@ -8,14 +8,23 @@ import 'package:automobile_management/providers/user/user_provider.dart';
 import 'package:automobile_management/services/location_api.dart';
 import 'package:automobile_management/widgets/reusable_card.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 import '../Common/constants.dart';
+import '../Widgets/custom_chat_list_card.dart';
+import '../Widgets/profile_card.dart';
+import '../databases/chat_api.dart';
 import '../dependency_injection/injection_container.dart';
+import '../function/time_date_functions.dart';
 import '../models/auth_method.dart';
 import 'package:geolocator/geolocator.dart';
+
+import '../models/chat/chat.dart';
+import '../models/user_model.dart';
+import 'chat_screens/personal_chat_page/personal_chat_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -37,8 +46,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     AuthMethod authMethod = sl.get<AuthMethod>();
+    // sl.get<UserProvider>().init();
     var position = sl.get<LocationApi>().determinePosition();
-    sl.get<UserProvider>().init();
+    
+
     var scaffold = Scaffold(
       backgroundColor: backgroundColor,
       body: SafeArea(
@@ -255,70 +266,204 @@ class _HomeScreenState extends State<HomeScreen> {
                     )
                   ],
                 ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: ReusableCard(
-                        colour: textFieldColor,
-                        cardChild: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Text(
-                              "3.0M",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 35),
+                Container(
+                  height: 220,
+                  child: StreamBuilder<QuerySnapshot>(
+                      stream: ChatAPI().getAllChats(),
+                      builder:
+                          (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                        if (snapshot.hasError) {
+                          return const Text('Something went wrong');
+                        }
+
+                        if (snapshot.connectionState ==
+                            ConnectionState.waiting) {
+                          return const Center(
+                              child: CircularProgressIndicator(
+                            color: Colors.black,
+                          ));
+                        }
+                        // List<Chat> chatsList = [];
+                        return Column(
+                          children: [
+                            const ReusableCard(
+                              cardHeight: 40,
+                              cardWidth: double.infinity,
+                              colour: textFieldColor,
+                              cardChild: Center(
+                                child: Text(
+                                  "Recent Chats",
+                                  style: TextStyle(
+                                    color: textColor,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
                             ),
-                            Text(
-                              "Active Users",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            )
-                          ],
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: ReusableCard(
-                        colour: textFieldColor,
-                        cardChild: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Text(
-                              "48M",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 35),
+                            Flexible(
+                              child: GridView.builder(
+                                physics: const NeverScrollableScrollPhysics(),
+                                gridDelegate:
+                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 5,
+                                ),
+                                itemCount: snapshot.data?.docs.length,
+                                scrollDirection: Axis.vertical,
+                                shrinkWrap: true,
+                                itemBuilder: (context, index) {
+                                  if (snapshot.hasError) {
+                                    return const Text('Something went wrong');
+                                  }
+
+                                  if (snapshot.connectionState ==
+                                      ConnectionState.waiting) {
+                                    return const Center(
+                                        child: CircularProgressIndicator(
+                                      color: Colors.black,
+                                    ));
+                                  }
+
+                                  // print(snapshot.data!.docs[index]["persons"]);
+                                  List<String> participants = [];
+                                  participants.add(snapshot
+                                      .data!.docs[index]["persons"][0]
+                                      .toString());
+                                  participants.add(snapshot
+                                      .data!.docs[index]["persons"][1]
+                                      .toString());
+                                  List<UserModel> listUsers = sl
+                                      .get<UserProvider>()
+                                      .usersFromListOfString(
+                                          uidsList: participants);
+                                  // var lastMessageDetails = snapshot
+                                  //     .data!.docs[index]["last_message"];
+                                  // print(lastMessageDetails['text']);
+
+                                  Chat currentChat = Chat(
+                                      isGroup: false,
+                                      chatID: snapshot.data!.docs[index]
+                                          ["chat_id"],
+                                      persons: participants);
+                                  String? userPic = listUsers[0].id !=
+                                          sl
+                                              .get<AuthMethod>()
+                                              .currentUserData
+                                              ?.id
+                                      ? listUsers[0].photoUrl
+                                      : listUsers[1].photoUrl;
+                                  return GridTile(
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                              builder: (context) =>
+                                                  PersonalChatScreen(
+                                                      chat: currentChat,
+                                                      chatWith: listUsers[0]
+                                                                  .id !=
+                                                              sl
+                                                                  .get<
+                                                                      AuthMethod>()
+                                                                  .currentUserData
+                                                                  ?.id
+                                                          ? listUsers[0]
+                                                          : listUsers[1]),
+                                            ));
+                                      },
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: CachedNetworkImage(
+                                          imageUrl: userPic ??
+                                              "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg",
+                                          imageBuilder:
+                                              (context, imageProvider) =>
+                                                  Container(
+                                            width: 45,
+                                            height: 45,
+                                            decoration: BoxDecoration(
+                                              shape: BoxShape.circle,
+                                              image: DecorationImage(
+                                                image: imageProvider,
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
                             ),
-                            Text(
-                              "Searched",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            )
                           ],
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: ReusableCard(
-                        colour: textFieldColor,
-                        cardChild: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Text(
-                              "1.3K",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 35),
-                            ),
-                            Text(
-                              "Active Pin",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            )
-                          ],
-                        ),
-                      ),
-                    )
-                  ],
-                ),
-                const SizedBox(
-                  height: 180,
-                ),
+                        );
+                      }),
+                )
+                // Row(
+                //   children: [
+                //     Expanded(
+                //       child: ReusableCard(
+                //         colour: textFieldColor,
+                //         cardChild: Column(
+                //           mainAxisAlignment: MainAxisAlignment.center,
+                //           children: const [
+                //             Text(
+                //               "3.0M",
+                //               style: TextStyle(
+                //                   fontWeight: FontWeight.bold, fontSize: 35),
+                //             ),
+                //             Text(
+                //               "Active Users",
+                //               style: TextStyle(fontWeight: FontWeight.bold),
+                //             )
+                //           ],
+                //         ),
+                //       ),
+                //     ),
+                //     Expanded(
+                //       child: ReusableCard(
+                //         colour: textFieldColor,
+                //         cardChild: Column(
+                //           mainAxisAlignment: MainAxisAlignment.center,
+                //           children: const [
+                //             Text(
+                //               "48M",
+                //               style: TextStyle(
+                //                   fontWeight: FontWeight.bold, fontSize: 35),
+                //             ),
+                //             Text(
+                //               "Searched",
+                //               style: TextStyle(fontWeight: FontWeight.bold),
+                //             )
+                //           ],
+                //         ),
+                //       ),
+                //     ),
+                //     Expanded(
+                //       child: ReusableCard(
+                //         colour: textFieldColor,
+                //         cardChild: Column(
+                //           mainAxisAlignment: MainAxisAlignment.center,
+                //           children: const [
+                //             Text(
+                //               "1.3K",
+                //               style: TextStyle(
+                //                   fontWeight: FontWeight.bold, fontSize: 35),
+                //             ),
+                //             Text(
+                //               "Active Pin",
+                //               style: TextStyle(fontWeight: FontWeight.bold),
+                //             )
+                //           ],
+                //         ),
+                //       ),
+                //     )
+                //   ],
+                // ),
+                // const SizedBox(
+                //   height: 180,
+                // ),
               ],
             ),
           ),
@@ -343,7 +488,7 @@ class _HomeScreenState extends State<HomeScreen> {
 //                     }
 //                     final List<DocumentSnapshot> documents =
 //                         snapshot.data!.docs;
-//                     return ListView.builder(
+//                     return GridView.builder(
 //                       physics: const BouncingScrollPhysics(),
 //                       scrollDirection: Axis.horizontal,
 //                       itemCount: documents.length,

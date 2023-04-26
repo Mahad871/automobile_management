@@ -15,10 +15,11 @@ const chatBarMessage = Color.fromRGBO(30, 36, 40, 1);
 const mobileChatBoxColor = Color.fromRGBO(31, 44, 52, 1);
 const greyColor = Colors.grey;
 const blackColor = Colors.black;
+const defualtUserImg =
+    "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg";
 
-
-   String get firebaseServerID =>
-      'AAAA9MYSeK8:APA91bGnI05KPv8IhyfqvrMZR-pOVCBNQ0iTq_e3ZCfqheeU_vEbhb2LpkCkxRDVm1yKl5eXtI2_6Ad2GGgl5CiD6wS1VjhLlj_j2NEEK_m3_AgVQxvNRPLx47ZzCFE4S_qGuvnsuDiQ';
+String get firebaseServerID =>
+    'AAAA9MYSeK8:APA91bGnI05KPv8IhyfqvrMZR-pOVCBNQ0iTq_e3ZCfqheeU_vEbhb2LpkCkxRDVm1yKl5eXtI2_6Ad2GGgl5CiD6wS1VjhLlj_j2NEEK_m3_AgVQxvNRPLx47ZzCFE4S_qGuvnsuDiQ';
 
 const kSendButtonTextStyle = TextStyle(
   color: Colors.lightBlueAccent,
