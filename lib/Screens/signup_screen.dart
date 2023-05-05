@@ -25,7 +25,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Color vendorModeTextColor = Colors.black;
 
   LocationApi locationApi = sl.get<LocationApi>();
-
+  bool obscureText = true;
+  bool obscureText2 = true;
   @override
   Widget build(BuildContext context) {
     final controller = sl.get<SignUpController>();
@@ -187,11 +188,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         padding: const EdgeInsets.only(left: 16),
                         child: TextField(
                           style: const TextStyle(color: textColor),
-                          obscureText: true,
-                          decoration: const InputDecoration(
+                          obscureText: obscureText,
+                          decoration: InputDecoration(
                             border: InputBorder.none,
                             hintText: "Password",
-                            hintStyle: TextStyle(color: hintTextColor),
+                            suffixIcon: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  obscureText = !obscureText;
+                                });
+                              },
+                              child: Icon(obscureText
+                                  ? Icons.visibility
+                                  : Icons.visibility_off),
+                            ),
+                            hintStyle: const TextStyle(color: hintTextColor),
                           ),
                           controller: controller.password,
                         ),
@@ -207,10 +218,20 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         child: TextField(
                           style: const TextStyle(color: textColor),
                           obscureText: true,
-                          decoration: const InputDecoration(
+                          decoration: InputDecoration(
                             border: InputBorder.none,
+                            suffixIcon: GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  obscureText2 = !obscureText2;
+                                });
+                              },
+                              child: Icon(obscureText2
+                                  ? Icons.visibility
+                                  : Icons.visibility_off),
+                            ),
                             hintText: "Confirm Password",
-                            hintStyle: TextStyle(color: hintTextColor),
+                            hintStyle: const TextStyle(color: hintTextColor),
                           ),
                           controller: controller.confirmPassword,
                         ),
