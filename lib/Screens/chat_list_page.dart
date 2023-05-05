@@ -109,8 +109,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
                       return ListTile(
                           title: ChatListCard(
                         userProfileImage: CachedNetworkImage(
-                          imageUrl: userPic ??
-                              defualtUserImg,
+                          imageUrl: userPic ?? defualtUserImg,
                           imageBuilder: (context, imageProvider) => Container(
                             width: 45,
                             height: 45,

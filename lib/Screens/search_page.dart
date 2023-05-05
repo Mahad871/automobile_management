@@ -316,7 +316,7 @@ class _SearchScreenState extends State<SearchScreen>
                               userModel.add(UserModel.fromDocumentSnapshot(e));
                             }
                           }
-                         
+
                           return Column(
                             children: [
                               const ReusableCard(
@@ -442,7 +442,8 @@ class _SearchScreenState extends State<SearchScreen>
       persons.add(authMethod.currentUserData!.id!);
 
       Chat chat = await ChatAPI().createChat(
-          snapshot.data?.docs[index]['pid'] + authMethod.currentUserData?.id,
+          snapshot.data?.docs[index]['created_by_uid'] +
+              authMethod.currentUserData?.id,
           persons);
       Navigator.push(
         context,

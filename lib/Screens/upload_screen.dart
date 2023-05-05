@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-
 import 'package:automobile_management/widgets/custom_toast.dart';
 import 'package:automobile_management/widgets/cutom_text.dart';
 import 'package:automobile_management/function/time_date_function.dart';
