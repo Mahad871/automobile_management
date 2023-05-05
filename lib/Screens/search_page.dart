@@ -304,22 +304,19 @@ class _SearchScreenState extends State<SearchScreen>
                           final QuerySnapshot<Map<String, dynamic>> users =
                               snapshot.data!;
                           List<UserModel> userModel = [];
-                          if (snapshot.data != null) {
-                            for (var e in users.docs) {
-                              UserModel model =
-                                  UserModel.fromDocumentSnapshot(e);
-                              distance = Geolocator.distanceBetween(
-                                authMethod.currentUserData?.latitude ?? 0.0,
-                                authMethod.currentUserData?.longitude ?? 0.0,
-                                model.latitude ?? 0.0,
-                                model.longitude ?? 0.0,
-                              );
-                              if (distance < 3000) {
-                                userModel
-                                    .add(UserModel.fromDocumentSnapshot(e));
-                              }
+                          for (var e in users.docs) {
+                            UserModel model = UserModel.fromDocumentSnapshot(e);
+                            distance = Geolocator.distanceBetween(
+                              authMethod.currentUserData?.latitude ?? 0.0,
+                              authMethod.currentUserData?.longitude ?? 0.0,
+                              model.latitude ?? 0.0,
+                              model.longitude ?? 0.0,
+                            );
+                            if (distance < 3000) {
+                              userModel.add(UserModel.fromDocumentSnapshot(e));
                             }
                           }
+                         
                           return Column(
                             children: [
                               const ReusableCard(
@@ -392,8 +389,9 @@ class _SearchScreenState extends State<SearchScreen>
                                                                   .toString(),
                                                             );
                                                     },
-                                                    notificationText:
-                                                        distance.toString(),
+                                                    notificationText: distance
+                                                        .round()
+                                                        .toString(),
                                                     username: user.username,
                                                     userProfileImage:
                                                         CachedNetworkImage(

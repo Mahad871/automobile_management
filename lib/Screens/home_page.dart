@@ -48,7 +48,6 @@ class _HomeScreenState extends State<HomeScreen> {
     AuthMethod authMethod = sl.get<AuthMethod>();
     // sl.get<UserProvider>().init();
     var position = sl.get<LocationApi>().determinePosition();
-    
 
     var scaffold = Scaffold(
       backgroundColor: backgroundColor,
