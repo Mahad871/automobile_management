@@ -8,6 +8,7 @@ import 'package:automobile_management/models/user_model.dart';
 import 'package:automobile_management/providers/user/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../dependency_injection/injection_container.dart';
 import '../../enums/chat/message_type_enum.dart';
 import '../../models/chat/chat.dart';
 import '../../models/chat/message.dart';
@@ -198,8 +199,7 @@ class _ChatTextFieldState extends State<ChatTextField> {
                       setState(() {
                         isLoading = true;
                       });
-                      final UserProvider userPro =
-                          Provider.of<UserProvider>(context, listen: false);
+                      final UserProvider userPro = sl.get<UserProvider>();
                       final List<String> allUsers = widget.chat.persons;
                       final String otherUID = ChatAPI.othersUID(allUsers)[0];
                       final UserModel receiver = userPro.user(uid: otherUID);
@@ -248,7 +248,6 @@ class _ChatTextFieldState extends State<ChatTextField> {
                         receiver: receiver,
                         sender: sender,
                       );
-                      
                     },
                     splashRadius: 16,
                     icon: Icon(
@@ -282,8 +281,7 @@ class _TextHintButton extends StatelessWidget {
       onTap: () async {
         final int time = TimeDateFunctions.timestamp;
         final String otherUID = ChatAPI.othersUID(chat.persons)[0];
-        final UserProvider userPro =
-            Provider.of<UserProvider>(context, listen: false);
+        final UserProvider userPro = sl.get<UserProvider>();
         final UserModel receiver = userPro.user(uid: otherUID);
         final UserModel sender = userPro.user(uid: AuthMethods.uid);
         final Message msg = Message(

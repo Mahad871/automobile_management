@@ -1,7 +1,7 @@
+import 'package:automobile_management/dependency_injection/injection_container.dart';
 import 'package:automobile_management/providers/user/user_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 
 class CustomValidator {
   static String? email(String? value) {
@@ -32,8 +32,7 @@ class CustomValidator {
     if (!RegExp(r'^[a-zA-Z0-9.a-zA-Z0-9._]+$').hasMatch(value.substring(1))) {
       return ''' Only '.' and '_' signs are allowed''';
     }
-    if (Provider.of<UserProvider>(context, listen: false)
-        .usernameExist(value: value)) {
+    if (sl.get<UserProvider>().usernameExist(value: value)) {
       return 'Username already exist';
     }
     return null;

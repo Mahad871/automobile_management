@@ -172,7 +172,7 @@ class AuthMethod extends ChangeNotifier {
             deviceToken.map((MyDeviceToken e) => e.toMap()).toList()
       });
     } catch (e) {
-      CustomToast.errorToast(message: 'Something Went Wrong');
+      CustomToast.errorToast(message: 'Something Went Wrong Token setup');
     }
   }
 

@@ -29,7 +29,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
   Color vendorModeTextColor = Colors.black;
   List<ChatListCard> chatsList = [
     ChatListCard(
-      userProfileImage: Icon(
+      userProfileImage: const Icon(
         CupertinoIcons.person_alt,
         color: Colors.black,
         size: 30,

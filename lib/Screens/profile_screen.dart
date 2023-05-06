@@ -95,96 +95,87 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 Row(
                   children: [
                     Expanded(
-                      child: Stack(
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Container(
-                              width: double.maxFinite,
-                              decoration: BoxDecoration(boxShadow: [
-                                BoxShadow(
-                                  color: Colors.grey.withOpacity(1),
-                                  spreadRadius: 0,
-                                  blurRadius: 8,
-                                  offset: const Offset(
-                                      1, 1), // changes position of shadow
-                                ),
-                              ], borderRadius: BorderRadius.circular(20)),
-                              child: ChangeNotifierProvider<AuthMethod>.value(
-                                value: authMethod,
-                                child: Consumer<AuthMethod>(
-                                  builder: (context, value, child) => ClipRRect(
-                                    borderRadius: BorderRadius.circular(20),
-                                    child: SizedBox.fromSize(
-                                      size: const Size.fromRadius(90),
-                                      child: authMethod
-                                                  .currentUserData!.photoUrl !=
-                                              null
-                                          ? CachedNetworkImage(
-                                              imageUrl: authMethod
-                                                  .currentUserData!.photoUrl!,
-                                              placeholder: (context, url) =>
-                                                  const Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 120,
-                                                    vertical: 45),
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  color: textColor,
-                                                ),
-                                              ),
-                                              errorWidget:
-                                                  (context, url, error) => Text(
-                                                error,
-                                                style: const TextStyle(
-                                                    color: textColor),
-                                              ),
-                                              fit: BoxFit.cover,
-                                            )
-                                          : CachedNetworkImage(
-                                              imageUrl:
-                                                  "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
-                                              placeholder: (context, url) =>
-                                                  const Padding(
-                                                padding: EdgeInsets.symmetric(
-                                                    horizontal: 120,
-                                                    vertical: 45),
-                                                child:
-                                                    CircularProgressIndicator(
-                                                  color: textColor,
-                                                ),
-                                              ),
-                                              fit: BoxFit.cover,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Container(
+                          width: double.maxFinite,
+                          decoration: BoxDecoration(boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(1),
+                              spreadRadius: 0,
+                              blurRadius: 8,
+                              offset: const Offset(
+                                  1, 1), // changes position of shadow
+                            ),
+                          ], borderRadius: BorderRadius.circular(20)),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: SizedBox.fromSize(
+                                size: const Size.fromRadius(90),
+                                child: _image != null
+                                    ? Stack(
+                                        children: <Widget>[
+                                          Container(
+                                            width: double.maxFinite,
+                                            decoration: BoxDecoration(
+                                              image: DecorationImage(
+                                                  image: MemoryImage(_image!),
+                                                  fit: BoxFit.cover),
                                             ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
+                                          ),
+                                          Align(
+                                            alignment: Alignment.topRight,
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 25.0, top: 20),
+                                              child: ElevatedButton(
+                                                onPressed: () {
+                                                  selectImage();
+                                                },
+                                                style: ElevatedButton.styleFrom(
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            8),
+                                                  ),
+                                                  backgroundColor:
+                                                      textFieldColor,
+                                                  foregroundColor: Colors.black,
+                                                  fixedSize:
+                                                      const Size.fromRadius(15),
+                                                  elevation: 0,
+                                                ),
+                                                child: const Icon(CupertinoIcons
+                                                    .add_circled_solid),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      )
+                                    : GestureDetector(
+                                        onTap: () {
+                                          selectImage();
+                                        },
+                                        child: Container(
+                                          color: Colors.white,
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.center,
+                                            children: [
+                                              Icon(
+                                                Icons
+                                                    .add_circle_outline_outlined,
+                                              ),
+                                              SizedBox(
+                                                width: 10,
+                                              ),
+                                              Text("Add Photo")
+                                            ],
+                                          ),
+                                        ),
+                                      )),
                           ),
-                          Align(
-                            alignment: Alignment.bottomRight,
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(right: 25.0, top: 20),
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  selectImage();
-                                },
-                                style: ElevatedButton.styleFrom(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                  backgroundColor: textFieldColor,
-                                  foregroundColor: Colors.black,
-                                  fixedSize: const Size.fromRadius(15),
-                                  elevation: 0,
-                                ),
-                                child: const Icon(CupertinoIcons.pencil),
-                              ),
-                            ),
-                          )
-                        ],
+                        ),
                       ),
                     )
                   ],

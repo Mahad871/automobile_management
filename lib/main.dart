@@ -26,11 +26,11 @@ void main() async {
   await init();
   sl.get<UserProvider>().init();
   FirebaseMessaging.onBackgroundMessage(_firebaseMessBackgroundHand);
-  NotificationsServices.init();
+  await NotificationsServices.init();
   try {
     await sl.get<LocationApi>().determinePosition();
   } on Exception catch (e) {}
-  sl.get<UserProvider>().refresh();
+  // sl.get<UserProvider>().refresh();
 
   runApp(MainApp());
 }
