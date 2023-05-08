@@ -1,4 +1,6 @@
 import 'package:automobile_management/Screens/update_password_screen.dart';
+import 'package:automobile_management/widgets/custom_toast.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../Common/constants.dart';
 
@@ -15,7 +17,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   Color userModeTextColor = Colors.white;
   Color vendorModeContainerColor = textFieldColor;
   Color vendorModeTextColor = Colors.black;
-
+  TextEditingController emailController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     var scaffold = Scaffold(
@@ -140,6 +142,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                         padding: const EdgeInsets.only(left: 16),
                         child: TextField(
                           style: const TextStyle(color: textColor),
+                          controller: emailController,
                           decoration: const InputDecoration(
                             border: InputBorder.none,
                             hintText: "Email/Username",
@@ -152,9 +155,23 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                       Center(
                         child: GestureDetector(
                           onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) =>
-                                    const UpdatePasswowrdScreen()));
+                            FirebaseAuth.instance
+                                .sendPasswordResetEmail(
+                                    email: emailController.text)
+                                .onError((error, stackTrace) =>
+                                    CustomToast.errorToast(
+                                        message: 'InCorrect Email!!'))
+                                .whenComplete(() => CustomToast.successToast(
+                                    message:
+                                        "An email has been sent/n Update Password from there"))
+                                .then((value) => Navigator.of(context).pop()
+                                    // .push(
+                                    // MaterialPageRoute(
+                                    //     builder: (context) =>
+                                    //         const UpdatePasswowrdScreen()
+
+                                    //         ))
+                                    );
                           },
                           child: Container(
                             height: 55,

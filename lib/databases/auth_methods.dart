@@ -1,14 +1,9 @@
 import 'package:automobile_management/databases/user_api.dart';
 import 'package:automobile_management/models/user_model.dart';
-import 'package:automobile_management/providers/user/user_provider.dart';
 import 'package:automobile_management/widgets/custom_toast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../models/device_token.dart';
-import 'notification_service.dart';
 
 class AuthMethods {
   static final FirebaseAuth _auth = FirebaseAuth.instance;
