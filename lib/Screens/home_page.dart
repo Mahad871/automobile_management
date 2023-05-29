@@ -164,7 +164,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           ElevatedButton(
                             onPressed: () {
                               authMethod.signOutUser();
-                              _storage.remove('user');
+                              _storage.remove('mail');
+                              _storage.remove('pass');
                               Navigator.pushAndRemoveUntil(
                                   context,
                                   MaterialPageRoute(

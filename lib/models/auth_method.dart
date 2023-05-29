@@ -84,7 +84,9 @@ class AuthMethod extends ChangeNotifier {
     try {
       UserCredential cred = await auth.signInWithEmailAndPassword(
           email: email, password: password);
-
+      if (auth.currentUser == null) {
+        return "failed";
+      }
       currentUser = cred;
       await getCurrentUserData(email);
       await sl.get<LocationApi>().determinePosition();
@@ -266,6 +268,8 @@ class AuthMethod extends ChangeNotifier {
   }
 
   void signOutUser() async {
+    currentUser = null;
+    currentUserData = null;
     _storage.remove('user');
     await auth.signOut();
     notifyListeners();

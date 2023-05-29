@@ -1,3 +1,4 @@
+import 'package:automobile_management/databases/chat_api.dart';
 import 'package:automobile_management/models/auth_method.dart';
 import 'package:automobile_management/providers/SearchController.dart';
 import 'package:automobile_management/providers/profile_controller.dart';
@@ -49,5 +50,8 @@ init() {
 
   sl.registerLazySingleton<ChatPageProvider>(
     () => ChatPageProvider(),
+  );
+  sl.registerLazySingleton<ChatAPI>(
+    () => ChatAPI(),
   );
 }

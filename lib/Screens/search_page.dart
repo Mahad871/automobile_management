@@ -334,85 +334,100 @@ class _SearchScreenState extends State<SearchScreen>
                                 ),
                               ),
                               Flexible(
-                                child: GridView.builder(
-                                  gridDelegate:
-                                      const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2,
-                                  ),
-                                  shrinkWrap: true,
-                                  physics: const BouncingScrollPhysics(),
-                                  itemCount: userModel.length,
-                                  itemBuilder:
-                                      (BuildContext context, int index) {
-                                    final user = userModel[index];
-                                    distance = Geolocator.distanceBetween(
-                                      authMethod.currentUserData?.latitude ??
-                                          0.0,
-                                      authMethod.currentUserData?.longitude ??
-                                          0.0,
-                                      user.latitude ?? 0.0,
-                                      user.longitude ?? 0.0,
-                                    );
-                                    return ChangeNotifierProvider.value(
-                                      value: sl.get<AuthMethod>(),
-                                      child: Consumer<AuthMethod>(
-                                        builder: (context, value, child) {
-                                          return GridTile(
-                                            child: Column(
-                                              children: [
-                                                Flexible(
-                                                  child: ProfileCard(
-                                                    buttonText: isUserFollowed(
-                                                        snapshot, index),
-                                                    onButtonPressed: () {
-                                                      isUserFollowed(snapshot,
-                                                                  index) ==
-                                                              "UnFollow"
-                                                          ? authMethod
-                                                              .unfollowUser(
-                                                              followerUid: authMethod
-                                                                  .currentUserData!
-                                                                  .id
-                                                                  .toString(),
-                                                              followingUid: user
-                                                                  .id
-                                                                  .toString(),
-                                                            )
-                                                          : authMethod
-                                                              .followUser(
-                                                              followerUid: authMethod
-                                                                  .currentUserData!
-                                                                  .id
-                                                                  .toString(),
-                                                              followingUid: user
-                                                                  .id
-                                                                  .toString(),
-                                                            );
-                                                    },
-                                                    notificationText: distance
-                                                        .round()
-                                                        .toString(),
-                                                    username: user.username,
-                                                    userProfileImage:
-                                                        CachedNetworkImage(
-                                                      imageUrl: user.photoUrl ??
-                                                          "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
-                                                      fit: BoxFit.cover,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          );
-
-                                          // return const Visibility(
-                                          //   visible: false,
-                                          //   child: Text("visible"),
-                                          // );
-                                        },
+                                child: ChangeNotifierProvider.value(
+                                  value: sl.get<AuthMethod>(),
+                                  child: Consumer<AuthMethod>(
+                                    builder: (context, value, child) =>
+                                        GridView.builder(
+                                      gridDelegate:
+                                          const SliverGridDelegateWithFixedCrossAxisCount(
+                                        crossAxisCount: 2,
                                       ),
-                                    );
-                                  },
+                                      shrinkWrap: true,
+                                      physics: const BouncingScrollPhysics(),
+                                      itemCount: userModel.length,
+                                      itemBuilder:
+                                          (BuildContext context, int index) {
+                                        final user = userModel[index];
+                                        distance = Geolocator.distanceBetween(
+                                          authMethod
+                                                  .currentUserData?.latitude ??
+                                              0.0,
+                                          authMethod
+                                                  .currentUserData?.longitude ??
+                                              0.0,
+                                          user.latitude ?? 0.0,
+                                          user.longitude ?? 0.0,
+                                        );
+                                        return ChangeNotifierProvider.value(
+                                          value: sl.get<AuthMethod>(),
+                                          child: Consumer<AuthMethod>(
+                                            builder: (context, value, child) {
+                                              return GridTile(
+                                                child: Column(
+                                                  children: [
+                                                    Flexible(
+                                                      child: ProfileCard(
+                                                        buttonText:
+                                                            isUserFollowed(
+                                                                snapshot,
+                                                                index),
+                                                        onButtonPressed: () {
+                                                          isUserFollowed(
+                                                                      snapshot,
+                                                                      index) ==
+                                                                  "UnFollow"
+                                                              ? authMethod
+                                                                  .unfollowUser(
+                                                                  followerUid:
+                                                                      authMethod
+                                                                          .currentUserData!
+                                                                          .id
+                                                                          .toString(),
+                                                                  followingUid: user
+                                                                      .id
+                                                                      .toString(),
+                                                                )
+                                                              : authMethod
+                                                                  .followUser(
+                                                                  followerUid:
+                                                                      authMethod
+                                                                          .currentUserData!
+                                                                          .id
+                                                                          .toString(),
+                                                                  followingUid: user
+                                                                      .id
+                                                                      .toString(),
+                                                                );
+                                                        },
+                                                        notificationText:
+                                                            distance
+                                                                .round()
+                                                                .toString(),
+                                                        username: user.username,
+                                                        userProfileImage:
+                                                            CachedNetworkImage(
+                                                          imageUrl: user
+                                                                  .photoUrl ??
+                                                              "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              );
+
+                                              // return const Visibility(
+                                              //   visible: false,
+                                              //   child: Text("visible"),
+                                              // );
+                                            },
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
                                 ),
                               ),
                             ],

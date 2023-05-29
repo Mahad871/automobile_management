@@ -19,7 +19,7 @@ class ChatAPI {
   static const String _collection = 'chat';
   static const String _subCollection = 'messages';
   static final AuthMethod authMethod = sl.get<AuthMethod>();
-
+  List<Chat> chatsList = <Chat>[];
   Stream<List<Message>> messages(String chatID) {
     return _instance
         .collection(_collection)
@@ -37,11 +37,32 @@ class ChatAPI {
     });
   }
 
+  Future<List<Chat>> getchats() async {
+
+  QuerySnapshot<Map<String, dynamic>> querySnapshot = await _instance
+      .collection(_collection)
+      .where('persons', arrayContains: authMethod.currentUserData?.id)
+      .where('is_group', isEqualTo: false)
+      .orderBy('timestamp', descending: true)
+      .get();
+
+  for (DocumentSnapshot<Map<String, dynamic>> element in querySnapshot.docs) {
+    final Chat temp = Chat.fromMap(element.data()!);
+    chatsList.add(temp);
+  }
+
+  print("recent chats: $chatsList");
+
+  return chatsList;
+}
+
+
   Stream<List<Chat>> chats() {
     // Firebase Index need to add
     // Composite Index
     // Collection ID -> chat
     // Field Indexed -> persons Arrays is_group Ascending timestamp Descending
+    chatsList.clear();
     return _instance
         .collection(_collection)
         .where('persons', arrayContains: authMethod.currentUserData?.id)
@@ -49,12 +70,11 @@ class ChatAPI {
         .orderBy('timestamp', descending: true)
         .snapshots()
         .asyncMap((QuerySnapshot<Map<String, dynamic>> event) {
-      List<Chat> chats = <Chat>[];
       for (DocumentSnapshot<Map<String, dynamic>> element in event.docs) {
         final Chat temp = Chat.fromMap(element.data()!);
-        chats.add(temp);
+        chatsList.add(temp);
       }
-      return chats;
+      return chatsList;
     });
   }
 
