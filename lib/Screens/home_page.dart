@@ -365,6 +365,15 @@ class _HomeScreenState extends State<HomeScreen> {
                                     child: Padding(
                                       padding: const EdgeInsets.all(8.0),
                                       child: CachedNetworkImage(
+                                        progressIndicatorBuilder:
+                                            (context, url, progress) =>
+                                                const CircularProgressIndicator(
+                                          color: Colors.black,
+                                        ),
+                                        errorWidget: (context, url, error) =>
+                                            const CircularProgressIndicator(
+                                          color: Colors.black,
+                                        ),
                                         imageUrl: userPic ??
                                             "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg",
                                         imageBuilder:

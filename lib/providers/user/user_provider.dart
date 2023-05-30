@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:automobile_management/databases/auth_methods.dart';
+import 'package:automobile_management/models/device_token.dart';
 import 'package:automobile_management/models/user_model.dart';
 import 'package:flutter/material.dart';
 import 'package:automobile_management/databases/user_api.dart';
@@ -73,6 +74,22 @@ class UserProvider extends ChangeNotifier {
       tempList.add(_user[_indexOf(element)]);
     }
     return tempList;
+  }
+
+  List<MyDeviceToken> deviceTokensFromListOfString(
+      {required List<String> uidsList}) {
+    List<UserModel> tempList = <UserModel>[];
+    List<MyDeviceToken> tokens = <MyDeviceToken>[];
+    for (String element in uidsList) {
+      tempList.add(_user[_indexOf(element)]);
+    }
+
+    for (UserModel e in tempList) {
+      if (e.deviceToken != null) {
+        tokens.add(e.deviceToken![0]);
+      }
+    }
+    return tokens;
   }
 
   onSearch(String? value) {

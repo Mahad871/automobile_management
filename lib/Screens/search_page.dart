@@ -7,9 +7,13 @@ import 'package:automobile_management/Screens/notificastion_page.dart';
 import 'package:automobile_management/Widgets/custom_toast.dart';
 import 'package:automobile_management/Widgets/reusable_card.dart';
 import 'package:automobile_management/databases/chat_api.dart';
+import 'package:automobile_management/databases/notification_api.dart';
+import 'package:automobile_management/databases/notification_service.dart';
 import 'package:automobile_management/models/chat/chat.dart';
+import 'package:automobile_management/models/device_token.dart';
 import 'package:automobile_management/models/user_model.dart';
 import 'package:automobile_management/providers/SearchController.dart';
+import 'package:automobile_management/providers/user/user_provider.dart';
 import 'package:automobile_management/screens/chat_screens/personal_chat_page/personal_chat_screen.dart';
 import 'package:automobile_management/widgets/profile_card.dart';
 import 'package:automobile_management/models/auth_method.dart';
@@ -156,7 +160,25 @@ class _SearchScreenState extends State<SearchScreen>
                           shape: const CircleBorder(),
                           side: const BorderSide(style: BorderStyle.solid)),
                       onPressed: () {
-                       
+                        List<String> followersList = authMethod
+                            .currentUserData!.followers
+                            .cast<String>();
+                        List<MyDeviceToken> followerTokens = sl
+                            .get<UserProvider>()
+                            .deviceTokensFromListOfString(
+                                uidsList: followersList);
+
+                        NotificationsServices().sendSubsceibtionNotification(
+                            deviceToken: followerTokens,
+                            messageTitle: "Product Search",
+                            messageBody: authMethod.currentUserData!.username
+                                    .toString() +
+                                " Just Searched for a product",
+                            data: <String>[
+                              'Product Search',
+                              'Image Search',
+                              'Search'
+                            ]);
                       },
                       child: const Icon(Icons.upload_file_sharp)),
                 ),
