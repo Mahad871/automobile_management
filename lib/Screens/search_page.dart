@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:automobile_management/Common/constants.dart';
 // import 'package:automobile_management/Screens/chat/screens/mobile_chat_screen.dart';
 import 'package:automobile_management/Screens/chat_list_page.dart';
+import 'package:automobile_management/Screens/image_search_screen.dart';
 import 'package:automobile_management/Screens/notificastion_page.dart';
 import 'package:automobile_management/Widgets/custom_toast.dart';
 import 'package:automobile_management/Widgets/reusable_card.dart';
@@ -160,25 +161,11 @@ class _SearchScreenState extends State<SearchScreen>
                           shape: const CircleBorder(),
                           side: const BorderSide(style: BorderStyle.solid)),
                       onPressed: () {
-                        List<String> followersList = authMethod
-                            .currentUserData!.followers
-                            .cast<String>();
-                        List<MyDeviceToken> followerTokens = sl
-                            .get<UserProvider>()
-                            .deviceTokensFromListOfString(
-                                uidsList: followersList);
-
-                        NotificationsServices().sendSubsceibtionNotification(
-                            deviceToken: followerTokens,
-                            messageTitle: "Product Search",
-                            messageBody: authMethod.currentUserData!.username
-                                    .toString() +
-                                " Just Searched for a product",
-                            data: <String>[
-                              'Product Search',
-                              'Image Search',
-                              'Search'
-                            ]);
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const ImageSearchScreen(),
+                            ));
                       },
                       child: const Icon(Icons.upload_file_sharp)),
                 ),
@@ -324,6 +311,7 @@ class _SearchScreenState extends State<SearchScreen>
                           final QuerySnapshot<Map<String, dynamic>> users =
                               snapshot.data!;
                           List<UserModel> userModel = [];
+                          List<String> isFollowed = [];
                           for (var e in users.docs) {
                             UserModel model = UserModel.fromDocumentSnapshot(e);
                             distance = Geolocator.distanceBetween(
@@ -334,6 +322,8 @@ class _SearchScreenState extends State<SearchScreen>
                             );
                             if (distance < 3000) {
                               userModel.add(UserModel.fromDocumentSnapshot(e));
+                              isFollowed.add(isUserFollowed(
+                                  snapshot, userModel.last.id.toString()));
                             }
                           }
 
@@ -379,70 +369,57 @@ class _SearchScreenState extends State<SearchScreen>
                                           user.latitude ?? 0.0,
                                           user.longitude ?? 0.0,
                                         );
-                                        return ChangeNotifierProvider.value(
-                                          value: sl.get<AuthMethod>(),
-                                          child: Consumer<AuthMethod>(
-                                            builder: (context, value, child) {
-                                              return GridTile(
-                                                child: Column(
-                                                  children: [
-                                                    Flexible(
-                                                      child: ProfileCard(
-                                                        buttonText:
-                                                            isUserFollowed(
-                                                                snapshot,
-                                                                index),
-                                                        onButtonPressed: () {
-                                                          isUserFollowed(
-                                                                      snapshot,
-                                                                      index) ==
-                                                                  "UnFollow"
-                                                              ? authMethod
-                                                                  .unfollowUser(
-                                                                  followerUid:
-                                                                      authMethod
-                                                                          .currentUserData!
-                                                                          .id
-                                                                          .toString(),
-                                                                  followingUid: user
-                                                                      .id
-                                                                      .toString(),
-                                                                )
-                                                              : authMethod
-                                                                  .followUser(
-                                                                  followerUid:
-                                                                      authMethod
-                                                                          .currentUserData!
-                                                                          .id
-                                                                          .toString(),
-                                                                  followingUid: user
-                                                                      .id
-                                                                      .toString(),
-                                                                );
-                                                        },
-                                                        notificationText:
-                                                            distance
-                                                                .round()
-                                                                .toString(),
-                                                        username: user.username,
-                                                        userProfileImage:
-                                                            CachedNetworkImage(
-                                                          imageUrl: user
-                                                                  .photoUrl ??
-                                                              "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
-                                                          fit: BoxFit.cover,
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ],
-                                                ),
-                                              );
 
-                                              // return const Visibility(
-                                              //   visible: false,
-                                              //   child: Text("visible"),
-                                              // );
-                                            },
+                                        return GridTile(
+                                          child: Column(
+                                            children: [
+                                              Flexible(
+                                                child: ProfileCard(
+                                                  buttonText: isFollowed[index],
+                                                  onButtonPressed: () {
+                                                    isFollowed[index] ==
+                                                            "UnFollow"
+                                                        ? authMethod
+                                                            .unfollowUser(
+                                                            followerUid: authMethod
+                                                                .currentUserData!
+                                                                .id
+                                                                .toString(),
+                                                            followingUid: user
+                                                                .id
+                                                                .toString(),
+                                                          )
+                                                        : authMethod.followUser(
+                                                            followerUid: authMethod
+                                                                .currentUserData!
+                                                                .id
+                                                                .toString(),
+                                                            followingUid: user
+                                                                .id
+                                                                .toString(),
+                                                          );
+                                                    setState(() {
+                                                      isFollowed[index] =
+                                                          isUserFollowed(
+                                                              snapshot,
+                                                              userModel[index]
+                                                                  .id
+                                                                  .toString());
+                                                    });
+                                                  },
+                                                  notificationText: distance
+                                                      .round()
+                                                      .toString(),
+                                                  username: user.username,
+                                                  userProfileImage:
+                                                      CachedNetworkImage(
+                                                    imageUrl: user.photoUrl ??
+                                                        "https://as1.ftcdn.net/v2/jpg/03/46/83/96/1000_F_346839683_6nAPzbhpSkIpb8pmAwufkC7c5eD7wYws.jpg",
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         );
                                       },
@@ -463,6 +440,21 @@ class _SearchScreenState extends State<SearchScreen>
         ),
       ),
     );
+  }
+
+  void sendImageSearchNotification() {
+    List<String> followersList =
+        authMethod.currentUserData!.followers.cast<String>();
+    List<MyDeviceToken> followerTokens = sl
+        .get<UserProvider>()
+        .deviceTokensFromListOfString(uidsList: followersList);
+
+    NotificationsServices().sendSubsceibtionNotification(
+        deviceToken: followerTokens,
+        messageTitle: "Product Search",
+        messageBody:
+            "${authMethod.currentUserData!.username} Just Searched for a product",
+        data: <String>['Product Search', 'Image Search', 'Search']);
   }
 
   Future<void> createChat(AsyncSnapshot<QuerySnapshot<Object?>> snapshot,
@@ -491,9 +483,12 @@ class _SearchScreenState extends State<SearchScreen>
   }
 
   String isUserFollowed(
-      AsyncSnapshot<QuerySnapshot<Object?>> snapshot, int index) {
-    return authMethod.currentUserData!.following
-            .contains(snapshot.data!.docs[index]['uid'])
+      AsyncSnapshot<QuerySnapshot<Object?>> snapshot, String uid) {
+    if (authMethod.currentUserData!.noOfFollowing == 0 ||
+        authMethod.currentUserData?.following == null) {
+      return 'follow';
+    }
+    return authMethod.currentUserData!.following.contains(uid)
         ? "UnFollow"
         : "Follow";
   }

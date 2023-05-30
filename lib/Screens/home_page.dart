@@ -3,7 +3,6 @@ import 'package:automobile_management/Screens/profile_screen.dart';
 import 'package:automobile_management/Screens/search_page.dart';
 import 'package:automobile_management/Screens/signin_screen.dart';
 import 'package:automobile_management/Screens/upload_screen.dart';
-import 'package:automobile_management/databases/notification_service.dart';
 import 'package:automobile_management/providers/user/user_provider.dart';
 import 'package:automobile_management/services/location_api.dart';
 import 'package:automobile_management/widgets/reusable_card.dart';
@@ -14,14 +13,9 @@ import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
 import '../Common/constants.dart';
-import '../Widgets/custom_chat_list_card.dart';
-import '../Widgets/profile_card.dart';
 import '../databases/chat_api.dart';
 import '../dependency_injection/injection_container.dart';
-import '../function/time_date_functions.dart';
 import '../models/auth_method.dart';
-import 'package:geolocator/geolocator.dart';
-
 import '../models/chat/chat.dart';
 import '../models/user_model.dart';
 import 'chat_screens/personal_chat_page/personal_chat_screen.dart';
@@ -401,70 +395,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     },
                   ),
                 )
-                // Row(
-                //   children: [
-                //     Expanded(
-                //       child: ReusableCard(
-                //         colour: textFieldColor,
-                //         cardChild: Column(
-                //           mainAxisAlignment: MainAxisAlignment.center,
-                //           children: const [
-                //             Text(
-                //               "3.0M",
-                //               style: TextStyle(
-                //                   fontWeight: FontWeight.bold, fontSize: 35),
-                //             ),
-                //             Text(
-                //               "Active Users",
-                //               style: TextStyle(fontWeight: FontWeight.bold),
-                //             )
-                //           ],
-                //         ),
-                //       ),
-                //     ),
-                //     Expanded(
-                //       child: ReusableCard(
-                //         colour: textFieldColor,
-                //         cardChild: Column(
-                //           mainAxisAlignment: MainAxisAlignment.center,
-                //           children: const [
-                //             Text(
-                //               "48M",
-                //               style: TextStyle(
-                //                   fontWeight: FontWeight.bold, fontSize: 35),
-                //             ),
-                //             Text(
-                //               "Searched",
-                //               style: TextStyle(fontWeight: FontWeight.bold),
-                //             )
-                //           ],
-                //         ),
-                //       ),
-                //     ),
-                //     Expanded(
-                //       child: ReusableCard(
-                //         colour: textFieldColor,
-                //         cardChild: Column(
-                //           mainAxisAlignment: MainAxisAlignment.center,
-                //           children: const [
-                //             Text(
-                //               "1.3K",
-                //               style: TextStyle(
-                //                   fontWeight: FontWeight.bold, fontSize: 35),
-                //             ),
-                //             Text(
-                //               "Active Pin",
-                //               style: TextStyle(fontWeight: FontWeight.bold),
-                //             )
-                //           ],
-                //         ),
-                //       ),
-                //     )
-                //   ],
-                // ),
-                // const SizedBox(
-                //   height: 180,
-                // ),
               ],
             ),
           ),
