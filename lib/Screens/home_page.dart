@@ -42,6 +42,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Color vendorModeContainerColor = textFieldColor;
   Color vendorModeTextColor = Colors.black;
   final GetStorage _storage = GetStorage();
+  List<Chat> chatsList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -269,136 +270,127 @@ class _HomeScreenState extends State<HomeScreen> {
                 Container(
                   height: 220,
                   child: StreamBuilder<QuerySnapshot>(
-                      stream: ChatAPI().getAllChats(),
-                      builder:
-                          (context, AsyncSnapshot<QuerySnapshot> snapshot) {
-                        if (snapshot.hasError) {
-                          return const Text('Something went wrong');
-                        }
+                    stream: ChatAPI().getAllChats(),
+                    builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                      if (snapshot.hasError) {
+                        return const Text('Something went wrong');
+                      }
 
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Center(
-                              child: CircularProgressIndicator(
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(
                             color: Colors.black,
-                          ));
+                          ),
+                        );
+                      }
+
+                      // Clear the chats list
+                      chatsList.clear();
+
+                      // Add chats to the list
+                      for (var doc in snapshot.data?.docs ?? []) {
+                        List<String> participants =
+                            List<String>.from(doc["persons"]);
+                        Chat currentChat = Chat(
+                          isGroup: false,
+                          chatID: doc["chat_id"],
+                          persons: participants,
+                        );
+                        if (!chatsList.contains(currentChat)) {
+                          chatsList.add(currentChat);
                         }
-                        // List<Chat> chatsList = [];
-                        return Column(
-                          children: [
-                            const ReusableCard(
-                              cardHeight: 40,
-                              cardWidth: double.infinity,
-                              colour: textFieldColor,
-                              cardChild: Center(
-                                child: Text(
-                                  "Recent Chats",
-                                  style: TextStyle(
-                                    color: textColor,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                      }
+
+                      return Column(
+                        children: [
+                          const ReusableCard(
+                            cardHeight: 40,
+                            cardWidth: double.infinity,
+                            colour: textFieldColor,
+                            cardChild: Center(
+                              child: Text(
+                                "Recent Chats",
+                                style: TextStyle(
+                                  color: textColor,
+                                  fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
-                            Flexible(
-                              child: GridView.builder(
-                                physics: const NeverScrollableScrollPhysics(),
-                                gridDelegate:
-                                    const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 5,
-                                ),
-                                itemCount: snapshot.data?.docs.length,
-                                scrollDirection: Axis.vertical,
-                                shrinkWrap: true,
-                                itemBuilder: (context, index) {
-                                  if (snapshot.hasError) {
-                                    return const Text('Something went wrong');
-                                  }
+                          ),
+                          Flexible(
+                            child: GridView.builder(
+                              physics: const NeverScrollableScrollPhysics(),
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 5,
+                              ),
+                              itemCount: chatsList.length,
+                              scrollDirection: Axis.vertical,
+                              shrinkWrap: true,
+                              itemBuilder: (context, index) {
+                                Chat currentChat = chatsList[index];
+                                List<String> participants = currentChat.persons;
 
-                                  if (snapshot.connectionState ==
-                                      ConnectionState.waiting) {
-                                    return const Center(
-                                        child: CircularProgressIndicator(
-                                      color: Colors.black,
-                                    ));
-                                  }
+                                List<UserModel> listUsers = sl
+                                    .get<UserProvider>()
+                                    .usersFromListOfString(
+                                      uidsList: participants,
+                                    );
 
-                                  // print(snapshot.data!.docs[index]["persons"]);
-                                  List<String> participants = [];
-                                  participants.add(snapshot
-                                      .data!.docs[index]["persons"][0]
-                                      .toString());
-                                  participants.add(snapshot
-                                      .data!.docs[index]["persons"][1]
-                                      .toString());
-                                  List<UserModel> listUsers = sl
-                                      .get<UserProvider>()
-                                      .usersFromListOfString(
-                                          uidsList: participants);
-                                  // var lastMessageDetails = snapshot
-                                  //     .data!.docs[index]["last_message"];
-                                  // print(lastMessageDetails['text']);
+                                String? userPic = listUsers[0].id !=
+                                        sl.get<AuthMethod>().currentUserData?.id
+                                    ? listUsers[0].photoUrl
+                                    : listUsers[1].photoUrl;
 
-                                  Chat currentChat = Chat(
-                                      isGroup: false,
-                                      chatID: snapshot.data!.docs[index]
-                                          ["chat_id"],
-                                      persons: participants);
-                                  String? userPic = listUsers[0].id !=
-                                          sl
-                                              .get<AuthMethod>()
-                                              .currentUserData
-                                              ?.id
-                                      ? listUsers[0].photoUrl
-                                      : listUsers[1].photoUrl;
-                                  return GridTile(
-                                    child: GestureDetector(
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) =>
-                                                  PersonalChatScreen(
-                                                      chat: currentChat,
-                                                      chatWith: listUsers[0]
-                                                                  .id !=
-                                                              sl
-                                                                  .get<
-                                                                      AuthMethod>()
-                                                                  .currentUserData
-                                                                  ?.id
-                                                          ? listUsers[0]
-                                                          : listUsers[1]),
-                                            ));
-                                      },
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: CachedNetworkImage(
-                                          imageUrl: userPic ??
-                                              "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg",
-                                          imageBuilder:
-                                              (context, imageProvider) =>
-                                                  Container(
-                                            width: 45,
-                                            height: 45,
-                                            decoration: BoxDecoration(
-                                              shape: BoxShape.circle,
-                                              image: DecorationImage(
-                                                image: imageProvider,
-                                                fit: BoxFit.cover,
-                                              ),
+                                return GridTile(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              PersonalChatScreen(
+                                            chat: currentChat,
+                                            chatWith: listUsers[0].id !=
+                                                    sl
+                                                        .get<AuthMethod>()
+                                                        .currentUserData
+                                                        ?.id
+                                                ? listUsers[0]
+                                                : listUsers[1],
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: CachedNetworkImage(
+                                        imageUrl: userPic ??
+                                            "https://thumbs.dreamstime.com/b/default-avatar-profile-icon-vector-social-media-user-portrait-176256935.jpg",
+                                        imageBuilder:
+                                            (context, imageProvider) =>
+                                                Container(
+                                          width: 45,
+                                          height: 45,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            image: DecorationImage(
+                                              image: imageProvider,
+                                              fit: BoxFit.cover,
                                             ),
                                           ),
                                         ),
                                       ),
                                     ),
-                                  );
-                                },
-                              ),
+                                  ),
+                                );
+                              },
                             ),
-                          ],
-                        );
-                      }),
+                          ),
+                        ],
+                      );
+                    },
+                  ),
                 )
                 // Row(
                 //   children: [

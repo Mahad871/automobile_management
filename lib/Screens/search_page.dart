@@ -156,11 +156,9 @@ class _SearchScreenState extends State<SearchScreen>
                           shape: const CircleBorder(),
                           side: const BorderSide(style: BorderStyle.solid)),
                       onPressed: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => const NotificationScreen(),
-                        ));
+                       
                       },
-                      child: const Icon(Icons.mic)),
+                      child: const Icon(Icons.upload_file_sharp)),
                 ),
               ],
             ),

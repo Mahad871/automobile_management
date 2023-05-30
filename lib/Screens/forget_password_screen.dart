@@ -18,6 +18,7 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
   Color vendorModeContainerColor = textFieldColor;
   Color vendorModeTextColor = Colors.black;
   TextEditingController emailController = TextEditingController();
+  bool isLoading = false;
   @override
   Widget build(BuildContext context) {
     var scaffold = Scaffold(
@@ -155,6 +156,9 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                       Center(
                         child: GestureDetector(
                           onTap: () {
+                            setState(() {
+                              isLoading = true;
+                            });
                             FirebaseAuth.instance
                                 .sendPasswordResetEmail(
                                     email: emailController.text)
@@ -164,7 +168,12 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                                 .whenComplete(() => CustomToast.successToast(
                                     message:
                                         "An email has been sent/n Update Password from there"))
-                                .then((value) => Navigator.of(context).pop()
+                                .then((value) {
+                              setState(() {
+                                isLoading = false;
+                              });
+                              Navigator.of(context).pop();
+                            }
                                     // .push(
                                     // MaterialPageRoute(
                                     //     builder: (context) =>
@@ -180,16 +189,20 @@ class _ForgetPasswordScreenState extends State<ForgetPasswordScreen> {
                               borderRadius: BorderRadius.circular(100),
                               color: Colors.black,
                             ),
-                            child: const Center(
+                            child: Center(
                               child: Padding(
-                                padding: EdgeInsets.all(10.0),
-                                child: Text(
-                                  ' Send',
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 18),
-                                ),
+                                padding: const EdgeInsets.all(10.0),
+                                child: isLoading
+                                    ? const CircularProgressIndicator(
+                                        color: Colors.white,
+                                      )
+                                    : const Text(
+                                        ' Send',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 18),
+                                      ),
                               ),
                             ),
                           ),

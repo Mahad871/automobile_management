@@ -37,23 +37,8 @@ void main() async {
 
 class MainApp extends StatelessWidget {
   MainApp({super.key});
-  final _storage = GetStorage();
-  late var mail;
-  late var pass;
-
-  Future<bool> checkLoginStatus() async {
-    mail = null;
-    mail = _storage.read('mail');
-    pass = _storage.read('pass');
-    print("Storage read result: $mail");
-    // print(val['email']);
-    // _storage.erase();
-    if (mail == null) {
-      return false;
-    } else {
-      return true;
-    }
-  }
+  
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -66,32 +51,7 @@ class MainApp extends StatelessWidget {
       ),
 
       debugShowCheckedModeBanner: false,
-      home: FutureBuilder(
-        future: checkLoginStatus(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData == false || mail == null) {
-            return const SignInScreen();
-          }
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return SafeArea(
-              child: Container(
-                color: Colors.white,
-                child: const Center(
-                    child: CircularProgressIndicator(color: textColor)),
-              ),
-            );
-          }
-          AuthMethod authMethod = sl.get<AuthMethod>();
-
-          if (authMethod.currentUser == null) {
-            authMethod.signinUser(
-                email: mail.toString(), password: pass.toString());
-            authMethod.getCurrentUserData(mail.toString());
-          }
-
-          return const HomeScreen();
-        },
-      ),
+      home: SignInScreen()
 
       // initialRoute: '/',
       // routes: {

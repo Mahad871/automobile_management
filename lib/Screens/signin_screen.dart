@@ -27,16 +27,41 @@ class _SignInScreenState extends State<SignInScreen> {
   Color vendorModeTextColor = Colors.black;
   String status = " ";
   GetStorage storage = GetStorage();
+  bool passwordhidden = true;
+  final _storage = GetStorage();
+  late var mail;
+  late var pass;
+  AuthMethod authMethod = sl.get<AuthMethod>();
+  final controller = sl.get<SignInController>();
+
+  bool checkLoginStatus() {
+    mail = null;
+    mail = _storage.read('mail');
+    pass = _storage.read('pass');
+    print("Storage read result: $mail");
+    // print(val['email']);
+    // _storage.erase();
+    if (mail == null) {
+      return false;
+    } else {
+      return true;
+    }
+  }
 
   @override
   void initState() {
     super.initState();
+    if (checkLoginStatus()) {
+      CustomToast.successToast(
+          message: "Logging in Automatically!", duration: 7);
+      controller.email.text = mail;
+      controller.password.text = pass;
+      signUser(authMethod, controller, context);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    AuthMethod authMethod = sl.get<AuthMethod>();
-    final controller = sl.get<SignInController>();
     var scaffold = Scaffold(
       backgroundColor: backgroundColor,
       body: Column(
@@ -178,11 +203,23 @@ class _SignInScreenState extends State<SignInScreen> {
                         padding: const EdgeInsets.only(left: 16),
                         child: TextField(
                           style: const TextStyle(color: textColor),
-                          obscureText: true,
-                          decoration: const InputDecoration(
+                          obscureText: passwordhidden,
+                          decoration: InputDecoration(
                             border: InputBorder.none,
                             hintText: "Password",
                             hintStyle: TextStyle(color: hintTextColor),
+                            suffixIcon: IconButton(
+                              onPressed: () {
+                                setState(() {
+                                  passwordhidden = !passwordhidden;
+                                });
+                              },
+                              icon: Icon(
+                                passwordhidden
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                              ),
+                            ),
                           ),
                           controller: controller.password,
                         ),
@@ -296,7 +333,41 @@ class _SignInScreenState extends State<SignInScreen> {
       await authMethod.setDeviceToken(deviceToken);
       // localStorage.storeUserData(authMethod.currentUserData!);
       // storage.write('user', authMethod.currentUserData);
-      
+
+      if (context.mounted) {
+        authMethod.writeUserdataOnStorage();
+        controller.email.clear();
+        controller.password.clear();
+        Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const HomeScreen(),
+            ),
+            (route) => false);
+      }
+    } else {
+      CustomToast.errorToast(message: status);
+      setState(() {});
+    }
+  }
+
+  Future<void> autosignUser(AuthMethod authMethod, String email, String passw,
+      BuildContext context) async {
+    setState(() {
+      status = "loading";
+    });
+    status = await authMethod.signinUser(email: email, password: passw);
+    if (status == "success") {
+      await authMethod.getCurrentUserData(email);
+      CustomToast.successToast(message: "Success");
+      String token = await NotificationsServices.getToken() ?? "";
+      // print("Device Token ## " + token);
+      List<MyDeviceToken> deviceToken = [];
+      deviceToken.add(MyDeviceToken(token: token));
+      await authMethod.setDeviceToken(deviceToken);
+      // localStorage.storeUserData(authMethod.currentUserData!);
+      // storage.write('user', authMethod.currentUserData);
+
       if (context.mounted) {
         authMethod.writeUserdataOnStorage();
         controller.email.clear();
