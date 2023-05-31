@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:automobile_management/Common/constants.dart';
 // import 'package:automobile_management/Screens/chat/screens/mobile_chat_screen.dart';
 import 'package:automobile_management/Screens/chat_list_page.dart';
+import 'package:automobile_management/Screens/google_map.dart';
 import 'package:automobile_management/Screens/image_search_screen.dart';
 import 'package:automobile_management/Screens/notificastion_page.dart';
 import 'package:automobile_management/Widgets/custom_toast.dart';
@@ -329,11 +330,18 @@ class _SearchScreenState extends State<SearchScreen>
 
                           return Column(
                             children: [
-                              const ReusableCard(
+                              ReusableCard(
                                 cardHeight: 40,
                                 cardWidth: double.infinity,
                                 colour: textFieldColor,
-                                cardChild: Center(
+                                onPress: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => MapsPage(),
+                                      ));
+                                },
+                                cardChild: const Center(
                                   child: Text(
                                     "Vendors within 3 Km",
                                     style: TextStyle(
