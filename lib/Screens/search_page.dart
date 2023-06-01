@@ -338,7 +338,8 @@ class _SearchScreenState extends State<SearchScreen>
                                   Navigator.push(
                                       context,
                                       MaterialPageRoute(
-                                        builder: (context) => MapsPage(),
+                                        builder: (context) =>
+                                            MapsPage(users: userModel),
                                       ));
                                 },
                                 cardChild: const Center(
