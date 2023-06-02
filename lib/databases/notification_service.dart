@@ -1,12 +1,15 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:io';
 import 'package:automobile_management/databases/user_api.dart';
+import 'package:automobile_management/function/time_date_function.dart';
 import 'package:automobile_management/models/user_model.dart';
 import 'package:automobile_management/utilities/utilities.dart';
 import 'package:http/http.dart' as http;
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:flutter/foundation.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:rxdart/rxdart.dart';
 
@@ -54,22 +57,51 @@ class NotificationsServices {
           badge: true,
           sound: true,
         );
-    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) async {
       if (kDebugMode) {
         debugPrint('Message data: ${message.data}');
       }
       if (message.notification != null) {
-        _notificationDetails();
-        showNotification(
-          title: message.notification!.title!,
-          body: message.notification!.body!,
-          payload:
-              '${message.data['key1']}-${message.data['key2']}-${message.data['key3']}',
-        );
+        // _notificationDetails();
+        bool validURL = Uri.parse(message.notification!.body!).isAbsolute;
+        if (validURL) {
+          String? imgPath = await _downloadAndSavePicture(
+              message.notification!.body!, TimeStamp.timestamp.toString());
+          _notificationDetails(message.notification!.title!,
+              message.notification!.body!, imgPath!, true);
+          print("IMAGE PATH CHECK: $imgPath");
+          showNotification(
+            title: message.notification!.title!,
+            body: imgPath,
+            payload:
+                '${message.data['key1']}-${message.data['key2']}-${message.data['key3']}',
+          );
+        } else {
+          _notificationDetails(message.notification!.title!,
+              message.notification!.body!, '', false);
+          print("IMAGE PATH CHECK: ${message.notification!.body!}");
+          showNotification(
+            title: message.notification!.title!,
+            body: message.notification!.body!,
+            payload:
+                '${message.data['key1']}-${message.data['key2']}-${message.data['key3']}',
+          );
+        }
       }
     });
     await getToken();
     log('NOTIFICATION INIT DONE');
+  }
+
+  static Future<String?> _downloadAndSavePicture(
+      String? url, String fileName) async {
+    if (url == null) return null;
+    final Directory directory = await getApplicationDocumentsDirectory();
+    final String filePath = '${directory.path}/$fileName';
+    final http.Response response = await http.get(Uri.parse(url));
+    final File file = File(filePath);
+    await file.writeAsBytes(response.bodyBytes);
+    return filePath;
   }
 
   Future<bool> sendSubsceibtionNotification({
@@ -145,7 +177,25 @@ class NotificationsServices {
     return dToken;
   }
 
-  static NotificationDetails _notificationDetails() {
+  static NotificationDetails _notificationDetails(
+      String title, String body, String imgpath, bool hasPicture) {
+    if (hasPicture) {
+      return NotificationDetails(
+        android: AndroidNotificationDetails('channel Id', 'channel Name',
+            channelDescription: 'channel description',
+            playSound: true,
+            styleInformation: buildBigPictureStyleInformation(
+                title, body, imgpath, hasPicture),
+            importance: Importance.max),
+        iOS: const DarwinNotificationDetails(
+          presentAlert: true,
+          presentSound: true,
+          presentBadge: true,
+          // attachments:  [if (imgpath != null) IOSNotificationAttachment(imgpath)],
+        ),
+      );
+    }
+
     return const NotificationDetails(
       android: AndroidNotificationDetails('channel Id', 'channel Name',
           channelDescription: 'channel description',
@@ -159,14 +209,47 @@ class NotificationsServices {
     );
   }
 
+  static BigPictureStyleInformation? buildBigPictureStyleInformation(
+    String title,
+    String body,
+    String? picturePath,
+    bool showBigPicture,
+  ) {
+    if (picturePath == null) return null;
+    final FilePathAndroidBitmap filePath = FilePathAndroidBitmap(picturePath);
+    return BigPictureStyleInformation(
+      showBigPicture ? filePath : const FilePathAndroidBitmap("empty"),
+      largeIcon: filePath,
+      contentTitle: title,
+      htmlFormatContentTitle: true,
+      summaryText: body,
+      htmlFormatSummaryText: true,
+    );
+  }
+
   static showNotification({
     required String title,
     required String body,
     required String payload,
     int id = 0,
   }) async {
-    await localNotificationPlugin.show(id, title, body, _notificationDetails(),
-        payload: payload);
+    final Directory directory = await getApplicationDocumentsDirectory();
+    bool isPath = body.contains(directory.path);
+    print("NOTIFICATION PATH: $body");
+    print(" PATH: $isPath");
+    if (isPath) {
+      await localNotificationPlugin.show(
+        id,
+        title,
+        "Do You have this Product?",
+        _notificationDetails(title, body, body, true),
+        payload: payload,
+      );
+    } else {
+      await localNotificationPlugin.show(
+          id, title, body, _notificationDetails(title, body, payload, false),
+          payload: payload);
+    }
   }
 
   static Future<void> cancelNotification(int id) async {

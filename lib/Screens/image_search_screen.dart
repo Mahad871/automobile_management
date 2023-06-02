@@ -42,7 +42,7 @@ class _ImageSearchScreenState extends State<ImageSearchScreen> {
     });
   }
 
-  void sendImageSearchNotification() {
+  void sendImageSearchNotification(String imageurl) {
     List<String> followersList =
         authMethod.currentUserData!.followers.cast<String>();
     List<MyDeviceToken> followerTokens = sl
@@ -51,9 +51,9 @@ class _ImageSearchScreenState extends State<ImageSearchScreen> {
 
     NotificationsServices().sendSubsceibtionNotification(
         deviceToken: followerTokens,
-        messageTitle: "Product Search",
-        messageBody:
+        messageTitle:
             "${authMethod.currentUserData!.username} Just Searched for a product",
+        messageBody: imageurl,
         data: <String>['Product Search', 'Image Search', 'Search']);
   }
 
@@ -69,7 +69,7 @@ class _ImageSearchScreenState extends State<ImageSearchScreen> {
           authMethod.currentUserData!.id.toString(),
           _image!,
         );
-        sendImageSearchNotification();
+        sendImageSearchNotification(imageurl);
         setState(() {
           _isloading = false;
         });
