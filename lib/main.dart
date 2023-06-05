@@ -1,15 +1,9 @@
-import 'package:automobile_management/Screens/home_page.dart';
-import 'package:automobile_management/Widgets/custom_toast.dart';
 import 'package:automobile_management/databases/notification_service.dart';
-import 'package:automobile_management/models/auth_method.dart';
 import 'package:automobile_management/providers/user/user_provider.dart';
 import 'package:automobile_management/services/location_api.dart';
-import 'package:automobile_management/services/notification_service.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:get_storage/get_storage.dart';
-import 'package:provider/provider.dart';
-import 'Common/constants.dart';
 import 'Screens/signin_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
 
