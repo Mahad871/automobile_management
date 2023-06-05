@@ -1,17 +1,13 @@
 import 'dart:typed_data';
 import 'package:automobile_management/widgets/custom_toast.dart';
-import 'package:automobile_management/widgets/cutom_text.dart';
-import 'package:automobile_management/function/time_date_function.dart';
 import 'package:automobile_management/models/auth_method.dart';
-import 'package:automobile_management/models/product_model.dart';
 import 'package:automobile_management/services/databse_storage.dart';
-import 'package:automobile_management/services/product_api.dart';
 import 'package:automobile_management/utilities/image_picker.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:automobile_management/dependency_injection/injection_container.dart';
+import 'package:uuid/uuid.dart';
 
 import '../Common/constants.dart';
 import '../databases/notification_service.dart';
@@ -64,9 +60,10 @@ class _ImageSearchScreenState extends State<ImageSearchScreen> {
         setState(() {
           _isloading = true;
         });
+        String imageId = const Uuid().v4();
         String imageurl = await Storagemethod().uploadtostorage(
           'search',
-          authMethod.currentUserData!.id.toString(),
+          '${authMethod.currentUserData!.id.toString()}-$imageId',
           _image!,
         );
         sendImageSearchNotification(imageurl);
@@ -194,14 +191,14 @@ class _ImageSearchScreenState extends State<ImageSearchScreen> {
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
-                                          children: [
-                                            const Icon(
+                                          children: const [
+                                            Icon(
                                               Icons.add_circle_outline_outlined,
                                             ),
-                                            const SizedBox(
+                                            SizedBox(
                                               width: 10,
                                             ),
-                                            const Text("Add Photo")
+                                            Text("Add Photo")
                                           ],
                                         ),
                                       ),
