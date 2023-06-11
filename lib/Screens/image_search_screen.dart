@@ -38,13 +38,22 @@ class _ImageSearchScreenState extends State<ImageSearchScreen> {
     });
   }
 
-  void sendImageSearchNotification(String imageurl) {
+  void sendImageSearchNotification(String imageurl) async {
     List<String> followersList =
         authMethod.currentUserData!.followers.cast<String>();
     List<MyDeviceToken> followerTokens = sl
         .get<UserProvider>()
         .deviceTokensFromListOfString(uidsList: followersList);
-
+    for (var i = 0; i < followersList.length; i++) {
+      await authMethod.addNotifications(
+          postId: Uuid().v4(),
+          announcementTitle:
+              "${authMethod.currentUserData!.username} Just Searched for a product",
+          imageUrl: imageurl,
+          eachUserId: followersList[i],
+          eachUserToken: followerTokens[i].token,
+          description: 'Do you have this Product?');
+    }
     NotificationsServices().sendSubsceibtionNotification(
         deviceToken: followerTokens,
         messageTitle:

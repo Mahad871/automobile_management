@@ -26,6 +26,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
+import 'package:uuid/uuid.dart';
 
 import '../widgets/search_card.dart';
 import '../dependency_injection/injection_container.dart';
@@ -454,6 +455,7 @@ class _SearchScreenState extends State<SearchScreen>
   void sendImageSearchNotification() {
     List<String> followersList =
         authMethod.currentUserData!.followers.cast<String>();
+       
     List<MyDeviceToken> followerTokens = sl
         .get<UserProvider>()
         .deviceTokensFromListOfString(uidsList: followersList);

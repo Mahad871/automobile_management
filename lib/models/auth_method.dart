@@ -1,4 +1,5 @@
 import 'package:automobile_management/Screens/home_page.dart';
+import 'package:automobile_management/models/announcement_model.dart';
 import 'package:automobile_management/models/device_token.dart';
 import 'package:automobile_management/widgets/custom_toast.dart';
 import 'package:automobile_management/models/firebase_storage_model.dart';
@@ -265,6 +266,43 @@ class AuthMethod extends ChangeNotifier {
     } catch (e) {
       return CustomToast.errorToast(message: e.toString());
     }
+  }
+
+  addNotifications(
+      {required final String postId,
+      required final String announcementTitle,
+      required final String imageUrl,
+      required final String eachUserId,
+      required String eachUserToken,
+      required final String description}) async {
+    FirebaseFirestore.instance
+        .collection("notifications")
+        .doc(eachUserId)
+        .collection("userNotifications")
+        .doc(postId)
+        .set({
+      "announcementId": postId,
+      "announcementTitle": announcementTitle,
+      "description": description,
+      "timestamp": DateTime.now(),
+      "token": eachUserToken,
+      "imageUrl": imageUrl,
+      "userId": currentUser!.user!.uid
+    });
+  }
+
+  Future getNotifications() async {
+    List<NotificationModel> tempAllAnnouncements = [];
+    QuerySnapshot tempAnnouncementsSnapshot = await FirebaseFirestore.instance
+        .collection('notifications')
+        .doc(currentUser!.user!.uid)
+        .collection("userNotifications")
+        .get();
+
+    tempAnnouncementsSnapshot.docs.forEach((element) {
+      tempAllAnnouncements.add(NotificationModel.fromDocument(element));
+    });
+    return tempAllAnnouncements;
   }
 
   void signOutUser() async {

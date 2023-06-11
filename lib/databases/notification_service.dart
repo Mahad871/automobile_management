@@ -1,8 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
+import 'package:automobile_management/Common/constants.dart';
 import 'package:automobile_management/databases/user_api.dart';
+import 'package:automobile_management/dependency_injection/injection_container.dart';
 import 'package:automobile_management/function/time_date_function.dart';
+import 'package:automobile_management/models/auth_method.dart';
 import 'package:automobile_management/models/user_model.dart';
 import 'package:automobile_management/utilities/utilities.dart';
 import 'package:http/http.dart' as http;
@@ -12,11 +15,13 @@ import 'package:flutter/foundation.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:rxdart/rxdart.dart';
+import 'package:uuid/uuid.dart';
 
 import '../models/device_token.dart';
 import 'auth_methods.dart';
 
 class NotificationsServices {
+  static AuthMethod authMethod = sl.get<AuthMethod>();
   // static late String? deviceToken;
   static final FlutterLocalNotificationsPlugin localNotificationPlugin =
       FlutterLocalNotificationsPlugin();
@@ -64,19 +69,38 @@ class NotificationsServices {
       if (message.notification != null) {
         // _notificationDetails();
         bool validURL = Uri.parse(message.notification!.body!).isAbsolute;
+
         if (validURL) {
           String? imgPath = await _downloadAndSavePicture(
               message.notification!.body!, TimeStamp.timestamp.toString());
           _notificationDetails(message.notification!.title!,
               message.notification!.body!, imgPath!, true);
           print("IMAGE PATH CHECK: $imgPath");
+          // await authMethod.addNotifications(
+          //     postId: const Uuid().v4(),
+          //     announcementTitle: message.notification!.title!,
+          //     imageUrl: message.notification!.body!,
+          //     eachUserId: authMethod.currentUser?.user?.uid ?? 'noti_idmissing',
+          //     eachUserToken:
+          //         authMethod.currentUserData?.deviceToken?.first.token ??
+          //             'notiTokenMissing',
+          //     description: 'Do you have This Product');
           showNotification(
-            title: message.notification!.title!,
-            body: imgPath,
-            payload:
-                '${message.data['key1']}-${message.data['key2']}-${message.data['key3']}',
-          );
+              title: message.notification!.title!,
+              body: imgPath,
+              payload:
+                  '${message.data['key1']}-${message.data['key2']}-${message.data['key3']}',
+              isImage: true);
         } else {
+          // await authMethod.addNotifications(
+          //     postId: const Uuid().v4(),
+          //     announcementTitle: message.notification!.title!,
+          //     imageUrl: defualtUserImg,
+          //     eachUserId: authMethod.currentUser?.user?.uid ?? 'noti_idmissing',
+          //     eachUserToken:
+          //         authMethod.currentUserData?.deviceToken?.first.token ??
+          //             'notiTokenMissing',
+          //     description: message.notification!.body!);
           _notificationDetails(message.notification!.title!,
               message.notification!.body!, '', false);
           print("IMAGE PATH CHECK: ${message.notification!.body!}");
@@ -227,22 +251,27 @@ class NotificationsServices {
     );
   }
 
-  static showNotification({
-    required String title,
-    required String body,
-    required String payload,
-    int id = 0,
-  }) async {
+  static showNotification(
+      {required String title,
+      required String body,
+      required String payload,
+      int id = 0,
+      bool isImage = false}) async {
     final Directory directory = await getApplicationDocumentsDirectory();
     bool isPath = body.contains(directory.path);
+    bool isvalidUrl = Uri.parse(body).isAbsolute;
     print("NOTIFICATION PATH: $body");
     print(" PATH: $isPath");
-    if (isPath) {
+    if (isImage) {
+      String? imgPath = Uri.parse(body).isAbsolute
+          ? await _downloadAndSavePicture(body, Uuid().v4())
+          : body;
       await localNotificationPlugin.show(
         id,
         title,
         "Do You have this Product?",
-        _notificationDetails(title, body, body, true),
+        _notificationDetails(
+            title, "Do You have this Product?", imgPath!, true),
         payload: payload,
       );
     } else {

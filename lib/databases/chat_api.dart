@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:automobile_management/Common/constants.dart';
 import 'package:automobile_management/dependency_injection/injection_container.dart';
 import 'package:automobile_management/models/auth_method.dart';
 import 'package:automobile_management/models/user_model.dart';
@@ -7,6 +8,7 @@ import 'package:automobile_management/widgets/custom_toast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 import '../models/chat/chat.dart';
 import '../models/chat/message.dart';
@@ -38,24 +40,22 @@ class ChatAPI {
   }
 
   Future<List<Chat>> getchats() async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await _instance
+        .collection(_collection)
+        .where('persons', arrayContains: authMethod.currentUserData?.id)
+        .where('is_group', isEqualTo: false)
+        .orderBy('timestamp', descending: true)
+        .get();
 
-  QuerySnapshot<Map<String, dynamic>> querySnapshot = await _instance
-      .collection(_collection)
-      .where('persons', arrayContains: authMethod.currentUserData?.id)
-      .where('is_group', isEqualTo: false)
-      .orderBy('timestamp', descending: true)
-      .get();
+    for (DocumentSnapshot<Map<String, dynamic>> element in querySnapshot.docs) {
+      final Chat temp = Chat.fromMap(element.data()!);
+      chatsList.add(temp);
+    }
 
-  for (DocumentSnapshot<Map<String, dynamic>> element in querySnapshot.docs) {
-    final Chat temp = Chat.fromMap(element.data()!);
-    chatsList.add(temp);
+    print("recent chats: $chatsList");
+
+    return chatsList;
   }
-
-  print("recent chats: $chatsList");
-
-  return chatsList;
-}
-
 
   Stream<List<Chat>> chats() {
     // Firebase Index need to add
@@ -130,10 +130,18 @@ class ChatAPI {
           .doc(chat.chatID)
           .set(chat.toMap());
       if (receiver.deviceToken?.isNotEmpty ?? false) {
+        await authMethod.addNotifications(
+            postId: const Uuid().v4(),
+            announcementTitle: sender.username,
+            imageUrl: sender.photoUrl ?? defualtUserImg,
+            eachUserId: authMethod.currentUser?.user?.uid ?? 'noti_idmissing',
+            eachUserToken: receiver.deviceToken?.first.token ?? ' ',
+            description: newMessage!.text ?? 'Send you a message');
+
         await NotificationsServices().sendSubsceibtionNotification(
           deviceToken: receiver.deviceToken ?? <MyDeviceToken>[],
           messageTitle: sender.username ?? 'App User',
-          messageBody: newMessage!.text ?? 'Send you a message',
+          messageBody: newMessage.text ?? 'Send you a message',
           data: <String>['chat', 'message', 'personal'],
         );
       }
