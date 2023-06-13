@@ -1,6 +1,6 @@
 enum NotificationType {
   message('message'),
-  order('order'),
+  search('search'),
   offer('offer');
 
   const NotificationType(this.json);
@@ -12,8 +12,8 @@ class NotificationTypeConvertor {
     switch (type) {
       case 'message':
         return NotificationType.message;
-      case 'order':
-        return NotificationType.order;
+      case 'search':
+        return NotificationType.search;
       case 'offer':
         return NotificationType.offer;
       default:

@@ -96,6 +96,7 @@ class _ChatListScreenState extends State<ChatListScreen> {
                           .usersFromListOfString(uidsList: participants);
                       var lastMessageDetails =
                           snapshot.data!.docs[index]["last_message"];
+
                       // print(lastMessageDetails['text']);
 
                       Chat currentChat = Chat(

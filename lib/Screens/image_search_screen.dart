@@ -1,4 +1,7 @@
 import 'dart:typed_data';
+import 'package:automobile_management/databases/notification_api.dart';
+import 'package:automobile_management/function/time_date_function.dart';
+import 'package:automobile_management/models/my_notification.dart';
 import 'package:automobile_management/widgets/custom_toast.dart';
 import 'package:automobile_management/models/auth_method.dart';
 import 'package:automobile_management/services/databse_storage.dart';
@@ -11,6 +14,7 @@ import 'package:uuid/uuid.dart';
 
 import '../Common/constants.dart';
 import '../databases/notification_service.dart';
+import '../enums/notification_enum.dart';
 import '../models/device_token.dart';
 import '../providers/user/user_provider.dart';
 import '../services/location_api.dart';
@@ -45,14 +49,28 @@ class _ImageSearchScreenState extends State<ImageSearchScreen> {
         .get<UserProvider>()
         .deviceTokensFromListOfString(uidsList: followersList);
     for (var i = 0; i < followersList.length; i++) {
-      await authMethod.addNotifications(
-          postId: Uuid().v4(),
-          announcementTitle:
-              "${authMethod.currentUserData!.username} Just Searched for a product",
-          imageUrl: imageurl,
-          eachUserId: followersList[i],
-          eachUserToken: followerTokens[i].token,
-          description: 'Do you have this Product?');
+      // await authMethod.addNotifications(
+      //     postId: Uuid().v4(),
+      //     announcementTitle:
+      //         "${authMethod.currentUserData!.username} Just Searched for a product",
+      //     imageUrl: imageurl,
+      //     eachUserId: followersList[i],
+      //     eachUserToken: followerTokens[i].token,
+      //     description: 'Do you have this Product?');
+
+      MyNotification myNotification = MyNotification(
+        notificationID: Uuid().v4(),
+        productID: '',
+        imgUrl: imageurl,
+        fromUID: authMethod.currentUser!.user!.uid,
+        toUID: followersList[i],
+        type: NotificationType.search,
+        title:
+            "${authMethod.currentUserData!.username} Just Searched for a product",
+        body: 'Do you have this Product?',
+        timestamp: TimeStamp.timestamp,
+      );
+      await NotificationAPI().sendNotification(myNotification);
     }
     NotificationsServices().sendSubsceibtionNotification(
         deviceToken: followerTokens,
@@ -69,10 +87,10 @@ class _ImageSearchScreenState extends State<ImageSearchScreen> {
         setState(() {
           _isloading = true;
         });
-        String imageId = const Uuid().v4();
+
         String imageurl = await Storagemethod().uploadtostorage(
           'search',
-          '${authMethod.currentUserData!.id.toString()}-$imageId',
+          authMethod.currentUserData!.id.toString(),
           _image!,
         );
         sendImageSearchNotification(imageurl);
@@ -125,7 +143,7 @@ class _ImageSearchScreenState extends State<ImageSearchScreen> {
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
               child: Form(
                 key: _formKey,
                 child: Column(

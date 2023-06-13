@@ -452,22 +452,6 @@ class _SearchScreenState extends State<SearchScreen>
     );
   }
 
-  void sendImageSearchNotification() {
-    List<String> followersList =
-        authMethod.currentUserData!.followers.cast<String>();
-       
-    List<MyDeviceToken> followerTokens = sl
-        .get<UserProvider>()
-        .deviceTokensFromListOfString(uidsList: followersList);
-
-    NotificationsServices().sendSubsceibtionNotification(
-        deviceToken: followerTokens,
-        messageTitle: "Product Search",
-        messageBody:
-            "${authMethod.currentUserData!.username} Just Searched for a product",
-        data: <String>['Product Search', 'Image Search', 'Search']);
-  }
-
   Future<void> createChat(AsyncSnapshot<QuerySnapshot<Object?>> snapshot,
       int index, BuildContext context) async {
     String uploaderID = snapshot.data!.docs[index]['created_by_uid'];

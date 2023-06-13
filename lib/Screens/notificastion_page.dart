@@ -1,3 +1,12 @@
+import 'package:automobile_management/databases/notification_api.dart';
+import 'package:automobile_management/dependency_injection/injection_container.dart';
+import 'package:automobile_management/function/time_date_functions.dart';
+import 'package:automobile_management/models/auth_method.dart';
+import 'package:automobile_management/models/my_notification.dart';
+import 'package:automobile_management/models/user_model.dart';
+import 'package:automobile_management/providers/user/user_provider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../Common/constants.dart';
@@ -40,14 +49,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
   @override
   Widget build(BuildContext context) {
     var scaffold = Scaffold(
-        floatingActionButton: FloatingActionButton(
-            child: const Icon(
-              Icons.notification_add_outlined,
-              color: textColor,
-            ),
-            onPressed: () {
-              addNotifications();
-            }),
         backgroundColor: backgroundColor,
         body: SafeArea(
           child: Scaffold(
@@ -59,22 +60,93 @@ class _NotificationScreenState extends State<NotificationScreen> {
               shadowColor: Colors.white,
               elevation: 0,
               title: const Text(
-                "Notifiactions",
+                "Notifications",
                 style: TextStyle(color: textColor),
               ),
             ),
-            body: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-              child: ListView.builder(
-                itemCount: notificationsList.length,
-                scrollDirection: Axis.vertical,
-                shrinkWrap: true,
-                itemBuilder: (context, index) => notificationsList[index],
-              ),
-            ),
+            body: FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
+                future: NotificationAPI().getAllNotificationsFuture(),
+                builder: (context,
+                    AsyncSnapshot<QuerySnapshot<Map<String, dynamic>>>
+                        snapshot) {
+                  if (snapshot.hasError) {
+                    return const Text('Something went wrong');
+                  }
+
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                        child: CircularProgressIndicator(
+                      color: Colors.black,
+                    ));
+                  }
+                  List<MyNotification> notiList = [];
+
+                  for (var element in snapshot.data!.docs) {
+                    MyNotification notification =
+                        MyNotification.fromDoc(element);
+                    if (notification.toUID ==
+                        sl.get<AuthMethod>().currentUserData!.id) {
+                      notiList.add(notification);
+                    }
+                  }
+                  List<UserModel> userList = [];
+                  if (notiList.isNotEmpty) {
+                    for (var e in notiList) {
+                      userList
+                          .add(sl.get<UserProvider>().userFromUid(e.fromUID));
+                    }
+                  }
+                  return ListView.builder(
+                    itemCount: notiList.length,
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) {
+                      if (snapshot.hasError) {
+                        return const Text('Something went wrong');
+                      }
+
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Center(
+                            child: CircularProgressIndicator(
+                          color: Colors.black,
+                        ));
+                      }
+
+                      return ListTile(
+                        title: NotificationCard(
+                          title: notiList[index].title,
+                          body: notiList[index].body,
+                          time: TimeDateFunctions.timeInDigits(
+                              notiList[index].timestamp),
+                          showBanner: notiList[index].type.json == 'search'
+                              ? true
+                              : false,
+                          userProfileImage: CachedNetworkImage(
+                            imageUrl:
+                                userList[index].photoUrl ?? defualtUserImg,
+                            imageBuilder: (context, imageProvider) => Container(
+                              width: 45,
+                              height: 45,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                image: DecorationImage(
+                                  image: imageProvider,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                          ),
+                          bannerImage: CachedNetworkImage(
+                              imageUrl:
+                                  notiList[index].imgUrl ?? defualtUserImg),
+                        ),
+                      );
+                    },
+                  );
+                }),
           ),
         ));
-
+    ;
     return scaffold;
   }
 }

@@ -1,8 +1,12 @@
 import 'dart:io';
 
 import 'package:automobile_management/Common/constants.dart';
+import 'package:automobile_management/databases/notification_api.dart';
 import 'package:automobile_management/dependency_injection/injection_container.dart';
+import 'package:automobile_management/enums/notification_enum.dart';
+import 'package:automobile_management/function/time_date_function.dart';
 import 'package:automobile_management/models/auth_method.dart';
+import 'package:automobile_management/models/my_notification.dart';
 import 'package:automobile_management/models/user_model.dart';
 import 'package:automobile_management/widgets/custom_toast.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -130,13 +134,25 @@ class ChatAPI {
           .doc(chat.chatID)
           .set(chat.toMap());
       if (receiver.deviceToken?.isNotEmpty ?? false) {
-        await authMethod.addNotifications(
-            postId: const Uuid().v4(),
-            announcementTitle: sender.username,
-            imageUrl: sender.photoUrl ?? defualtUserImg,
-            eachUserId: authMethod.currentUser?.user?.uid ?? 'noti_idmissing',
-            eachUserToken: receiver.deviceToken?.first.token ?? ' ',
-            description: newMessage!.text ?? 'Send you a message');
+        // await authMethod.addNotifications(
+        //     postId: const Uuid().v4(),
+        //     announcementTitle: sender.username,
+        //     imageUrl: sender.photoUrl ?? defualtUserImg,
+        //     eachUserId: authMethod.currentUser?.user?.uid ?? 'noti_idmissing',
+        //     eachUserToken: receiver.deviceToken?.first.token ?? ' ',
+        //     description: newMessage!.text ?? 'Send you a message');
+
+        MyNotification myNotification = MyNotification(
+            notificationID: Uuid().v4(),
+            productID: '',
+            imgUrl: authMethod.currentUserData!.photoUrl ?? defualtUserImg,
+            fromUID: authMethod.currentUser!.user!.uid,
+            toUID: receiver.id.toString(),
+            type: NotificationType.message,
+            title: authMethod.currentUserData!.username,
+            body: newMessage!.text ?? 'Send you a message',
+            timestamp: TimeStamp.timestamp);
+        await NotificationAPI().sendNotification(myNotification);
 
         await NotificationsServices().sendSubsceibtionNotification(
           deviceToken: receiver.deviceToken ?? <MyDeviceToken>[],

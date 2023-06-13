@@ -12,6 +12,7 @@ class MyNotification {
     required this.title,
     required this.body,
     required this.timestamp,
+    this.imgUrl = '',
   });
 
   final String notificationID;
@@ -22,6 +23,7 @@ class MyNotification {
   final String title;
   final String body;
   final int timestamp;
+  final String imgUrl;
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -33,6 +35,7 @@ class MyNotification {
       'title': title,
       'body': body,
       'timestamp': timestamp,
+      'imgUrl': imgUrl,
     };
   }
 
@@ -48,6 +51,7 @@ class MyNotification {
       title: doc.data()?['title'] ?? '',
       body: doc.data()?['body'] ?? '',
       timestamp: doc.data()?['timestamp'] ?? 0,
+      imgUrl: doc.data()?['imgUrl'] ?? '',
     );
   }
 }

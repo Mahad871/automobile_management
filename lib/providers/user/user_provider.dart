@@ -76,6 +76,10 @@ class UserProvider extends ChangeNotifier {
     return tempList;
   }
 
+  UserModel userFromUid(String uid) {
+    return _user[_indexOf(uid)];
+  }
+
   List<MyDeviceToken> deviceTokensFromListOfString(
       {required List<String> uidsList}) {
     List<UserModel> tempList = <UserModel>[];

@@ -281,8 +281,8 @@ class AuthMethod extends ChangeNotifier {
         .collection("userNotifications")
         .doc(postId)
         .set({
-      "announcementId": postId,
-      "announcementTitle": announcementTitle,
+      "notificationId": postId,
+      "notificationTitle": announcementTitle,
       "description": description,
       "timestamp": DateTime.now(),
       "token": eachUserToken,
