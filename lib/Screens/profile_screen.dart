@@ -300,41 +300,41 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         onChanged: (value) {},
                       ),
                     ),
-                    const SizedBox(height: 20),
-                    Text(
-                      " Password",
-                      style: TextStyle(
-                          color: textColor.withOpacity(0.5),
-                          fontWeight: FontWeight.bold),
-                    ),
-                    const SizedBox(height: 10),
-                    Container(
-                      height: 50,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4),
-                        color: textFieldColor,
-                      ),
-                      padding: const EdgeInsets.only(left: 16),
-                      child: TextField(
-                        obscureText: true,
-                        readOnly: passwordFieldDisabled,
-                        controller: controller.password,
-                        style: const TextStyle(color: textColor),
-                        decoration: InputDecoration(
-                          border: InputBorder.none,
-                          hintStyle: const TextStyle(color: hintTextColor),
-                          suffixIcon: IconButton(
-                            onPressed: () {
-                              setState(() {
-                                passwordFieldDisabled = !passwordFieldDisabled;
-                              });
-                            },
-                            icon: const Icon(Icons.edit),
-                          ),
-                        ),
-                        onChanged: (value) {},
-                      ),
-                    ),
+                    // const SizedBox(height: 20),
+                    // Text(
+                    //   " Password",
+                    //   style: TextStyle(
+                    //       color: textColor.withOpacity(0.5),
+                    //       fontWeight: FontWeight.bold),
+                    // ),
+                    // const SizedBox(height: 10),
+                    // Container(
+                    //   height: 50,
+                    //   decoration: BoxDecoration(
+                    //     borderRadius: BorderRadius.circular(4),
+                    //     color: textFieldColor,
+                    //   ),
+                    //   padding: const EdgeInsets.only(left: 16),
+                    //   child: TextField(
+                    //     obscureText: true,
+                    //     readOnly: passwordFieldDisabled,
+                    //     controller: controller.password,
+                    //     style: const TextStyle(color: textColor),
+                    //     decoration: InputDecoration(
+                    //       border: InputBorder.none,
+                    //       hintStyle: const TextStyle(color: hintTextColor),
+                    //       suffixIcon: IconButton(
+                    //         onPressed: () {
+                    //           setState(() {
+                    //             passwordFieldDisabled = !passwordFieldDisabled;
+                    //           });
+                    //         },
+                    //         icon: const Icon(Icons.edit),
+                    //       ),
+                    //     ),
+                    //     onChanged: (value) {},
+                    //   ),
+                    // ),
                     const SizedBox(height: 20),
                     Text(
                       " Address",

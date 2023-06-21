@@ -101,6 +101,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     }
                   }
                   return ListView.builder(
+                    physics: const BouncingScrollPhysics(),
                     itemCount: notiList.length,
                     scrollDirection: Axis.vertical,
                     shrinkWrap: true,

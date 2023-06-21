@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:automobile_management/Common/constants.dart';
 import 'package:automobile_management/databases/auth_methods.dart';
 import 'package:automobile_management/databases/chat_api.dart';
 import 'package:automobile_management/function/picker_functions.dart';
@@ -253,14 +254,14 @@ class _ChatTextFieldState extends State<ChatTextField> {
                     icon: Icon(
                       Icons.send,
                       color: isLoading
-                          ? Colors.grey
+                          ? Colors.white
                           : Theme.of(context).iconTheme.color,
                     ),
                   )
                 : IconButton(
                     onPressed: widget.onStartRecoding,
                     splashRadius: 1,
-                    icon: const Icon(Icons.send, color: Colors.grey),
+                    icon: const Icon(Icons.send, color: Colors.black),
                   ),
           ],
         ),
@@ -301,7 +302,7 @@ class _TextHintButton extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
-          color: Theme.of(context).primaryColor,
+          color: textColor,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Text(

@@ -255,42 +255,134 @@ class _SearchScreenState extends State<SearchScreen>
                     physics: const NeverScrollableScrollPhysics(),
                     controller: _pageController,
                     children: [
-                      StreamBuilder<QuerySnapshot>(
-                          stream: FirebaseFirestore.instance
-                              .collection('product')
-                              .snapshots(),
-                          builder: (context, snapshot) {
-                            return ListView.builder(
-                              physics: const BouncingScrollPhysics(),
-                              itemCount: snapshot.data?.docs.length,
-                              itemBuilder: (BuildContext context, int index) {
-                                if (snapshot.hasError) {
-                                  return const Text('Something went wrong');
-                                }
-
-                                if (snapshot.connectionState ==
-                                    ConnectionState.waiting) {
-                                  return const Center(
-                                      child: CircularProgressIndicator(
-                                    color: Colors.black,
-                                  ));
-                                }
-                                return ListTile(
-                                  title: SearchCard(
-                                    time: "",
-                                    username: snapshot.data!.docs[index]
-                                        ['product_name'],
-                                    notificationText: snapshot.data!.docs[index]
-                                        ['description'],
-                                    circularImageUrl: snapshot.data!.docs[index]
-                                        ['image_url'],
-                                    onCardIconPressed: () =>
-                                        createChat(snapshot, index, context),
-                                  ),
-                                );
-                              },
+                      StreamBuilder(
+                        stream: authMethod.db.collection('product').snapshots(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<QuerySnapshot> snapshot) {
+                          if (!snapshot.hasData) {
+                            return const ReusableCard(
+                              colour: textFieldColor,
+                              cardChild: Icon(Icons.photo),
+                              cardWidth: 280,
                             );
-                          }),
+                          }
+                          final List<DocumentSnapshot> documents =
+                              snapshot.data!.docs;
+                          return GridView.builder(
+                            shrinkWrap: true,
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 2.0,
+                              mainAxisSpacing: 5.0,
+                            ),
+                            physics: const BouncingScrollPhysics(),
+                            scrollDirection: Axis.vertical,
+                            itemCount: documents.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              final String url = documents[index]['image_url'];
+                              final String productName =
+                                  documents[index]['product_name'];
+
+                              return Stack(
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: Container(
+                                      height: 200,
+                                      // width: double.maxFinite,
+                                      decoration: BoxDecoration(
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.grey.withOpacity(1),
+                                              spreadRadius: 0,
+                                              blurRadius: 8,
+                                              offset: const Offset(1,
+                                                  1), // changes position of shadow
+                                            ),
+                                          ],
+                                          borderRadius:
+                                              BorderRadius.circular(20)),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(20),
+                                        child: SizedBox.fromSize(
+                                            size: const Size.fromRadius(90),
+                                            child: CachedNetworkImage(
+                                              imageUrl: url,
+                                              placeholder: (context, url) =>
+                                                  const Padding(
+                                                padding: EdgeInsets.symmetric(
+                                                    horizontal: 120,
+                                                    vertical: 45),
+                                                child:
+                                                    CircularProgressIndicator(
+                                                  color: textColor,
+                                                ),
+                                              ),
+                                              errorWidget:
+                                                  (context, url, error) => Text(
+                                                error,
+                                                style: const TextStyle(
+                                                    color: textColor),
+                                              ),
+                                              fit: BoxFit.cover,
+                                            )),
+                                      ),
+                                    ),
+                                  ),
+                                  Align(
+                                      alignment: Alignment.bottomRight,
+                                      child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              right: 25.0, top: 20),
+                                          child: ElevatedButton(
+                                            onPressed: () {},
+                                            style: ElevatedButton.styleFrom(
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(8),
+                                              ),
+                                              backgroundColor: textFieldColor,
+                                              foregroundColor: Colors.black,
+                                              elevation: 0,
+                                            ),
+                                            child: Text(
+                                              '\$' +
+                                                  documents[index]['amount']
+                                                      .toString(),
+                                              style: const TextStyle(
+                                                  color: textColor),
+                                            ),
+                                          ))),
+                                  Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            right: 25.0, top: 20),
+                                        child: ElevatedButton(
+                                          onPressed: () {},
+                                          style: ElevatedButton.styleFrom(
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(8),
+                                            ),
+                                            backgroundColor: textFieldColor,
+                                            foregroundColor: Colors.black,
+                                            elevation: 0,
+                                          ),
+                                          child: Text(
+                                            productName,
+                                            style: const TextStyle(
+                                                color: textColor),
+                                          ),
+                                        ),
+                                      ))
+                                ],
+                              );
+                            },
+                          );
+                        },
+                      ),
                       FutureBuilder<QuerySnapshot<Map<String, dynamic>>>(
                         future: FirebaseFirestore.instance
                             .collection('users')
@@ -502,3 +594,51 @@ class _SearchScreenState extends State<SearchScreen>
   //   return result;
   // }
 }
+
+
+
+
+
+
+
+
+
+//Timer Functionality
+
+
+// StreamBuilder<QuerySnapshot>(
+                      //     stream: FirebaseFirestore.instance
+                      //         .collection('product')
+                      //         .snapshots(),
+                      //     builder: (context, snapshot) {
+                      //       return ListView.builder(
+                      //         physics: const BouncingScrollPhysics(),
+                      //         itemCount: snapshot.data?.docs.length,
+                      //         itemBuilder: (BuildContext context, int index) {
+                      //           if (snapshot.hasError) {
+                      //             return const Text('Something went wrong');
+                      //           }
+
+                      //           if (snapshot.connectionState ==
+                      //               ConnectionState.waiting) {
+                      //             return const Center(
+                      //                 child: CircularProgressIndicator(
+                      //               color: Colors.black,
+                      //             ));
+                      //           }
+                      //           return ListTile(
+                      //             title: SearchCard(
+                      //               time: "",
+                      //               username: snapshot.data!.docs[index]
+                      //                   ['product_name'],
+                      //               notificationText: snapshot.data!.docs[index]
+                      //                   ['description'],
+                      //               circularImageUrl: snapshot.data!.docs[index]
+                      //                   ['image_url'],
+                      //               onCardIconPressed: () =>
+                      //                   createChat(snapshot, index, context),
+                      //             ),
+                      //           );
+                      //         },
+                      //       );
+                      //     }),
