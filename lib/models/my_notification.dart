@@ -12,18 +12,20 @@ class MyNotification {
     required this.title,
     required this.body,
     required this.timestamp,
-    this.imgUrl = '',
+    this.chatId,
+    this.imgUrl,
   });
 
   final String notificationID;
   final String productID;
   final String fromUID;
   final String toUID;
+  final String? chatId;
   final NotificationType type;
   final String title;
   final String body;
   final int timestamp;
-  final String imgUrl;
+  final String? imgUrl;
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
@@ -36,6 +38,7 @@ class MyNotification {
       'body': body,
       'timestamp': timestamp,
       'imgUrl': imgUrl,
+      'chatId': chatId,
     };
   }
 
@@ -52,6 +55,7 @@ class MyNotification {
       body: doc.data()?['body'] ?? '',
       timestamp: doc.data()?['timestamp'] ?? 0,
       imgUrl: doc.data()?['imgUrl'] ?? '',
+      chatId: doc.data()?['chatId'] ?? '',
     );
   }
 }

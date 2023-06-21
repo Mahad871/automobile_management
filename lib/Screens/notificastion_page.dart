@@ -1,7 +1,11 @@
+import 'package:automobile_management/Screens/chat_list_page.dart';
+import 'package:automobile_management/Screens/chat_screens/personal_chat_page/personal_chat_screen.dart';
+import 'package:automobile_management/databases/chat_api.dart';
 import 'package:automobile_management/databases/notification_api.dart';
 import 'package:automobile_management/dependency_injection/injection_container.dart';
 import 'package:automobile_management/function/time_date_functions.dart';
 import 'package:automobile_management/models/auth_method.dart';
+import 'package:automobile_management/models/chat/chat.dart';
 import 'package:automobile_management/models/my_notification.dart';
 import 'package:automobile_management/models/user_model.dart';
 import 'package:automobile_management/providers/user/user_provider.dart';
@@ -27,7 +31,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   Color vendorModeTextColor = Colors.black;
   List<NotificationCard> notificationsList = [
     NotificationCard(
-      userProfileImage: Icon(
+      userProfileImage: const Icon(
         CupertinoIcons.person_alt,
         color: Colors.black,
         size: 30,
@@ -37,7 +41,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   void addNotifications() {
     setState(() {
       notificationsList.add(NotificationCard(
-        userProfileImage: Icon(
+        userProfileImage: const Icon(
           CupertinoIcons.person_alt,
           color: Colors.black,
           size: 30,
@@ -114,6 +118,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
 
                       return ListTile(
                         title: NotificationCard(
+                          onPressed: () async {
+                            print('asd: ${notiList[index].chatId.runtimeType}');
+                            if (notiList[index].chatId != null &&
+                                notiList[index].chatId != '') {
+                            } else {
+                              createChat(notiList[index], context);
+                            }
+                          },
                           title: notiList[index].title,
                           body: notiList[index].body,
                           time: TimeDateFunctions.timeInDigits(
@@ -146,7 +158,38 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 }),
           ),
         ));
-    ;
+
     return scaffold;
+  }
+
+  Future<void> createChat(
+      MyNotification notificationData, BuildContext context) async {
+    String uploaderID = notificationData.fromUID;
+    UserModel productUser;
+    sl.get<AuthMethod>().recieveUserData(uploaderID).then((value) async {
+      productUser = value;
+
+      List<String> persons = [];
+      persons.add(productUser.id!);
+      persons.add(sl.get<AuthMethod>().currentUserData!.id!);
+
+      Chat chat = await ChatAPI().createChat(
+          notificationData.fromUID + sl.get<AuthMethod>().currentUserData!.id!,
+          persons);
+      // ignore: use_build_context_synchronously
+      // Chat asd = await sl.get<ChatAPI>().getchat(notificationData.chatId!);
+      // print(asd.chatID);
+      // ignore: use_build_context_synchronously
+      Navigator.push(context, MaterialPageRoute(builder: (context) {
+        return PersonalChatScreen(
+            chat: chat,
+            url: notificationData.type.json == 'search'
+                ? notificationData.imgUrl
+                : null,
+            chatWith: sl.get<UserProvider>().user(
+                  uid: notificationData.fromUID,
+                ));
+      }));
+    });
   }
 }

@@ -43,7 +43,7 @@ class ChatAPI {
     });
   }
 
-  Future<List<Chat>> getchats() async {
+  Future<List<Chat>> getAllchats() async {
     QuerySnapshot<Map<String, dynamic>> querySnapshot = await _instance
         .collection(_collection)
         .where('persons', arrayContains: authMethod.currentUserData?.id)
@@ -59,6 +59,19 @@ class ChatAPI {
     print("recent chats: $chatsList");
 
     return chatsList;
+  }
+
+  Future<Chat> getchat(String chatID) async {
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await _instance
+        .collection(_collection)
+        .where('chat_id', isEqualTo: chatID)
+        .get();
+
+    final chat = Chat.fromMap(querySnapshot.docs.first.data());
+
+    print("recent chats: $chatsList");
+
+    return chat;
   }
 
   Stream<List<Chat>> chats() {
@@ -143,8 +156,9 @@ class ChatAPI {
         //     description: newMessage!.text ?? 'Send you a message');
 
         MyNotification myNotification = MyNotification(
-            notificationID: Uuid().v4(),
+            notificationID: const Uuid().v4(),
             productID: '',
+            chatId: chat.chatID,
             imgUrl: authMethod.currentUserData!.photoUrl ?? defualtUserImg,
             fromUID: authMethod.currentUser!.user!.uid,
             toUID: receiver.id.toString(),
@@ -196,7 +210,7 @@ class ChatAPI {
           if (snapshot.hasData) {
             chatExists = true;
           }
-          return Text('data');
+          return const Text('data');
         },
         stream: chatsList);
 

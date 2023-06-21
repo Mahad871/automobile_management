@@ -113,6 +113,108 @@ class NotificationsServices {
         }
       }
     });
+    FirebaseMessaging.onBackgroundMessage((message) async {
+      if (kDebugMode) {
+        debugPrint('Message data: ${message.data}');
+      }
+      if (message.notification != null) {
+        // _notificationDetails();
+        bool validURL = Uri.parse(message.notification!.body!).isAbsolute;
+
+        if (validURL) {
+          String? imgPath = await _downloadAndSavePicture(
+              message.notification!.body!, TimeStamp.timestamp.toString());
+          _notificationDetails(message.notification!.title!,
+              message.notification!.body!, imgPath!, true);
+          print("IMAGE PATH CHECK: $imgPath");
+          // await authMethod.addNotifications(
+          //     postId: const Uuid().v4(),
+          //     announcementTitle: message.notification!.title!,
+          //     imageUrl: message.notification!.body!,
+          //     eachUserId: authMethod.currentUser?.user?.uid ?? 'noti_idmissing',
+          //     eachUserToken:
+          //         authMethod.currentUserData?.deviceToken?.first.token ??
+          //             'notiTokenMissing',
+          //     description: 'Do you have This Product');
+          showNotification(
+              title: message.notification!.title!,
+              body: imgPath,
+              payload:
+                  '${message.data['key1']}-${message.data['key2']}-${message.data['key3']}',
+              isImage: true);
+        } else {
+          // await authMethod.addNotifications(
+          //     postId: const Uuid().v4(),
+          //     announcementTitle: message.notification!.title!,
+          //     imageUrl: defualtUserImg,
+          //     eachUserId: authMethod.currentUser?.user?.uid ?? 'noti_idmissing',
+          //     eachUserToken:
+          //         authMethod.currentUserData?.deviceToken?.first.token ??
+          //             'notiTokenMissing',
+          //     description: message.notification!.body!);
+          _notificationDetails(message.notification!.title!,
+              message.notification!.body!, '', false);
+          print("IMAGE PATH CHECK: ${message.notification!.body!}");
+          showNotification(
+            title: message.notification!.title!,
+            body: message.notification!.body!,
+            payload:
+                '${message.data['key1']}-${message.data['key2']}-${message.data['key3']}',
+          );
+        }
+      }
+    });
+    FirebaseMessaging.onMessageOpenedApp.listen((message) async {
+      if (kDebugMode) {
+        debugPrint('Message data: ${message.data}');
+      }
+      if (message.notification != null) {
+        // _notificationDetails();
+        bool validURL = Uri.parse(message.notification!.body!).isAbsolute;
+
+        if (validURL) {
+          String? imgPath = await _downloadAndSavePicture(
+              message.notification!.body!, TimeStamp.timestamp.toString());
+          _notificationDetails(message.notification!.title!,
+              message.notification!.body!, imgPath!, true);
+          print("IMAGE PATH CHECK: $imgPath");
+          // await authMethod.addNotifications(
+          //     postId: const Uuid().v4(),
+          //     announcementTitle: message.notification!.title!,
+          //     imageUrl: message.notification!.body!,
+          //     eachUserId: authMethod.currentUser?.user?.uid ?? 'noti_idmissing',
+          //     eachUserToken:
+          //         authMethod.currentUserData?.deviceToken?.first.token ??
+          //             'notiTokenMissing',
+          //     description: 'Do you have This Product');
+          showNotification(
+              title: message.notification!.title!,
+              body: imgPath,
+              payload:
+                  '${message.data['key1']}-${message.data['key2']}-${message.data['key3']}',
+              isImage: true);
+        } else {
+          // await authMethod.addNotifications(
+          //     postId: const Uuid().v4(),
+          //     announcementTitle: message.notification!.title!,
+          //     imageUrl: defualtUserImg,
+          //     eachUserId: authMethod.currentUser?.user?.uid ?? 'noti_idmissing',
+          //     eachUserToken:
+          //         authMethod.currentUserData?.deviceToken?.first.token ??
+          //             'notiTokenMissing',
+          //     description: message.notification!.body!);
+          _notificationDetails(message.notification!.title!,
+              message.notification!.body!, '', false);
+          print("IMAGE PATH CHECK: ${message.notification!.body!}");
+          showNotification(
+            title: message.notification!.title!,
+            body: message.notification!.body!,
+            payload:
+                '${message.data['key1']}-${message.data['key2']}-${message.data['key3']}',
+          );
+        }
+      }
+    });
     await getToken();
     log('NOTIFICATION INIT DONE');
   }

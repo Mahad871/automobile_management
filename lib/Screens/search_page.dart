@@ -467,6 +467,7 @@ class _SearchScreenState extends State<SearchScreen>
           snapshot.data?.docs[index]['created_by_uid'] +
               authMethod.currentUserData?.id,
           persons);
+      // ignore: use_build_context_synchronously
       Navigator.push(
         context,
         MaterialPageRoute(

@@ -62,6 +62,7 @@ class _ImageSearchScreenState extends State<ImageSearchScreen> {
         notificationID: Uuid().v4(),
         productID: '',
         imgUrl: imageurl,
+        chatId: null,
         fromUID: authMethod.currentUser!.user!.uid,
         toUID: followersList[i],
         type: NotificationType.search,
@@ -143,7 +144,7 @@ class _ImageSearchScreenState extends State<ImageSearchScreen> {
           child: SingleChildScrollView(
             physics: const BouncingScrollPhysics(),
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 30),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -154,6 +155,7 @@ class _ImageSearchScreenState extends State<ImageSearchScreen> {
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
                     ),
+                    SizedBox(height: 10),
                     Padding(
                       padding: const EdgeInsets.all(10.0),
                       child: Container(

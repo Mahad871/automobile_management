@@ -1,3 +1,7 @@
+import 'dart:io';
+
+import 'package:automobile_management/enums/message_enum.dart';
+import 'package:automobile_management/utilities/utils.dart';
 import 'package:flutter/material.dart';
 
 import '../../models/chat/chat.dart';
@@ -42,4 +46,33 @@ class _ChatMessageTileState extends State<ChatMessageTile> {
       ),
     );
   }
+
+
+  // void sendFileMessage(
+  //   File file,
+  //   MessageEnum messageEnum,
+  // ) {
+  //   ref.read(chatControllerProvider).sendFileMessage(
+  //         context,
+  //         file,
+  //         widget.recieverUserId,
+  //         messageEnum,
+  //         widget.isGroupChat,
+  //       );
+  // }
+
+  // void selectImage() async {
+  //   File? image = await pickImageFromGallery(context);
+  //   if (image != null) {
+  //     sendFileMessage(image, MessageEnum.image);
+  //   }
+  // }
+
+  // void selectVideo() async {
+  //   File? video = await pickVideoFromGallery(context);
+  //   if (video != null) {
+  //     sendFileMessage(video, MessageEnum.video);
+  //   }
+  // }
+
 }
