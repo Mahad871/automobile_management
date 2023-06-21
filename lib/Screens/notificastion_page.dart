@@ -180,6 +180,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
       // Chat asd = await sl.get<ChatAPI>().getchat(notificationData.chatId!);
       // print(asd.chatID);
       // ignore: use_build_context_synchronously
+      // TODO: fix_chat_duplication_problemc
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         return PersonalChatScreen(
             chat: chat,

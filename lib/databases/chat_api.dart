@@ -44,12 +44,8 @@ class ChatAPI {
   }
 
   Future<List<Chat>> getAllchats() async {
-    QuerySnapshot<Map<String, dynamic>> querySnapshot = await _instance
-        .collection(_collection)
-        .where('persons', arrayContains: authMethod.currentUserData?.id)
-        .where('is_group', isEqualTo: false)
-        .orderBy('timestamp', descending: true)
-        .get();
+    QuerySnapshot<Map<String, dynamic>> querySnapshot =
+        await _instance.collection(_collection).get();
 
     for (DocumentSnapshot<Map<String, dynamic>> element in querySnapshot.docs) {
       final Chat temp = Chat.fromMap(element.data()!);
@@ -67,9 +63,17 @@ class ChatAPI {
         .where('chat_id', isEqualTo: chatID)
         .get();
 
-    final chat = Chat.fromMap(querySnapshot.docs.first.data());
+    if (querySnapshot.docs.isEmpty) {
+      return Chat(chatID: '-1', persons: <String>[]);
+    }
 
-    print("recent chats: $chatsList");
+    var chat = Chat.fromMap(querySnapshot.docs.first.data());
+
+    print("recent chats: ${chat.chatID}");
+
+    if (chat == null) {
+      return Chat(chatID: '-1', persons: <String>[]);
+    }
 
     return chat;
   }
@@ -202,24 +206,40 @@ class ChatAPI {
 
   chatExists(List<String> persons) async {
     bool chatExists = false;
-    var chatsList = await chats();
+    // List<Chat> listOfChats = await getAllchats();
 
-    StreamBuilder(
-        builder: (context, snapshot) {
-          print(snapshot.data?.asMap());
-          if (snapshot.hasData) {
-            chatExists = true;
-          }
-          return const Text('data');
-        },
-        stream: chatsList);
+    // FutureBuilder(
+    //     future: getAllchats(),
+    //     builder: (context, snapshot) {
 
-    return chatExists;
+    //     });
+
+    // for (Chat e in listOfChats) {
+    //   List<String> participants = e.persons;
+    //   if (e.chatID == (persons.first + persons.last) ||
+    //       e.chatID == (persons.last + persons.first)) {
+    //     chatExists = true;
+    //     break;
+    //   }
+    // }
+    Chat chat1, chat2;
+    chat1 = await getchat(persons.first.toString() + persons.last.toString());
+    chat2 = await getchat(persons.last.toString() + persons.first.toString());
+
+    if (chat1.chatID != '-1') {
+      chatExists = true;
+      return chat1;
+    }
+    if (chat2.chatID != '-1') {
+      chatExists = true;
+      return chat2;
+    }
+    return chat1;
   }
 
   Future createChat(String chatID, List<String> persons) async {
-    var chatExist = await chatExists(persons);
-    if (!chatExist) {
+    Chat chatExist = await chatExists(persons);
+    if (chatExist.chatID == '-1') {
       print("chat does not exist");
       Chat chat = Chat(chatID: chatID, persons: persons);
       _instance
@@ -232,7 +252,7 @@ class ChatAPI {
     }
     print("chat exists");
 
-    return Chat(chatID: '-1', persons: persons);
+    return chatExist;
   }
 
   Future<String?> uploadAttachment({
